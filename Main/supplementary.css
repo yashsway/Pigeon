@@ -1,0 +1,91 @@
+/* default text styling */
+.text {
+    font-family: 'Slabo 27px';
+    font-size: 15px;
+}
+/* Color of anchors in the top nav bar */
+.ym-hlist ul li a {
+    color: #fff;
+    font-size: 20px;
+}
+/* top nav bar properties */
+.ym-hlist {
+    height: 50px;
+    background-color: #301330;
+}
+/* Elements inside top nav bar */
+.nav-element {
+    margin: 0 auto;
+}
+/* Buttons inside top nav bar */
+.nav-buttons {
+    float: right;
+    margin: 10px;
+}
+/* Styling of the website title */
+#nav-title {
+    color: #fff;
+}
+/* Size of the icon division of the top nav bar buttons */
+
+.ym-button:before {
+    width: 2em;
+}
+/* Panel enclosing our main panel above */
+.main-panel-container {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.24);
+    display: block;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 0px;
+}
+/* Either side of the main panel container */
+.side-panel {
+    background-image: url(grid.png);
+    background-color: #8FB59C;
+    background-blend-mode: screen;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.24);
+    height: 100vh;
+}
+/* Each section of the table header */
+.main-panel-header-contents {
+    text-align: center;
+    background-color: #E8C571;
+}
+/* Icons of the table header */
+.main-panel-header-contents > img {
+    height: 30px;
+    width: 30px;
+}
+/* Control for ALL reports */
+.report-elements {
+    text-align: center;
+    cursor: pointer;
+    /*    background-color: #54A992;*/
+    /*    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.24);*/
+    /*    color: #fff;*/
+}
+/* Override text alignment of report title */
+.report-title {
+    text-align: left;
+}
+/* Flag size of the urgency column */
+.report-urgency > img {
+    height: 40px;
+    width: 40px;
+}
+/* Slide the table under the top nav bar */
+.main-panel {
+    margin-top: -2px;
+    position: absolute;
+    z-index: -1;
+}
+/* Height of the table rows */
+.main-panel > tbody > tr {
+    height: 50px;
+}
+/* Main area of the application. Overrides Bootstrap */
+.container-fluid {
+    margin: 0 auto;
+    padding: 0px;
+}
