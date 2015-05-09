@@ -10,16 +10,27 @@
     <!--mobile viewport optimization-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!--Stylesheets-->
-    <link rel="stylesheet" href="../../Frameworks/yaml412-130728/yaml412-130728/yaml/core/base.min.css" />
-    <link rel="stylesheet" href="../../Frameworks/yaml412-130728/yaml412-130728/yaml/forms/gray-theme.css" />
-    <link rel="stylesheet" href="../../Frameworks/yaml412-130728/yaml412-130728/yaml/navigation/hlist.css" />
-    <link rel="stylesheet" href="../../Frameworks/yaml412-130728/yaml412-130728/yaml/screen/typography.css" />
-    <link rel="stylesheet" href="../../Frameworks/yaml412-130728/yaml412-130728/yaml/screen/grid-960gs-16.css" />
+    <!--yaml framework-->
+    <link rel="stylesheet" href="../Frameworks/yaml412-130728/yaml412-130728/yaml/core/base.min.css" />
+    <link rel="stylesheet" href="../Frameworks/yaml412-130728/yaml412-130728/yaml/forms/gray-theme.css" />
+    <link rel="stylesheet" href="../Frameworks/yaml412-130728/yaml412-130728/yaml/navigation/hlist.css" />
+    <link rel="stylesheet" href="../Frameworks/yaml412-130728/yaml412-130728/yaml/screen/typography.css" />
+    <link rel="stylesheet" href="../Frameworks/yaml412-130728/yaml412-130728/yaml/screen/grid-960gs-16.css" />
+    <!--Pure CSS-->
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-    <link href="../../Frameworks/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--Bootstrap-->
+    <link href="../Frameworks/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--Web Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Slabo+27px|Oswald' rel='stylesheet' type='text/css'>
+    <!--Grid Forms-->
+    <link rel="stylesheet" type="text/css" href="../Frameworks/gridforms-master/gridforms-master/gridforms/gridforms.css">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <!--Datedropper-->
+    <link rel="stylesheet" type="text/css" href="../Frameworks/datedropper-master/datedropper-master/datedropper.css"/>
+    <!--Custom Stylesheet-->
     <link rel="stylesheet" href="supplementary.css" />
+
 </head>
 
 <body>
@@ -36,6 +47,7 @@
         <div class="col-md-2 col-sm-2 side-panel">
         </div>
         <div class="col-md-8 col-sm-8 main-panel-container">
+
             <table class="table table-hover table-responsive table-striped main-panel">
                 <thead>
                     <th class="main-panel-header-contents"><img src="assets/icons/info.png" />
@@ -58,7 +70,10 @@
                         <td class="report-elements report-file_date">April 27th</td>
                         <td class="report-elements report-duration">~10mins</td>
                         <td class="report-elements report-urgency">High</td>
-                        <td class="report-elements report-tools">Edit . Delete</td>
+                        <td class="report-elements report-tools">
+                            <button class="btn btn-default view">View</button>
+                            <button class="btn btn-danger delete">Delete</button>
+                        </td>
                     </tr>
                     <tr>
                         <td class="report-elements report-id">#002</td>
@@ -66,7 +81,10 @@
                         <td class="report-elements report-file_date">April 25th</td>
                         <td class="report-elements report-duration">~5mins</td>
                         <td class="report-elements report-urgency">Neutral</td>
-                        <td class="report-elements report-tools">Edit - Delete</td>
+                        <td class="report-elements report-tools">
+                            <button class="btn btn-default view">View</button>
+                            <button class="btn btn-danger delete">Delete</button>
+                        </td>
                     </tr>
                     <tr>
                         <td class="report-elements report-id">#003</td>
@@ -74,7 +92,10 @@
                         <td class="report-elements report-file_date">April 25th</td>
                         <td class="report-elements report-duration">~30mins</td>
                         <td class="report-elements report-urgency">Medium</td>
-                        <td class="report-elements report-tools">Edit - Delete</td>
+                        <td class="report-elements report-tools">
+                            <button class="btn btn-default view">View</button>
+                            <button class="btn btn-danger delete">Delete</button>
+                        </td>
                     </tr>
                     <tr>
                         <td class="report-elements report-id">#004</td>
@@ -82,7 +103,10 @@
                         <td class="report-elements report-file_date">April 28th</td>
                         <td class="report-elements report-duration">~5mins</td>
                         <td class="report-elements report-urgency">Low</td>
-                        <td class="report-elements report-tools">Edit - Delete</td>
+                        <td class="report-elements report-tools">
+                            <button class="btn btn-default view">View</button>
+                            <button class="btn btn-danger delete">Delete</button>
+                        </td>
                     </tr>
                     <tr>
                         <td class="report-elements report-id">#005</td>
@@ -90,7 +114,10 @@
                         <td class="report-elements report-file_date">April 29th</td>
                         <td class="report-elements report-duration">~5mins</td>
                         <td class="report-elements report-urgency">High</td>
-                        <td class="report-elements report-tools">Edit - Delete</td>
+                        <td class="report-elements report-tools">
+                            <button class="btn btn-default view">View</button>
+                            <button class="btn btn-danger delete">Delete</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -98,9 +125,186 @@
         <div class="col-md-2 col-sm-2 side-panel">
         </div>
     </div>
+    <!--Report Full Detail modal overlay-->
+    <div class="modal fade full-info" id="full-info" tabindex="-1" role="dialog" aria-labelledby="full-info-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="full-info-title">#001 Slow PC, Malware Infection?</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!--Column 1-->
+                        <div class="col-md-4">
+                            <div class="name_container">
+                                <span class="fa fa-user fa-lg full-info-icons" aria-hidden="true"></span>
+                                <p class="full-info-text name">Peter Gregory</p>
+                            </div>
+                            <div class="department_container">
+                                <span class="fa fa-building fa-lg full-info-icons"></span>
+                                <p class="full-info-text department">Conference Services</p>
+                            </div>
+                        </div>
+                        <!--Column 2-->
+                        <div class="col-md-4">
+                            <div class="phone_container">
+                                <span class="fa fa-phone fa-lg full-info-icons" aria-hidden="true"></span>
+                                <p class="full-info-text phone">905-525-9140</p>
+                            </div>
+                            <div class="request_container">
+                                <span class="fa fa-life-ring fa-lg full-info-icons"></span>
+                                <p class="full-info-text request">PC Problem</p>
+                            </div>
+                        </div>
+                        <!--Column 3 -->
+                        <div class="col-md-4">
+                            <div class="email_container">
+                                <span class="fa fa-envelope fa-lg full-info-icons" aria-hidden="true"></span>
+                                <p class="full-info-text email">gregp@mcmaster.ca</p>
+                            </div>
+                            <div class="date_container">
+                                <span class="fa fa-calendar fa-lg full-info-icons"></span>
+                                <p class="full-info-text date">May 2nd 2015</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="details_container">
+                                <span class="fa fa-file-text fa-lg full-info-icons"></span>
+                                <br/>
+                                <p class="full-info-text details">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies
+                                    nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum
+                                    felis eu pede mollis pretium. Integer tincidunt. Cras dapibu</p>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="col-md-6">
+                                <div class="priority_container">
+                                    <span class="fa fa-exclamation-triangle fa-lg full-info-icons"></span>
+                                    <p class="full-info-text priority">High</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="duration_container">
+                                    <span class="fa fa-clock-o fa-lg full-info-icons"></span>
+                                    <p class="full-info-text duration">2:30pm</p>
+                                </div>
+                            </div>
+                    </div>
+                    <!--TODO: Detailed Report View-->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-default" id="edit_issue">Edit</button>
+                    <button class="btn btn-sm btn-default" id="contact_client">Contact Client</button>
+                    <button class="btn btn-success" id="resolve_issue">Resolve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--New Report Filing modal-->
+    <div class="modal fade newReport" id="file-new-report" tabindex="-1" role="dialog" aria-labelledby="newReport-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="newReport-title">New Report</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="grid-form">
+                        <fieldset>
+                            <div data-row-span="3">
+                                <div data-field-span="1">
+                                    <label>Name</label>
+                                    <input type="text" maxlength="22" placeholder="Peter Gregory" id="newReport_name">
+                                </div>
+                                <div data-field-span="1">
+                                    <label>Phone</label>
+                                    <input type="text" maxlength="19" placeholder="902-525-9140 x55555" id="newReport_phone">
+                                </div>
+                                <div data-field-span="1">
+                                    <label>Email</label>
+                                    <input type="email" maxlength="28" placeholder="gregp@mcmaster.ca" id="newReport_email">
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div data-row-span="4">
+                                <div data-field-span="1">
+                                    <label>Department</label>
+                                    <select id="newReport_department">
+                                        <option value="blank" selected="selected"></option>
+                                        <option value="resadm" title="Residence Admissions">Res Admissions</option>
+                                        <option value="reslife" title="Residence Life">Res Life</option>
+                                        <option value="resfacil" title="Residence Facilities">Res Facilities</option>
+                                        <option value="nqsc" title="North Quad Service Centre">NQ Service Centre</option>
+                                        <option value="wqsc" title="West Quad Service Centre">WQ Service Centre</option>
+                                        <option value="conf" title="Conference & Event Services">Conference Services</option>
+                                    </select>
+                                </div>
+                                <div data-field-span="1">
+                                    <label>Request Category</label>
+                                    <select id="newReport_requestCategory">
+                                        <option value="blank" selected="selected"></option>
+                                        <option value="pc_issue" title="PC Issues">PC Issue (Slow, Malware etc)</option>
+                                        <option value="pc_setup" title="PC Setup">PC Setup</option>
+                                        <option value="printer_setup" title="Printer Setup">Printer Setup</option>
+                                        <option value="printer_issue" title="Printer Issues">Printer Issue</option>
+                                        <option value="network_issue" title="Network Issues">Internet/Network Issues</option>
+                                        <option value="network_drive" title="Shared Drive Setup">Shared Drives</option>
+                                        <option value="other_request" title="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div data-field-span="2">
+                                    <label>If Other, please specify</label>
+                                    <input type="text" id="newReport_otherRequest" maxlength="48">
+                                </div>
+                            </div>
+                            <div data-row-span="4">
+                                <div data-field-span="4">
+                                    <label>Report Summary (60 characters)</label>
+                                    <input type="text" id="newReport_summary" maxlength="60">
+                                </div>
+                            </div>
+                            <div data-row-span="4">
+                                <div data-field-span="4">
+                                    <label>Details (500 characters)</label>
+                                    <textarea rows="2" cols="20" name="report_details" wrap="hard" maxlength="500" style="resize:none;height:130px" id="newReport_details"></textarea>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div data-row-span="2">
+                                <div data-field-span="1">
+                                    <label>Priority</label>
+                                    <form class="newReport_priority">
+                                        <input type="radio" name="priority" value="low"><span id="priority_low"><img src="assets/icons/green-flag.png"></span>
+                                        <input type="radio" name="priority" value="medium"><span id="priority_med"><img src="assets/icons/orange-flag.png"></span>
+                                        <input type="radio" name="priority" value="high"><span id="priority_high"><img src="assets/icons/red-flag.png"></span>
+                                    </form>
+                                </div>
+                                <div data-field-span="1">
+                                    <label>When are you free?</label>
+                                    <input type="text" placeholder="mm/dd/yyyy" id="newReport_date">
+                                    <input type="text" placeholder="e.g. 2:30 PM" id="newReport_time">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="newReport_clear">Clear</button>
+                    <button class="btn btn-success btn-lg" id="newReport_submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="../../Frameworks/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../Frameworks/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../Frameworks/datedropper-master/datedropper-master/datedropper.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

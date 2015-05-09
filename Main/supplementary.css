@@ -12,6 +12,8 @@
 .ym-hlist {
     height: 50px;
     background-color: #301330;
+    position: relative;
+    z-index: 1;
 }
 /* Elements inside top nav bar */
 .nav-element {
@@ -77,8 +79,8 @@
 /* Slide the table under the top nav bar */
 .main-panel {
     margin-top: -2px;
-    position: absolute;
-    z-index: -1;
+/*    position: absolute;*/
+/*    z-index: -1;*/
 }
 /* Height of the table rows */
 .main-panel > tbody > tr {
@@ -88,4 +90,56 @@
 .container-fluid {
     margin: 0 auto;
     padding: 0px;
+}
+.report-tools {
+    position: relative;
+    z-index: 100;
+}
+.full-info-text {
+    font-size: 18px;
+    display: inline;
+    padding: 5px;
+    text-justify: inter-word;
+}
+.full-info-icons {
+    padding: 10px;
+}
+#full-info-title {
+    color: #cdcdcd;
+}
+.priority_container {
+    background-color: red;
+    color: white;
+    opacity: 0.5;
+}
+.duration_container {
+    background-color: yellow;
+    opacity: 1;
+}
+form span {
+    font-size: 14px;
+    padding: 2px;
+}
+#newReport_date {
+    width: 200px;
+}
+#newReport_time {
+    width: 200px;
+}
+input::-webkit-input-placeholder {
+    color: #cdcdcd;
+    opacity: 0.3;
+}
+.small span img {
+    height: 30px;
+    width: 30px;
+}
+#newReport_date {
+    padding: 20px;
+}
+#newReport_time {
+    padding: 20px;
+}
+#edit_issue {
+    float: left;
 }
