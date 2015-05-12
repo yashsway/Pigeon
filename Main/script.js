@@ -32,7 +32,7 @@ function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm){
     this.admin_priority = "-";
 }
 
-//Pushes report objects into database (array for now)
+//Pushes report objects into database (Local arrays currently, switch to SQL later!)
 function databaseBuilder(){
     for(var i=0;i<6;i++){
         reports.push(new report(hash(i),test_names[i],test_phones[i],test_emails[i],test_departments[i],test_requests[i],test_customs[i],test_summaries[i],test_details[i],test_priorities[i],test_dates[i],test_times[i]));
@@ -43,33 +43,25 @@ function databaseBuilder(){
 
 //Table row builder
 function rowBuilder(){
-    var temp_priority;
+    //var temp_priority;
     //Add an entry in the panel for each report
     for(var i=0;i<reports.length;i++){
         //Determine priority in a client-understandable form
-        switch(reports[i].priority){
-            case 0:
-                temp_priority = "Low";
-                break;
-            case 1:
-                temp_priority = "Medium";
-                break;
-            case 2:
-                temp_priority = "High";
-                break;
-            default:
-                temp_priority = "Error";
-        }
-        $(".main-panel > tbody").append('<tr><td class="report-elements report-id">' + reports[i].ID + '</td><td class="report-elements report-title">' + reports[i].summary + '</td><td class="report-elements report-date">' + reports[i].date + '</td><td class="report-elements report-duration">' + reports[i].duration + '</td><td class="report-elements report-urgency">' + temp_priority + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button>&nbsp&nbsp<button class="btn btn-danger delete">Delete</button></td></tr>');
+        //temp_priority = priorityString(reports[i].priority);
+        //Report ID is also the ID of the table row.
+        $(".main-panel > tbody").append('<tr id="' + reports[i].ID + '"><td class="report-elements report-id">' + reports[i].ID + '</td><td class="report-elements report-title">' + reports[i].summary + '</td><td class="report-elements report-date">' + reports[i].date + '</td><td class="report-elements report-duration">' + reports[i].duration + '</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[i].priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button>&nbsp&nbsp<button class="btn btn-danger delete">Delete</button></td></tr>');
     }
-    //TODO: Place following two things in a separate function
+    //Build the detailed view
+    detailedReportBuilder();
     //Detailed Report Modal View for View Button
     $(".report-tools .view").attr("data-toggle","modal");
     $(".report-tools .view").attr("data-target","#full-info");
-    //TEST: Bind a click event to the 'View' button (Customize all fields for the exact report that was clicked)
+}
+
+//Detailed Report View Generator (Asynchronous elements inside)
+function detailedReportBuilder(){
+    //Customize all fields for the exact report that was clicked
     $(".view").on("click", function (){
-        //TEST
-        //console.log($(this).parent().parent().index());
         var temp_index = $(this).parent().parent().index();
         $("#full-info-title").text("#" + reports[temp_index].ID + " " + reports[temp_index].summary);
         $(".full-info-text.name").text(reports[temp_index].name);
@@ -79,15 +71,76 @@ function rowBuilder(){
         $(".full-info-text.request").text(reports[temp_index].request);
         $(".full-info-text.date").text(reports[temp_index].date);
         $(".full-info-text.details").text(reports[temp_index].details);
-        $(".full-info-text.priority").text(temp_priority);
-        $(".full-info-text.time").text(reports[temp_index].time);
+        $(".full-info-text.priority").text(priorityString(reports[temp_index].priority)); //Priority variable set above in case statement
+        $(".full-info-text.time").text(reports[temp_index].time); 
+        //Admin-Set information changed below
+        //Final Color-coding
+        detailedReport_ColorCoding(reports[temp_index].priority,"priority");
     });
+}
+
+//Priority Flag HTML generator
+function priorityFlagCodeGenerator(value){
+    switch(value){
+        case 0:
+            return '<img src="assets/icons/green-flag.png"/>';
+        case 1:
+            return '<img src="assets/icons/orange-flag.png"/>';
+        case 2:
+            return '<img src="assets/icons/red-flag.png"/>';
+        default:
+            return '<img src="assets/icons/risk.png"/>';
+    }
+}
+
+//Detailed Report Color-coding
+function detailedReport_ColorCoding(value,field){
+    if(field=="priority"){
+        switch(value){
+            case 0:
+                $(".priority_container").css("background-color","#7AC74F");
+                break;
+            case 1:
+                $(".priority_container").css("background-color","#E8C571");
+                break;
+            case 2:
+                $(".priority_container").css("background-color","salmon");
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+//Priority String Setter
+function priorityString(value){
+    var p;
+    switch(value){
+        case 0:
+            p = "Low";
+            break;
+        case 1:
+            p = "Medium";
+            break;
+        case 2:
+            p = "High";
+            break;
+        default:
+            p = "Error!";
+            break;
+    }
+    return p;
 }
 
 //ID Hashing Function
 function hash(n){
     return n + Math.floor((Math.random()*100)+1);
 }
+
+//Delete buttons of the main report listing
+$(".delete").click(function(){
+    
+});
 
 //Clear button of the new Report formn
 $("#newReport_clear").click(function(){
@@ -104,7 +157,6 @@ $("#newReport_clear").click(function(){
     $('#newReport_time').val('');
 });
 
-
 // Functions to execute upon page load
 $(document).ready(function (){
     //New Report Modal View for Report button
@@ -114,7 +166,6 @@ $(document).ready(function (){
     $("#newReport_date").dateDropper();
     //Build database
     databaseBuilder();
-    //TODO: Build table row
+    //TODO: Build table row & report listing
     rowBuilder();
-    //TODO: Build reports list
 });
