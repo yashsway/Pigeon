@@ -32,27 +32,6 @@ function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm){
     this.admin_priority = "-";
 }
 
-// Functions to execute upon page load
-$(document).ready(function (){
-    //Detailed Report Modal View for View Button
-    $(".report-tools .view").attr("data-toggle","modal");
-    $(".report-tools .view").attr("data-target","#full-info");
-    //New Report Modal View for Report button
-    $("#report").attr("data-toggle","modal");
-    $("#report").attr("data-target","#file-new-report");
-    //Datedropper
-    $("#newReport_date").dateDropper();
-    //TEST: get index numbers of table rows
-    $(".view").click(function (){
-        console.log($(this).parent().parent().index());
-    });
-    //Build database
-    databaseBuilder();
-    //TODO: Build table row
-    
-    //TODO: Build reports list
-});
-
 //Pushes report objects into database (array for now)
 function databaseBuilder(){
     for(var i=0;i<6;i++){
@@ -60,6 +39,22 @@ function databaseBuilder(){
         console.log(reports[i].ID); //TEST: check hashes for consistency and no duplicates
     }
     console.log("Database Build Complete!"); //TEST
+}
+
+//Table row builder
+function rowBuilder(){
+    //Add an entry in the panel for each report
+    for(var i=0;i<reports.length;i++){
+        $(".main-panel > tbody").append('<tr><td class="report-elements report-id">' + reports[i].ID + '</td><td class="report-elements report-title">' + reports[i].summary + '</td><td class="report-elements report-date">' + reports[i].date + '</td><td class="report-elements report-duration">' + reports[i].duration + '</td><td class="report-elements report-urgency">' + reports[i].priority + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button>&nbsp&nbsp<button class="btn btn-danger delete">Delete</button></td></tr>');
+    }
+    //TODO: Place following two things in a separate function
+    //TEST: Bind a click event to the 'View' button
+    $(".view").on("click", function (){
+        console.log($(this).parent().parent().index());
+    });
+    //Detailed Report Modal View for View Button
+    $(".report-tools .view").attr("data-toggle","modal");
+    $(".report-tools .view").attr("data-target","#full-info");
 }
 
 //ID Hashing Function
@@ -80,4 +75,19 @@ $("#newReport_clear").click(function(){
     $('input[name="priority"]').prop('checked', false);
     $('#newReport_date').val('');
     $('#newReport_time').val('');
+});
+
+
+// Functions to execute upon page load
+$(document).ready(function (){
+    //New Report Modal View for Report button
+    $("#report").attr("data-toggle","modal");
+    $("#report").attr("data-target","#file-new-report");
+    //Datedropper
+    $("#newReport_date").dateDropper();
+    //Build database
+    databaseBuilder();
+    //TODO: Build table row
+    rowBuilder();
+    //TODO: Build reports list
 });
