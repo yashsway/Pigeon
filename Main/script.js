@@ -36,9 +36,85 @@ function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm){
 function databaseBuilder(){
     for(var i=0;i<6;i++){
         reports.push(new report(hash(i),test_names[i],test_phones[i],test_emails[i],test_departments[i],test_requests[i],test_customs[i],test_summaries[i],test_details[i],test_priorities[i],test_dates[i],test_times[i]));
-        console.log(reports[i].ID); //TEST: check hashes for consistency and no duplicates
     }
+    //TEST: Console msg
     console.log("Database Build Complete!"); //TEST
+}
+
+//New Report Validation
+function newReport_validation(){
+    function validationColors(val,regEx,obj,mode){
+        if(mode==0){
+            if(regEx==false){
+                $(obj).parent().css('background-color','pink');
+            }else if(regEx==true){
+                $(obj).parent().css('background-color','#CBE896');
+            }
+        }
+        else if(regEx.test(val)){
+            $(obj).parent().css('background-color','#CBE896');
+        }else{
+            $(obj).parent().css('background-color','pink');
+        }
+    }
+    $("#newReport_name").focusout(function(){
+        var emailRegx = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
+        validationColors($(this).val(),emailRegx,this,1);
+    });
+    $("#newReport_phone").focusout(function(){
+        var phoneRegx = /(?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})\s?(x\d{5})/g; //Standard US/Canadian Phone # along with 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        validationColors($(this).val(),phoneRegx,this,1);
+    });
+    $("#newReport_email").focusout(function(){
+        var emailRegx = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
+        validationColors($(this).val(),emailRegx,this,1);
+    });
+    $("#newReport_department").mouseleave(function(){
+        if($(this).val()=="blank"){
+            validationColors($(this).val(),false,this,0);
+        }else{
+            validationColors($(this).val(),true,this,0);
+        }
+    });
+    $("#newReport_requestCategory").mouseleave(function(){
+        var v = $(this).val();
+        if(v=="blank"){
+            validationColors($(this).val(),false,this,0);
+        }else{
+            validationColors($(this).val(),true,this,0);
+        }
+    });
+    $("#newReport_otherRequest").mouseover(function(){
+        var otherRegx = /.{5,}/g;
+        if($("#newReport_requestCategory").val()=="other_request"){
+            if($(this).text()==""){
+                validationColors($(this).val(),otherRegx,this,1);
+            }else{
+                validationColors($(this).val(),otherRegx,this,1); 
+            }
+        }
+    });
+    $("#newReport_summary").focusout(function(){
+        var summRegx = /.{5,}/g; //Standard email.
+        validationColors($(this).val(),summRegx,this,1);
+    });
+    $("#newReport_meetingTime").mouseleave(function(){
+       var datRegx = /.{10,}/g;
+       var timRegx = /(\d{1,2}:?\s?\d{2,2}\s?(AM|am|PM|pm))|(anytime)/g;
+       validationColors($("#newReport_date").val(),datRegx,"#newReport_date",1);
+       validationColors($("#newReport_time").val(),timRegx,"#newReport_time",1);
+    });
+    $("#newReport_priority").mouseover(function () {
+        if ($("input[name='priority']:checked").val()) {
+            validationColors($(this).val(),true,this,0);
+        }else if(!$("input[name='priority']:checked").val()){
+            validationColors($(this).val(),false,this,0);
+        }
+    });
+}
+//New Report Compilation
+function newReport_compilation(){
+    
 }
 
 //Table row builder
@@ -56,6 +132,22 @@ function rowBuilder(){
     //Detailed Report Modal View for View Button
     $(".report-tools .view").attr("data-toggle","modal");
     $(".report-tools .view").attr("data-target","#full-info");
+    //Allow report deletion
+    $(".delete").on("click",function(){
+        var obj = $(this);
+        var reportID = $(this).parent().parent().attr('id');
+        var reportIndex = reportID.charAt(0);
+        //TEST: Console msg
+        console.log("Deleted report #" + reportID);
+        //Remove report listing (after a delay)
+        $("#"+reportID).addClass("greyOut");
+        $(obj).css('display','none');
+        setTimeout(function(){ 
+            obj.parent().parent().remove();
+        }, 10000);
+        //Delete the report data from the database
+        test_names.splice(reportIndex,1);
+    });
 }
 
 //Detailed Report View Generator (Asynchronous elements inside)
@@ -134,13 +226,8 @@ function priorityString(value){
 
 //ID Hashing Function
 function hash(n){
-    return n + Math.floor((Math.random()*100)+1);
+    return n + "" + Math.floor((Math.random()*100)+1);
 }
-
-//Delete buttons of the main report listing
-$(".delete").click(function(){
-    
-});
 
 //Clear button of the new Report formn
 $("#newReport_clear").click(function(){
@@ -155,13 +242,24 @@ $("#newReport_clear").click(function(){
     $('input[name="priority"]').prop('checked', false);
     $('#newReport_date').val('');
     $('#newReport_time').val('');
+    $("#newReport_otherRequest").prop('disabled',true);
 });
 
 // Functions to execute upon page load
-$(document).ready(function (){
+$(document).ready(function(){
     //New Report Modal View for Report button
     $("#report").attr("data-toggle","modal");
     $("#report").attr("data-target","#file-new-report");
+    //Other category field is only enabled when request category dropdown is selected as 'other'
+    $("#newReport_requestCategory").on("click",function(){
+        if($(this).val()=="other_request"){
+            $("#newReport_otherRequest").prop('disabled',false);
+        }else{
+            $("#newReport_otherRequest").prop('disabled',true);
+        }
+    });
+    //Form Validation
+    newReport_validation();
     //Datedropper
     $("#newReport_date").dateDropper();
     //Build database

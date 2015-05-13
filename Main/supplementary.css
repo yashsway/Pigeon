@@ -137,8 +137,12 @@ input::-webkit-input-placeholder {
     padding: 20px;
 }
 #newReport_time {
+    width: 205px;
     padding: 20px;
 }
 #edit_issue {
     float: left;
+}
+.greyOut {
+    -webkit-filter: grayscale(100%);
 }
