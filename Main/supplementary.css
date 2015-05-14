@@ -146,3 +146,9 @@ input::-webkit-input-placeholder {
 .greyOut {
     -webkit-filter: grayscale(100%);
 }
+.timer {
+    display: inline-block;
+    position: relative;
+    margin-left: 2px;
+    padding-top: 5px;
+}

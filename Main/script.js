@@ -70,7 +70,7 @@ function newReport_validation(){
         validationColors($(this).val(),emailRegx,this,1);
     });
     $("#newReport_department").mouseleave(function(){
-        if($(this).val()=="blank"){
+        if($(this).val()=="blank" || $(this).text()==""){
             validationColors($(this).val(),false,this,0);
         }else{
             validationColors($(this).val(),true,this,0);
@@ -104,13 +104,13 @@ function newReport_validation(){
        validationColors($("#newReport_date").val(),datRegx,"#newReport_date",1);
        validationColors($("#newReport_time").val(),timRegx,"#newReport_time",1);
     });
-    $("#newReport_priority").mouseover(function () {
+    /*$("#newReport_submit").mouseover(function () {
         if ($("input[name='priority']:checked").val()) {
-            validationColors($(this).val(),true,this,0);
+            validationColors($("#newReport_priority").val(),true,"#newReport_priority",0);
         }else if(!$("input[name='priority']:checked").val()){
-            validationColors($(this).val(),false,this,0);
+            validationColors($("#newReport_priority").val(),false,"#newReport_priority",0);
         }
-    });
+    });*/
 }
 //New Report Compilation
 function newReport_compilation(){
@@ -136,25 +136,55 @@ function rowBuilder(){
     $(".delete").on("click",function(){
         var obj = $(this);
         var reportID = $(this).parent().parent().attr('id');
-        var reportIndex = reportID.charAt(0);
+        //var reportIndex = reportID.charAt(0); //The first character is the index # (check hash function)
         //TEST: Console msg
-        console.log("Deleted report #" + reportID);
+        console.log("Report #" + reportID + " marked for deletion.");
         //Remove report listing (after a delay)
         $("#"+reportID).addClass("greyOut");
         $(obj).css('display','none');
+        //Add a visual timer
+        $(obj).parent().append('<div class="timer" id="timer'+ reportID + '"></div>');
+        timer("#timer"+reportID,20);
         setTimeout(function(){ 
             obj.parent().parent().remove();
-        }, 10000);
-        //Delete the report data from the database
-        test_names.splice(reportIndex,1);
+            //Delete the report data from the database
+            database_dataDeleter(reportID);
+        }, 20000);
     });
+}
+
+function timer(elem,time){
+    $(elem).pietimer({
+        seconds: time,
+        color: 'rgba(0, 0, 0, 0.8)',
+        height: 25,
+        width: 25
+    });
+    $(elem).pietimer('start');
+}
+
+function database_dataDeleter(id){
+   reports.splice(database_indexReturn(id),1);
+   //TEST:
+   console.log("Report #" + id + " deleted.");
+}
+function database_indexReturn(id){
+    for(var i=0;i<reports.length;i++){
+        if(id==reports[i].ID){
+            return i;
+        }
+    }
 }
 
 //Detailed Report View Generator (Asynchronous elements inside)
 function detailedReportBuilder(){
     //Customize all fields for the exact report that was clicked
     $(".view").on("click", function (){
-        var temp_index = $(this).parent().parent().index();
+        //Acquire the index of the report entry
+        var query_ID = $(this).parent().parent().attr('id');
+        var temp_index = database_indexReturn(query_ID);
+        //Acquire the index of the entry (table row method - UNRELIABLE)
+        //var temp_index = $(this).parent().parent().attr('id');
         $("#full-info-title").text("#" + reports[temp_index].ID + " " + reports[temp_index].summary);
         $(".full-info-text.name").text(reports[temp_index].name);
         $(".full-info-text.phone").text(reports[temp_index].phone);
@@ -226,7 +256,7 @@ function priorityString(value){
 
 //ID Hashing Function
 function hash(n){
-    return n + "" + Math.floor((Math.random()*100)+1);
+    return n + "" + Math.floor((Math.random()*1000)+1);
 }
 
 //Clear button of the new Report formn
@@ -234,8 +264,8 @@ $("#newReport_clear").click(function(){
     $("#newReport_name").val('');
     $("#newReport_phone").val('');
     $("#newReport_email").val('');
-    $("#newReport_department").val('');
-    $("#newReport_requestCategory").val('');
+    $("#newReport_department").val('blank');
+    $("#newReport_requestCategory").val('blank');
     $("#newReport_otherRequest").val('');
     $("#newReport_summary").val('');
     $("#newReport_details").val('');
