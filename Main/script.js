@@ -1,6 +1,7 @@
 //Database to hold report objects
 var reports = new Array();
 var ID, name, phone, email, department, request, custom_request, summary, details, priority, date, time, duration, admin_priority;
+var newReport_valid = false;
 //TEST: all of the following arrays are test report data
 var test_names = ['Peter Gregory','Rade Kuruc','Jaimie Dickson','Marta Prancho','Mia Cai','Goranka Gaechesca'];
 var test_phones = ['905-525-9140','905-525-9140','905-525-9140','905-525-9140','905-525-9140','905-525-9140'];
@@ -43,80 +44,141 @@ function databaseBuilder(){
 
 //New Report Validation
 function newReport_validation(){
-    function validationColors(val,regEx,obj,mode){
+    function validationColors(val,regEx,obj,mode,locale){
         if(mode==0){
             if(regEx==false){
-                $(obj).parent().css('background-color','pink');
+                if(locale==1){
+                    $(obj).parent().css('background-color','pink');
+                }else{
+                    $(obj).css('background-color','pink');
+                }
             }else if(regEx==true){
-                $(obj).parent().css('background-color','#CBE896');
+                if(locale==1){
+                    $(obj).parent().css('background-color','#CBE896');
+                }else{
+                    $(obj).css('background-color','#CBE896');
+                }
             }
         }
         else if(regEx.test(val)){
-            $(obj).parent().css('background-color','#CBE896');
-        }else{
-            $(obj).parent().css('background-color','pink');
-        }
-    }
-    $("#newReport_name").focusout(function(){
-        var emailRegx = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
-        validationColors($(this).val(),emailRegx,this,1);
-    });
-    $("#newReport_phone").focusout(function(){
-        var phoneRegx = /(?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})\s?(x\d{5})/g; //Standard US/Canadian Phone # along with 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
-        validationColors($(this).val(),phoneRegx,this,1);
-    });
-    $("#newReport_email").focusout(function(){
-        var emailRegx = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
-        validationColors($(this).val(),emailRegx,this,1);
-    });
-    $("#newReport_department").mouseleave(function(){
-        if($(this).val()=="blank" || $(this).text()==""){
-            validationColors($(this).val(),false,this,0);
-        }else{
-            validationColors($(this).val(),true,this,0);
-        }
-    });
-    $("#newReport_requestCategory").mouseleave(function(){
-        var v = $(this).val();
-        if(v=="blank"){
-            validationColors($(this).val(),false,this,0);
-        }else{
-            validationColors($(this).val(),true,this,0);
-        }
-    });
-    $("#newReport_otherRequest").mouseover(function(){
-        var otherRegx = /.{5,}/g;
-        if($("#newReport_requestCategory").val()=="other_request"){
-            if($(this).text()==""){
-                validationColors($(this).val(),otherRegx,this,1);
+            if(locale==1){
+                $(obj).parent().css('background-color','#CBE896');
             }else{
-                validationColors($(this).val(),otherRegx,this,1); 
+                $(obj).css('background-color','#CBE896'); 
+            }
+        }else{
+            if(locale==1){
+                $(obj).parent().css('background-color','pink');
+            }else{
+                $(obj).css('background-color','pink');
             }
         }
-    });
-    $("#newReport_summary").focusout(function(){
-        var summRegx = /.{5,}/g; //Standard email.
-        validationColors($(this).val(),summRegx,this,1);
-    });
-    $("#newReport_meetingTime").mouseleave(function(){
-       var datRegx = /.{10,}/g;
-       var timRegx = /(\d{1,2}:?\s?\d{2,2}\s?(AM|am|PM|pm))|(anytime)/g;
-       validationColors($("#newReport_date").val(),datRegx,"#newReport_date",1);
-       validationColors($("#newReport_time").val(),timRegx,"#newReport_time",1);
-    });
-    /*$("#newReport_submit").mouseover(function () {
+    }
+    $("#newReport_submit").mouseover(function () {
+        //Name Validation
+        var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
+        validationColors($("#newReport_name").val(),regX,"#newReport_name",1,1);
+        //Phone Validation
+        regX = /(?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})|(\s?(x\d{5}))/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        validationColors($("#newReport_phone").val(),regX,"#newReport_phone",1,1);
+        //Email Validation
+        regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
+        validationColors($("#newReport_email").val(),regX,"#newReport_email",1,1);
+        //Department Validation
+        if($("#newReport_department").val()=="blank" || $("#newReport_department").text()==""){
+            validationColors($("#newReport_department").val(),false,"#newReport_department",0,1);
+        }else{
+            validationColors($("#newReport_department").val(),true,"#newReport_department",0,1);
+        }
+        //Request Category Validation
+        var v = $("#newReport_requestCategory").val();
+        if(v=="blank"){
+            validationColors($("#newReport_requestCategory").val(),false,"#newReport_requestCategory",0,1);
+        }else{
+            validationColors($("#newReport_requestCategory").val(),true,"#newReport_requestCategory",0,1);
+            //Remove color coding in this section when the category is changed back to something different from 'Other'
+            if(v!="other_request"){
+                $("#newReport_otherRequest").parent().css('background-color','');
+            }
+        }
+        //Other Request Validation
+        regX = /.{5,}/g;
+        if($("#newReport_requestCategory").val()=="other_request"){
+            if($("#newReport_otherRequest").text()==""){
+                validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1);
+            }else{
+                validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1); 
+            }
+        }
+        //Summary Validation
+        regX = /.{5,}/g; //Standard email.
+        validationColors($("#newReport_summary").val(),regX,"#newReport_summary",1,1);
+        //Date & Time Validation
+        regX = /.{10,}/g;
+        var regX2 = /(\d{1,2}:?\s?\d{2,2}\s?(AM|am|PM|pm))|(anytime|Anytime)/g;
+        //Color coding for this section is separate for both fields. Locale argument is therefore 0, meaning 'local' instead of 1, which means 'parent'
+        validationColors($("#newReport_date").val(),regX,"#newReport_date",1,0);
+        validationColors($("#newReport_time").val(),regX2,"#newReport_time",1,0);
+        //Priority Validation
         if ($("input[name='priority']:checked").val()) {
             validationColors($("#newReport_priority").val(),true,"#newReport_priority",0);
         }else if(!$("input[name='priority']:checked").val()){
             validationColors($("#newReport_priority").val(),false,"#newReport_priority",0);
         }
-    });*/
+    });
+}
+//Pre Submission Validation Check
+function finalValidationCheck(){
+    var fields = ["#newReport_name","#newReport_phone","#newReport_email","#newReport_department","#newReport_requestCategory","#newReport_otherRequest","#newReport_summary","#newReport_priority","#newReport_date","#newReport_time"];
+    //rgb(255, 192, 203) = pink
+    //rgb(203, 232, 150) = green
+    for(var i=0;i<fields.length;i++){
+        //TEST: console msg
+        //console.log(fields[i]+ ": self->" + $(fields[i]).css('background-color') + " parent->" + $(fields[i]).parent().css('background-color'));
+        if(i==5){
+            if(($(fields[i]).parent().css('background-color')=='rgba(0, 0, 0, 0)') | ($(fields[i]).parent().css('background-color')=='rgb(203, 232, 150)')){
+                newReport_valid == true;
+            }else{
+                newReport_valid = false;
+                break;
+            }
+        }
+        else if(i>=7){
+            if(($(fields[i]).css('background-color')=='rgb(203, 232, 150)')){
+                newReport_valid = true;
+            }else{
+                newReport_valid = false;
+                break;
+            }
+        }
+        else if(($(fields[i]).parent().css('background-color')=='rgb(203, 232, 150)')){
+            newReport_valid = true;
+        }else{
+            newReport_valid = false;
+            break;
+        }
+    }
 }
 //New Report Compilation
 function newReport_compilation(){
     
 }
-
+//New Report submit
+function newReport_formSubmission(){
+    $("#newReport_submit").on('click',function(){
+        //TEST: console msg
+        console.log("checking form...");
+        finalValidationCheck();
+        if(newReport_valid==true){
+            //TEST: console msg
+            console.log("form is valid!");
+            newReport_valid = false;
+        }else{
+            //TEST: console msg
+            console.log("form invalid! check again!");
+        }
+    });
+}
 //Table row builder
 function rowBuilder(){
     //var temp_priority;
@@ -165,7 +227,7 @@ function timer(elem,time){
 
 function database_dataDeleter(id){
    reports.splice(database_indexReturn(id),1);
-   //TEST:
+   //TEST: console msg
    console.log("Report #" + id + " deleted.");
 }
 function database_indexReturn(id){
@@ -290,6 +352,8 @@ $(document).ready(function(){
     });
     //Form Validation
     newReport_validation();
+    //Enable submission
+    newReport_formSubmission();
     //Datedropper
     $("#newReport_date").dateDropper();
     //Build database

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Pie Timer</title>
+	<style type="text/css">
+
+	</style>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	<script type="text/javascript" src="./jquery.pietimer.js"></script>
+	<script type="text/javascript">
+	$(function(){
+	
+		$('.boom').hide();
+	
+		$('#demo').pietimer({
+			seconds: 10,
+			color: 'rgba(0, 0, 0, 0.8)',
+			height: 100,
+			width: 100,
+					is_reversed: true
+		},
+		function(){
+			$('.boom').show('slow');
+		});
+		
+		$('a#start').click(function(){
+			$('.boom').hide();
+			$('#demo').pietimer('start');
+			return false;
+		});
+		$('a#pause').click(function(){
+			$('#demo').pietimer('pause');
+			return false;
+		});
+		
+	});
+	</script>
+</head>
+<body>
+
+	<h1>Pietimer</h1>
+	<p>Pietimer injects a canvas element into the page which has an ever reducing pie shaped timer. Once the timer is complete a callback function is performed.</p>
+	<p><a href="https://github.com/knorthfield/pietimer/">Download from GitHub</a></p>
+	
+	<hr />
+				
+	<h2>Demo</h2>
+	<p><a href="#" id="start" class="btn">Start Timer</a></p>
+	<p><a href="#" id="pause" class="btn">Pause Timer</a></p>
+						
+	<p id="demo" style="height: 150px;"></p>
+						
+	<h3 class="boom">Boom!</h3>
+	<p class="boom">The timer finished.</p>
+
+
+	<h2>Usage</h2>
+
+	<p>The pietimer canvas element will be injected *into* the specified element.</p>	
+	<p>$('#element').pietimer(); // Will place pietimer inside #element</p>
+	<p>Don't forget to pass some options and a callback!</p>
+
+				
+	<h2>Options</h2>
+
+<code>
+<pre>
+$('#demo').pietimer({
+    seconds: 10,
+    color: 'rgba(0, 0, 0, 0.8)',
+    height: 100,
+    width: 100
+},
+function(){
+    //Do something
+});
+$('#demo').pietimer('start');
+</pre>
+</code>
+				
+				
+	<p>Height and width will be inherited from the parent element and so are optional.</p>
+	
+	<p>Colour will accept any value that the canvas element accepts including hex values like #ffffff</p>
+
+	
+</body>
+</html>
