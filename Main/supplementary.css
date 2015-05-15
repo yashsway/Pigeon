@@ -152,3 +152,9 @@ input::-webkit-input-placeholder {
     margin-left: 2px;
     padding-top: 5px;
 }
+.progress {
+    float: left;
+    width: 200px;
+    position: absolute;
+    margin-top: 12px;
+}

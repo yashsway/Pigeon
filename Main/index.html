@@ -293,7 +293,10 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <em>All fields are required, except details.&nbsp</em>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success" id="#newReport_progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                    </div>
+                    <em id="newReport_infoMsg">All fields are required, except details.&nbsp</em>
                     <button class="btn btn-default" id="newReport_clear">Clear</button>
                     <button class="btn btn-success btn-lg" id="newReport_submit">Submit</button>
                 </div>
@@ -305,7 +308,7 @@
     <script src="../Frameworks/bootstrap/js/bootstrap.min.js"></script>
     <script src="../Frameworks/datedropper-master/datedropper-master/datedropper.js"></script>
     <script src="../Frameworks/pietimer-master/jquery.pietimer.min.js"></script>
+    <script src="../Frameworks/jqmeter.min.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>

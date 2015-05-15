@@ -127,6 +127,17 @@ function newReport_validation(){
         }
     });
 }
+function progressBar_modify(elem,quant){
+    //If quant = 0, reset the progress bar
+    if(quant==0){
+        $(elem).css('width',0+'%');
+        $(elem).attr('aria-valuenow',0);
+    }else{
+        var temp = (parseInt($(elem).attr('aria-valuenow'))+quant);
+        $(elem).attr('aria-valuenow',temp);
+        $(elem).css('width',temp+"%");
+    }
+}
 //Pre Submission Validation Check
 function finalValidationCheck(){
     var fields = ["#newReport_name","#newReport_phone","#newReport_email","#newReport_department","#newReport_requestCategory","#newReport_otherRequest","#newReport_summary","#newReport_priority","#newReport_date","#newReport_time"];
@@ -161,21 +172,26 @@ function finalValidationCheck(){
 }
 //New Report Compilation
 function newReport_compilation(){
-    
+}
+function newReport_message(msg){
+    $("#newReport_infoMsg").html(msg);
+    setTimeout(function(){
+        $("#newReport_infoMsg").html("All fields are required, except details.&nbsp")
+    },5000);
 }
 //New Report submit
 function newReport_formSubmission(){
     $("#newReport_submit").on('click',function(){
-        //TEST: console msg
-        console.log("checking form...");
         finalValidationCheck();
         if(newReport_valid==true){
             //TEST: console msg
             console.log("form is valid!");
-            newReport_valid = false;
+            //Inform the user that the form is valid
+            newReport_message("Looks great! Thanks!");
+            //The valid boolean will be set to false after the report goes into the database
         }else{
-            //TEST: console msg
-            console.log("form invalid! check again!");
+            //Inform the user that the form has some invalid fields
+            newReport_message("Correct the fields in <b>red</b> first!&nbsp");
         }
     });
 }
@@ -206,7 +222,9 @@ function rowBuilder(){
         $(obj).css('display','none');
         //Add a visual timer
         $(obj).parent().append('<div class="timer" id="timer'+ reportID + '"></div>');
+        //Place the timer in the element inserted above
         timer("#timer"+reportID,20);
+        //Delete the table row and everything related to the report from the database
         setTimeout(function(){ 
             obj.parent().parent().remove();
             //Delete the report data from the database
@@ -335,6 +353,8 @@ $("#newReport_clear").click(function(){
     $('#newReport_date').val('');
     $('#newReport_time').val('');
     $("#newReport_otherRequest").prop('disabled',true);
+    //Inform the user
+    newReport_message("Form cleared! You may start over.&nbsp");
 });
 
 // Functions to execute upon page load
@@ -358,6 +378,6 @@ $(document).ready(function(){
     $("#newReport_date").dateDropper();
     //Build database
     databaseBuilder();
-    //TODO: Build table row & report listing
+    //Build table row & report listing
     rowBuilder();
 });
