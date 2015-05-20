@@ -27,6 +27,7 @@
 /* Styling of the website title */
 #nav-title {
     color: #fff;
+    font-family: 'Oswald', sans-serif;
 }
 /* Size of the icon division of the top nav bar buttons */
 
@@ -63,9 +64,6 @@
 .report-elements {
     text-align: center;
     cursor: pointer;
-    /*    background-color: #54A992;*/
-    /*    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.24);*/
-    /*    color: #fff;*/
 }
 /* Override text alignment of report title */
 .report-title {
@@ -79,8 +77,6 @@
 /* Slide the table under the top nav bar */
 .main-panel {
     margin-top: -2px;
-/*    position: absolute;*/
-/*    z-index: -1;*/
 }
 /* Height of the table rows */
 .main-panel > tbody > tr {
@@ -91,48 +87,59 @@
     margin: 0 auto;
     padding: 0px;
 }
+/*View and Delete buttons on every report entry*/
 .report-tools {
     position: relative;
     z-index: 100;
 }
+/*Detailed view text*/
 .full-info-text {
-    font-size: 18px;
+    font-size: 17px;
     display: inline;
-    padding: 5px;
+    padding: 1px;
     text-justify: inter-word;
 }
+/*Detailed view icons*/
 .full-info-icons {
     padding: 10px;
 }
+/*Align details text section in detailed view*/
+.details {
+    margin-left: 9px;
+}
+/*Align request category container in detailed view*/
+.request_container {
+    margin-left: -2px;
+}
+/*Detailed report title*/
 #full-info-title {
     color: #cdcdcd;
 }
+/*Priority container text color*/
 .priority_container {
-    background-color: red;
     color: white;
 }
-.duration_container {
-    background-color: yellow;
-    opacity: 1;
-}
-form span {
-    font-size: 14px;
+/*form span {
+    font-size: 0px;
     padding: 2px;
-}
+}*/
+/*Date container in New Report form*/
 #newReport_date {
     width: 200px;
 }
+/*Time container in New Report form*/
 #newReport_time {
     width: 200px;
 }
+/*Global placeholder text*/
 input::-webkit-input-placeholder {
     color: #cdcdcd;
     opacity: 0.3;
 }
-.small span img {
-    height: 30px;
-    width: 30px;
-}
+/*#newReport_priority span img {
+    height: 50px;
+    width: 50px;
+}*/
 #newReport_date {
     padding: 20px;
 }
@@ -143,6 +150,27 @@ input::-webkit-input-placeholder {
 #edit_issue {
     float: left;
 }
+.vDivider {
+    height: 30px;
+    width: 2px;
+    box-shadow: 2px 0px 0px 0px rgba(0, 0, 0, 0.3);
+    margin-left: 10px;
+    margin-right: 15px;
+    float: left;
+}
+.saveTools {
+    display: none;
+}
+#editReport_save {
+    float: left;
+}
+#editReport_discard {
+    float: left;
+}
+#editReport_progress {
+    float: left;
+    display: inline;
+}
 .greyOut {
     -webkit-filter: grayscale(100%);
 }
@@ -150,11 +178,21 @@ input::-webkit-input-placeholder {
     display: inline-block;
     position: relative;
     margin-left: 2px;
-    padding-top: 5px;
+    top: 8px;
 }
 .progress {
     float: left;
     width: 200px;
     position: absolute;
     margin-top: 12px;
+}
+#editReport {
+    display: none;
+}
+.restore {
+    display: none;
+}
+/*Tools for each report in the report display*/
+.report-tools > button {
+    margin: 3px;
 }
