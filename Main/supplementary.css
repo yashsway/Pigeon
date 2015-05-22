@@ -44,7 +44,7 @@
 }
 /* Either side of the main panel container */
 .side-panel {
-    background-image: url(grid.png);
+    background-image: url(assets/grid.png);
     background-color: #8FB59C;
     background-blend-mode: screen;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.24);
@@ -171,6 +171,9 @@ input::-webkit-input-placeholder {
     float: left;
     display: inline;
 }
+#editReport_duration {
+    padding: 10px;
+}
 .greyOut {
     -webkit-filter: grayscale(100%);
 }
@@ -195,4 +198,22 @@ input::-webkit-input-placeholder {
 /*Tools for each report in the report display*/
 .report-tools > button {
     margin: 3px;
+}
+.adminPriority_icons {
+    height: 40px;
+    width: 40px;
+}
+#editReport_durationSlider {
+    margin: 10px 10px 0px 10px;
+}
+.noUi-connect {
+    background-color: #301330;
+}
+#adminDetailsSection_icon {
+    margin-left: 50%;
+    margin-top: 25px;
+    padding: 2px;
+}
+.paperBackground {
+    background-image: url(assets/linedPaper.png);
 }

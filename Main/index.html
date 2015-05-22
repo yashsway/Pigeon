@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!--Datedropper-->
     <link rel="stylesheet" type="text/css" href="../Frameworks/datedropper-master/datedropper-master/datedropper.css" />
+    <!--noUiSlider-->
+    <link href="../Frameworks/noUiSlider/jquery.nouislider.min.css" rel="stylesheet">
     <!--Custom Stylesheet-->
     <link rel="stylesheet" href="supplementary.css" />
 
@@ -147,9 +149,37 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="duration_container">
+                            <div class="time_container">
                                 <span class="fa fa-clock-o fa-lg full-info-icons"></span>
                                 <p class="full-info-text time"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="adminDetailsSection">
+                        <!--Column 1-->
+                        <div class="col-md-12">
+                            <div>
+                                <span class="fa fa-thumb-tack fa-2x" id="adminDetailsSection_icon"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 paperBackground">
+                            <div class="adminPriority_container">
+                                <span class="">
+                                    <span class="fa fa-bell-o fa-lg full-info-icons"></span>
+                                    <p class="full-info-text adminPriority">Are you cray?</p>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 paperBackground">
+                            <div class="duration_container">
+                                <span class="fa fa-rocket fa-lg full-info-icons"></span>
+                                <p class="full-info-text duration">Seriously.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 paperBackground">
+                            <div class="notes_container">
+                                <span class="fa fa-tags fa-lg full-info-icons"></span>
+                                <p class="full-info-text notes"></p>
                             </div>
                         </div>
                     </div>
@@ -160,25 +190,25 @@
                         <div data-row-span="3">
                             <div data-field-span="1">
                                 <label>Name</label>
-                                <input type="text" minlength="1" maxlength="22" id="editReport_name" required>
+                                <input type="text" minlength="1" maxlength="22" placeholder="Peter Gregory" id="editReport_name" required>
                             </div>
                             <div data-field-span="1">
                                 <label>Phone</label>
-                                <input type="text" maxlength="19" id="editReport_phone" required>
+                                <input type="text" maxlength="19" placholder="905-525-9140 x55555" id="editReport_phone" required>
                             </div>
                             <div data-field-span="1">
                                 <label>Email</label>
-                                <input type="text" maxlength="28" id="editReport_email" required>
+                                <input type="text" maxlength="28" placeholder="gregp@mcmaster.ca" id="editReport_email" required>
                             </div>
                         </div>
                         <div data-row-span="2">
                             <div data-field-span="1">
                                 <label>Date</label>
-                                <input type="text" id="editReport_date">
+                                <input type="text" placeholder="mm/dd/yyyy" id="editReport_date">
                             </div>
                             <div data-field-span="1">
                                 <label>Time</label>
-                                <input type="text" id="editReport_time">
+                                <input type="text" placeholder="2:30 PM or 'anytime'" id="editReport_time">
                             </div>
                         </div>
                     </fieldset><br>
@@ -186,18 +216,23 @@
                         <legend>Administrator</legend>
                         <div data-row-span="2">
                             <div data-field-span="1">
-                                <label>Duration</label>
-                                <input type="text" placeholder="10min">
-                            </div>
-                            <div data-field-span="1">
                                 <label>Admin Priority</label>
-                                <input type="text" placeholder="High">
+                                <form>
+                                    <input type="radio" name="adminPriority" value="Inactive" data-toggle="tooltip" data-placement="top" title="Deactive the issue, temporarily"><img class="adminPriority_icons" src="assets/icons/grey-flag.png">
+                                    <input type="radio" name="adminPriority" value="Low" data-toggle="tooltip" data-placement="top" title="Whenever possible."><img class="adminPriority_icons" src="assets/icons/green-flag.png">
+                                    <input type="radio" name="adminPriority" value="Medium" data-toggle="tooltip" data-placement="top" title="As soon as possible."><img class="adminPriority_icons" src="assets/icons/orange-flag.png">
+                                    <input type="radio" name="adminPriority" value="High" data-toggle="tooltip" data-placement="top" title="Urgent!"><img class="adminPriority_icons" src="assets/icons/red-flag.png">
+                                </form>
+                            </div>
+                            <div data-field-span="1" data-toggle="tooltip" data-placement="top" title="How long will it take to resolve the problem?">
+                                <label>Duration - <span id="duration_tooltip"></span></label>
+                                <div class="sliders" id="editReport_durationSlider"></div>
                             </div>
                         </div>
                         <div data-row-span="2">
                             <div data-field-span="2">
-                                <label>Notes</label>
-                                <textarea rows="2" cols="20" name="report_notes" wrap="hard" maxlength="500" style="resize:none;height:130px" id="editReport_notes"></textarea>
+                                <label>Notes (300 characters)</label>
+                                <textarea rows="2" cols="20" name="report_notes" wrap="hard" maxlength="300" style="resize:none;height:90px" id="editReport_notes"></textarea>
                             </div>
                         </div>
                     </fieldset>
@@ -293,9 +328,9 @@
                                 <div data-field-span="1" id="newReport_priority">
                                     <label>Priority For You</label>
                                     <form>
-                                        <input type="radio" name="priority" value="Low" title="Whenever possible."><span id="priority_low"><img src="assets/icons/green-flag.png" title="Whenever possible."></span>
-                                        <input type="radio" name="priority" value="Medium" title="As soon as possible."><span id="priority_med"><img src="assets/icons/orange-flag.png" title="As soon as possible."></span>
-                                        <input type="radio" name="priority" value="High" title="Urgent!"><span id="priority_high"><img src="assets/icons/red-flag.png" title="Urgent!"></span>
+                                        <input type="radio" name="priority" value="Low" title="Whenever possible."><img src="assets/icons/green-flag.png" title="Whenever possible.">
+                                        <input type="radio" name="priority" value="Medium" title="As soon as possible."><img src="assets/icons/orange-flag.png" title="As soon as possible.">
+                                        <input type="radio" name="priority" value="High" title="Urgent!"><img src="assets/icons/red-flag.png" title="Urgent!">
                                     </form>
                                 </div>
                                 <div data-field-span="1" id="newReport_meetingTime">
@@ -323,7 +358,7 @@
     <script src="../Frameworks/bootstrap/js/bootstrap.min.js"></script>
     <script src="../Frameworks/datedropper-master/datedropper-master/datedropper.js"></script>
     <script src="../Frameworks/pietimer-master/jquery.pietimer.min.js"></script>
-    <script src="../Frameworks/jqmeter.min.js"></script>
+    <script src="../Frameworks/noUiSlider/jquery.nouislider.all.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
