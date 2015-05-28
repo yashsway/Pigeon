@@ -101,7 +101,7 @@
                                 <p class="full-info-text name"></p>
                             </div>
                             <div class="department_container">
-                                <span class="fa fa-building fa-lg full-info-icons"></span>
+                                <span class="fa fa-building fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Department"></span>
                                 <p class="full-info-text department"></p>
                             </div>
                         </div>
@@ -122,14 +122,14 @@
                         <!--Full span-->
                         <div class="col-md-12">
                             <div class="request_container">
-                                <span class="fa fa-life-ring fa-lg full-info-icons"></span>
+                                <span class="fa fa-life-ring fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Request Category"></span>
                                 <p class="full-info-text request"></p>
                             </div>
                         </div>
                         <!--Full span-->
                         <div class="col-md-12">
                             <div class="details_container">
-                                <span class="fa fa-file-text fa-lg full-info-icons"></span>
+                                <span class="fa fa-file-text fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Details"></span>
                                 <br/>
                                 <p class="full-info-text details"></p>
                             </div>
@@ -138,7 +138,7 @@
                         <!--Column 1-->
                         <div class="col-md-6">
                             <div class="priority_container">
-                                <span class="fa fa-exclamation-triangle fa-lg full-info-icons"></span>
+                                <span class="fa fa-exclamation-triangle fa-lg full-info-icons"  data-toggle="tooltip" data-placement="top" title="Client Priority"></span>
                                 <p class="full-info-text priority"></p>
                             </div>
                         </div>
@@ -159,26 +159,27 @@
                         <!--Column 1-->
                         <div class="col-md-12">
                             <div>
-                                <span class="fa fa-thumb-tack fa-2x" id="adminDetailsSection_icon"></span>
+                                <span class="fa fa-thumb-tack fa-2x" data-toggle="tooltip" data-placement="top" title="Administrative Details" id="adminDetailsSection_icon"></span>
                             </div>
                         </div>
                         <div class="col-md-6 paperBackground">
                             <div class="adminPriority_container">
                                 <span class="">
-                                    <span class="fa fa-bell-o fa-lg full-info-icons"></span>
-                                    <p class="full-info-text adminPriority">Are you cray?</p>
+                                    <span class="fa fa-bell-o fa-lg full-info-icons"  data-toggle="tooltip" data-placement="top" title="Your Priority"></span>
+                                    <p class="full-info-text adminPriority"></p>
                                 </span>
                             </div>
                         </div>
                         <div class="col-md-6 paperBackground">
                             <div class="duration_container">
-                                <span class="fa fa-rocket fa-lg full-info-icons"></span>
-                                <p class="full-info-text duration">Seriously.</p>
+                                <p class="full-info-text duration"></p>
+                                <span class="fa fa-rocket fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Duration"></span>
                             </div>
                         </div>
                         <div class="col-md-12 paperBackground">
                             <div class="notes_container">
-                                <span class="fa fa-tags fa-lg full-info-icons"></span>
+                                <span class="fa fa-comment-o fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Notes"></span>
+                                <br/>
                                 <p class="full-info-text notes"></p>
                             </div>
                         </div>
@@ -328,9 +329,9 @@
                                 <div data-field-span="1" id="newReport_priority">
                                     <label>Priority For You</label>
                                     <form>
-                                        <input type="radio" name="priority" value="Low" title="Whenever possible."><img src="assets/icons/green-flag.png" title="Whenever possible.">
-                                        <input type="radio" name="priority" value="Medium" title="As soon as possible."><img src="assets/icons/orange-flag.png" title="As soon as possible.">
-                                        <input type="radio" name="priority" value="High" title="Urgent!"><img src="assets/icons/red-flag.png" title="Urgent!">
+                                        <input type="radio" name="priority" value="Low" data-toggle="tooltip" data-placement="top" title="Whenever possible."><img src="assets/icons/green-flag.png">
+                                        <input type="radio" name="priority" value="Medium" data-toggle="tooltip" data-placement="top" title="As soon as possible."><img src="assets/icons/orange-flag.png">
+                                        <input type="radio" name="priority" value="High" data-toggle="tooltip" data-placement="top" title="Urgent!"><img src="assets/icons/red-flag.png">
                                     </form>
                                 </div>
                                 <div data-field-span="1" id="newReport_meetingTime">

@@ -32,7 +32,7 @@ function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm,nte,del){
     this.priority = pri;
     this.date = dat;
     this.time = tim;
-    this.duration = 30; //Default value of 30mins
+    this.duration = 2; //Default value of 2 days
     this.admin_priority = "";
     this.admin_notes = "";
     this.markedForDeletion = false;
@@ -343,7 +343,7 @@ function editReport_updateChanges(id){
     reports[id].time = $("#editReport_time").val();
     reports[id].admin_priority = $("input[type='radio'][name='adminPriority']:checked").val();
     reports[id].duration = $("#editReport_durationSlider").val();
-    reports[id].admin_notes = $("editReport_notes").val();
+    reports[id].admin_notes = $("#editReport_notes").val();
 }
 function viewEditForm(){
     $("#edit_issue").on("click",function(){
@@ -357,23 +357,23 @@ function viewEditForm(){
         $("#editReport_time").val(reports[temp_index].time);
         //Setup the duration slider
         $("#editReport_durationSlider").noUiSlider({
-            start: 30,
-            step: 5,
+            start: 3,
+            step: 1,
             connect: "lower",
             orientation: "horizontal",
             range: {
-                'min': 5,
-                'max': 180
+                'min': 1,
+                'max': 30
             },
             format: wNumb({
 		        decimals: 0
         	})
         });
         //Show the initial value
-        $("#duration_tooltip").text("30min");
+        $("#duration_tooltip").text(reports[temp_index].duration + " day(s)");
         //Update the value in the label so the user knows what value the slider is at
         $("#editReport_durationSlider").on('slide',function(){
-            $("#duration_tooltip").text($(this).val()+"min");
+            $("#duration_tooltip").text($(this).val()+" day(s)");
         });
         //Disable itself
         $(this).prop('disabled',true);
@@ -435,7 +435,12 @@ function rowBuilder_initial(){
         //Determine priority in a client-understandable form
         //temp_priority = priorityString(reports[i].priority);
         //Report ID is also the ID of the table row.
-        $(".main-panel > tbody").append('<tr id="' + reports[i].ID + '"><td class="report-elements report-id">' + reports[i].ID + '</td><td class="report-elements report-title">' + reports[i].summary + '</td><td class="report-elements report-date">' + reports[i].date + '</td><td class="report-elements report-duration">' + reports[i].duration + 'mins</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[i].priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[i].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
+        //Replace priority column with admin priority setting if admin priority field is NOT empty
+        if(reports[i].admin_priority!=""){
+            $(".main-panel > tbody").append('<tr id="' + reports[i].ID + '"><td class="report-elements report-id">' + reports[i].ID + '</td><td class="report-elements report-title">' + reports[i].summary + '</td><td class="report-elements report-date">' + reports[i].date + '</td><td class="report-elements report-duration">' + reports[i].duration + ' day(s)</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[i].admin_priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[i].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
+        }else{
+            $(".main-panel > tbody").append('<tr id="' + reports[i].ID + '"><td class="report-elements report-id">' + reports[i].ID + '</td><td class="report-elements report-title">' + reports[i].summary + '</td><td class="report-elements report-date">' + reports[i].date + '</td><td class="report-elements report-duration">' + reports[i].duration + ' day(s)</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[i].priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[i].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
+        }
     }
     //Build the detailed view
     detailedReportBuilder();
@@ -444,7 +449,7 @@ function rowBuilder_initial(){
 //Table Row Adder
 function rowBuilder(id){
     var index = database_indexReturn(id);
-    $(".main-panel > tbody").append('<tr id="' + reports[index].ID + '"><td class="report-elements report-id">' + reports[index].ID + '</td><td class="report-elements report-title">' + reports[index].summary + '</td><td class="report-elements report-date">' + reports[index].date + '</td><td class="report-elements report-duration">' + reports[index].duration + 'mins</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[index].priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[index].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
+    $(".main-panel > tbody").append('<tr id="' + reports[index].ID + '"><td class="report-elements report-id">' + reports[index].ID + '</td><td class="report-elements report-title">' + reports[index].summary + '</td><td class="report-elements report-date">' + reports[index].date + '</td><td class="report-elements report-duration">' + reports[index].duration + ' day(s)</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[index].priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[index].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
     //Test: progress bar
     progressBar_modify("#newReport_progress",10);
 }
@@ -456,6 +461,8 @@ function rowBuilder_refresh(){
 //Priority Flag HTML generator
 function priorityFlagCodeGenerator(value){
     switch(value){
+        case "Inactive":
+            return '<img src="assets/icons/grey-flag.png"/>';
         case "Low":
             return '<img src="assets/icons/green-flag.png"/>';
         case "Medium":
@@ -554,11 +561,14 @@ function detailedReportBuilder(){
         $(".full-info-text.date").text(reports[temp_index].date);
         $(".full-info-text.details").text(reports[temp_index].details);
         $(".full-info-text.priority").text(reports[temp_index].priority); //priorityString() call REMOVED
-        $(".full-info-text.time").text(reports[temp_index].time); 
+        $(".full-info-text.time").text(reports[temp_index].time);
         //Admin-Set information changed below
-        
+        $(".full-info-text.adminPriority").text(reports[temp_index].admin_priority);
+        $(".full-info-text.duration").text("Will take approximately " + reports[temp_index].duration+" day(s) to complete");
+        $(".full-info-text.notes").text(reports[temp_index].admin_notes);
         //Final Color-coding
         detailedReport_ColorCoding(reports[temp_index].priority,"priority");
+        detailedReport_ColorCoding(reports[temp_index].admin_priority,"adminPriority");
         //Disable Resolution/Editing when the report has been marked for deletion
         if(reports[database_indexReturn(query_ID)].markedForDeletion==true){
             $(".resolutionTools").hide();
@@ -584,6 +594,24 @@ function detailedReport_ColorCoding(value,field){
                 break;
             default:
                 $(".priority_container").css("background-color","black");
+                break;
+        }
+    }else if(field=="adminPriority"){
+        switch(value){
+            case "Inactive":
+                $(".adminPriority_container").css("background-color","rgba(205, 205, 205, 0.5)");
+                break;
+            case "Low":
+                $(".adminPriority_container").css("background-color","rgba(122, 199, 79, 0.5)");
+                break;
+            case "Medium":
+                $(".adminPriority_container").css("background-color","rgba(232, 197, 113, 0.5)");
+                break;
+            case "High":
+                $(".adminPriority_container").css("background-color","rgba(250, 128, 114, 0.5)");
+                break;
+            default:
+                $(".adminPriority_container").css("background-color","");
                 break;
         }
     }
