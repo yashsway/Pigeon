@@ -1,0 +1,93 @@
+.main-text {
+    font-family: 'Oswald', sans-serif;
+}
+#product-title {
+    font-size: 12em;
+}
+body {
+    background: url(assets/grid.png);
+    background-color: #8FB59C;
+    background-blend-mode: screen;
+}
+.container-fluid {
+    min-height: 100%;
+    position: relative;
+}
+#header {
+    padding: 10px;
+}
+#info-bar{
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 0px;
+    width: 100%;
+    background-color: #301330;
+}
+#info-bar > p {
+    color: white;
+    text-align: center;
+}
+.center {
+    text-align: center;
+}
+.landing-buttons {
+    padding: 20px;
+}
+#newReport_trigger {
+    width: 150px;
+}
+#checkStatus_trigger {
+    width: 150px;
+}
+.body-text {
+    font-family: "Slabo 27px", sans-serif;
+    font-size: 35px;
+    text-align: center;
+}
+#newReport_ticketNumber {
+    font-style: bold;
+    font-size: 30px;
+    text-align: center;
+    color: #301330;
+}
+#help-text {
+    font-size: 15px;
+    font-style: italic;
+    text-align: center;
+}
+#checkTicket {
+    position: absolute;
+    display: inline;
+    height: 60px;
+    padding-bottom: 6px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+@media (max-width: 510px) {
+    #product-title {
+        font-size: 8em;
+    }
+    #newReport_trigger {
+        padding: 20px;
+    }
+    #checkStatus_trigger {
+        padding: 20px;
+    }
+}
+@media (max-width: 321px) {
+    #product-title {
+        font-size: 6em;
+    }
+    #newReport_trigger {
+        padding: 20px;
+    }
+    #checkStatus_trigger {
+        padding: 20px;
+    }
+}
+#landing-buttons-wrapper {
+    display: none;
+}
+#newReport-ticketNumber-wrapper {
+    display: none;
+}
