@@ -70,7 +70,7 @@ echo $test_2::$testman;
         </div>
         <div class="col-md-8 col-sm-8 main-panel-container">
             <!--REMOVED table-responsive from below-->
-            <table class="table main-panel">
+            <table class="table main-panel_dev" id = "main_panel">
                 <thead>
                     <th class="main-panel-header-contents"><img src="assets/icons/info.png" />
                     </th>
@@ -86,17 +86,28 @@ echo $test_2::$testman;
                     </th>
                 </thead>
                 <tbody>
-                    <!--<tr>
-                        <td class="report-elements report-id">#001</td>
-                        <td class="report-elements report-title">Setup BrandonPro Workstations</td>
-                        <td class="report-elements report-date">April 27th</td>
-                        <td class="report-elements report-duration">10mins</td>
-                        <td class="report-elements report-urgency">High</td>
-                        <td class="report-elements report-tools">
-                            <button class="btn btn-default view">View</button>
-                            <button class="btn btn-danger delete">Delete</button>
-                        </td>
-                    </tr>-->
+	                
+	                <?php
+		            $table_values = new Db();
+		            $result = $table_values->get_all_pigeons();
+		            
+		            
+		            while($row = $result->fetch_assoc()){
+			         	echo "<tr id =". $row['id']."><td class='report-elements report-title'>".$row['report_summary']."</td>";    
+			            echo "<td class='report-elements report-id'>#001</td>
+                        <td class='report-elements report-date'>April 27th</td>
+                        <td class='report-elements report-duration'>10mins</td>
+                        <td class='report-elements report-urgency'>High</td>
+                        <td class='report-elements report-tools'>
+                            <button class='btn btn-default view'>View</button>
+                            <button class='btn btn-danger delete'>Delete</button>
+                        </td><tr>";
+			            
+			        }    
+		           // echo "<tr><td>test</td></tr>";    
+		                
+		            ?>
+                        
                 </tbody>
             </table>
         </div>

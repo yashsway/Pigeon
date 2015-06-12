@@ -13,12 +13,21 @@ public function __construct(){
 public function connect(){
 	$_mode = 0;
 	if($_mode == 0){
-		$this->_con = new mysqli("127.0.0.1", "root", "", "llc_local_test"); //dev connection
+		$this->_con = new mysqli("127.0.0.1", "root", "", "pigeon"); //dev connection
 	}else{
 		$this->_con = new mysqli("130.113.143.45:3306", "psousa", "B3asl3y", "hcs-res-survey");	//prod connection - do not use
 	}
 	
 }
+
+public function get_all_pigeons(){
+	$query = $this->_con->prepare("select * from reports");
+	$query->execute();
+	$result = $query->get_result();
+	return $result;
+}
+
+
 
 public function get_all_records_for_table(){
 	$query = $this->_con->prepare('select students.id as s_id, llc2015.id as l_id, students.studentNo, students.studentID, students.studentLastName, students.studentFirstName, llc2015.q1, llc2015.q2, llc2015.state from llc2015 left join students on students.id = llc2015.f_id where students.id IS NOT NULL');
