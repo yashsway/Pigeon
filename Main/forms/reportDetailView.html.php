@@ -1,0 +1,170 @@
+<div class="modal fade full-info" id="full-info" tabindex="-1" role="dialog" aria-labelledby="full-info-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="editReport_close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="full-info-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!--Column 1-->
+                    <div class="col-md-4">
+                        <div class="name_container">
+                            <span class="fa fa-user fa-lg full-info-icons" aria-hidden="true"></span>
+                            <p class="full-info-text name"></p>
+                        </div>
+                        <div class="department_container">
+                            <span class="fa fa-building fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Department"></span>
+                            <p class="full-info-text department"></p>
+                        </div>
+                    </div>
+                    <!--Column 2-->
+                    <div class="col-md-4">
+                        <div class="phone_container">
+                            <span class="fa fa-phone fa-lg full-info-icons" aria-hidden="true"></span>
+                            <p class="full-info-text phone"></p>
+                        </div>
+                    </div>
+                    <!--Column 3 -->
+                    <div class="col-md-4">
+                        <div class="email_container">
+                            <span class="fa fa-envelope fa-lg full-info-icons" aria-hidden="true"></span>
+                            <p class="full-info-text email"></p>
+                        </div>
+                    </div>
+                    <!--Full span-->
+                    <div class="col-md-12">
+                        <div class="request_container">
+                            <span class="fa fa-life-ring fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Request Category"></span>
+                            <p class="full-info-text request"></p>
+                        </div>
+                    </div>
+                    <!--Full span-->
+                    <div class="col-md-12">
+                        <div class="details_container">
+                            <span class="fa fa-file-text fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Details"></span>
+                            <br/>
+                            <p class="full-info-text details"></p>
+                        </div>
+                        <br>
+                    </div>
+                    <!--Column 1-->
+                    <div class="col-md-6">
+                        <div class="priority_container">
+                            <span class="fa fa-exclamation-triangle fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Client Priority"></span>
+                            <p class="full-info-text priority"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="date_container">
+                            <span class="fa fa-calendar fa-lg full-info-icons"></span>
+                            <p class="full-info-text date"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="time_container">
+                            <span class="fa fa-clock-o fa-lg full-info-icons"></span>
+                            <p class="full-info-text time"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="adminDetailsSection">
+                    <!--Column 1-->
+                    <div class="col-md-12">
+                        <div>
+                            <span class="fa fa-thumb-tack fa-2x" data-toggle="tooltip" data-placement="top" title="Administrative Details" id="adminDetailsSection_icon"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 paperBackground">
+                        <div class="adminPriority_container">
+                            <span class="">
+                                    <span class="fa fa-bell-o fa-lg full-info-icons"  data-toggle="tooltip" data-placement="top" title="Your Priority"></span>
+                            <p class="full-info-text adminPriority"></p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 paperBackground">
+                        <div class="duration_container">
+                            <p class="full-info-text duration"></p>
+                            <span class="fa fa-rocket fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Duration"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 paperBackground">
+                        <div class="notes_container">
+                            <span class="fa fa-comment-o fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Notes"></span>
+                            <br/>
+                            <p class="full-info-text notes"></p>
+                        </div>
+                    </div>
+                </div>
+                <form class="grid-form" id="editReport">
+                    <h2>Edit Form</h2>
+                    <fieldset>
+                        <legend>Client</legend>
+                        <div data-row-span="3">
+                            <div data-field-span="1">
+                                <label>Name</label>
+                                <input type="text" minlength="1" maxlength="22" placeholder="Peter Gregory" id="editReport_name" required>
+                            </div>
+                            <div data-field-span="1">
+                                <label>Phone</label>
+                                <input type="text" maxlength="19" placholder="905-525-9140 x55555" id="editReport_phone" required>
+                            </div>
+                            <div data-field-span="1">
+                                <label>Email</label>
+                                <input type="text" maxlength="28" placeholder="gregp@mcmaster.ca" id="editReport_email" required>
+                            </div>
+                        </div>
+                        <div data-row-span="2">
+                            <div data-field-span="1">
+                                <label>Date</label>
+                                <input type="text" placeholder="mm/dd/yyyy" id="editReport_date">
+                            </div>
+                            <div data-field-span="1">
+                                <label>Time</label>
+                                <input type="text" placeholder="2:30 PM or 'anytime'" id="editReport_time">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <legend>Administrator</legend>
+                        <div data-row-span="2">
+                            <div data-field-span="1">
+                                <label>Admin Priority</label>
+                                <form>
+                                    <input type="radio" name="adminPriority" value="Inactive" data-toggle="tooltip" data-placement="top" title="Deactive the issue, temporarily"><img class="adminPriority_icons" src="assets/icons/grey-flag.png">
+                                    <input type="radio" name="adminPriority" value="Low" data-toggle="tooltip" data-placement="top" title="Whenever possible."><img class="adminPriority_icons" src="assets/icons/green-flag.png">
+                                    <input type="radio" name="adminPriority" value="Medium" data-toggle="tooltip" data-placement="top" title="As soon as possible."><img class="adminPriority_icons" src="assets/icons/orange-flag.png">
+                                    <input type="radio" name="adminPriority" value="High" data-toggle="tooltip" data-placement="top" title="Urgent!"><img class="adminPriority_icons" src="assets/icons/red-flag.png">
+                                </form>
+                            </div>
+                            <div data-field-span="1" data-toggle="tooltip" data-placement="top" title="How long will it take to resolve the problem?">
+                                <label>Duration - <span id="duration_tooltip"></span>
+                                </label>
+                                <div class="sliders" id="editReport_durationSlider"></div>
+                            </div>
+                        </div>
+                        <div data-row-span="2">
+                            <div data-field-span="2">
+                                <label>Notes (300 characters)</label>
+                                <textarea rows="2" cols="20" name="report_notes" wrap="hard" maxlength="300" style="resize:none;height:90px" id="editReport_notes"></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-default" id="edit_issue">Edit</button>
+                <div class="vDivider saveTools" id="editForm_divider"></div>
+                <button class="btn btn-sm btn-primary saveTools" id="editReport_save">Save</button>
+                <button class="btn btn-sm btn-warning saveTools" id="editReport_discard">Discard</button>
+                <em id="editReport_infoMsg">Hover over information for additional help text.&nbsp</em>
+                <button class="btn btn-sm btn-default resolutionTools" id="contact_client">Contact Client</button>
+                <button class="btn btn-success resolutionTools" id="resolve_issue">Resolve</button>
+            </div>
+
+        </div>
+    </div>
+</div>

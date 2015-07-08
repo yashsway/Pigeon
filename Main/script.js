@@ -96,7 +96,7 @@ function validationColors(val,regEx,obj,mode,locale){
         if(locale==1){
             $(obj).parent().css('background-color','#CBE896');
         }else{
-            $(obj).css('background-color','#CBE896'); 
+            $(obj).css('background-color','#CBE896');
         }
     }else{
         if(locale==1){
@@ -144,7 +144,7 @@ function newReport_validation(){
             if($("#newReport_otherRequest").text()==""){
                 validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1);
             }else{
-                validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1); 
+                validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1);
             }
         }
         //Summary Validation
@@ -366,8 +366,8 @@ function viewEditForm(){
                 'max': 30
             },
             format: wNumb({
-		        decimals: 0
-        	})
+                decimals: 0
+            })
         });
         //Show the initial value
         $("#duration_tooltip").text(reports[temp_index].duration + " day(s)");
@@ -421,14 +421,14 @@ function viewEditForm(){
         //Close edit form & related
         closeEditForm();
         //Clear the edit form //TODO: probably unnecessary since hitting edit loads info while replacing existing content
-        
+
         //Inform the user
         editReport_message("Changes discarded!",5000);
     });
 }
 //--------------Reports Table Display------------
 //Table row builder
-function rowBuilder_initial(){
+/*function rowBuilder_initial(){
     //var temp_priority;
     //Add an entry in the panel for each report
     for(var i=0;i<reports.length;i++){
@@ -445,7 +445,7 @@ function rowBuilder_initial(){
     //Build the detailed view
     detailedReportBuilder();
     reportDeletion();
-}
+}*/
 //Table Row Adder
 function rowBuilder(id){
     var index = database_indexReturn(id);
@@ -630,7 +630,7 @@ function progressBar_modify(elem,quant){
         //Reset after 3s
         setTimeout(function(){
           $(elem).css('width',0+'%');
-            $(elem).attr('aria-valuenow',0);  
+            $(elem).attr('aria-valuenow',0);
         },3000);
     }
 }
@@ -679,7 +679,9 @@ $(document).ready(function(){
     //Enable tooltips
     $('[data-toggle="tooltip"]').tooltip();
     //Build database
-    databaseBuilder_initial();
+    //databaseBuilder_initial();
     //Build table row & report listing
-    rowBuilder_initial();
+    //rowBuilder_initial();
+    //MOVED: Call to enable detailed report building
+    detailedReportBuilder();
 });
