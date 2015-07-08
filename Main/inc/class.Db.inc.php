@@ -1,4 +1,6 @@
 <?php
+
+//notes is my feature
 class Db {
     public $databaseConnection;
 
