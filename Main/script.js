@@ -5,7 +5,7 @@ var newReport_valid = false;
 var editReport_valid = false;
 var newReport_complete = false;
 //TEST: all of the following arrays are test report data
-var test_names = ['Peter Gregory','Rade Kuruc','Jaimie Dickson','Marta Prancho','Mia Cai','Goranka Gaechesca'];
+/*var test_names = ['Peter Gregory','Rade Kuruc','Jaimie Dickson','Marta Prancho','Mia Cai','Goranka Gaechesca'];
 var test_phones = ['905-525-9140','905-525-9140','905-525-9140','905-525-9140','905-525-9140','905-525-9140'];
 var test_emails = ['gregp@mcmaster.ca','kurucr@mcmaster.ca','jdickso@mcmaster.ca','mprancho@mcmaster.ca','caimi@mcmaster.ca','gacesag@mcmaster.ca'];
 var test_departments = ['Residence Admissions','Residence Admissions','Residence Admissions','Residence Admissions','Residence Admissions','Residence Admissions'];
@@ -15,8 +15,78 @@ var test_summaries = ['Sample Report','Sample Report','Sample Report','Sample Re
 var test_details = ['test','test','test','test','test','test'];
 var test_priorities = ["Low","Medium","Medium","Low","High","High"];
 var test_dates = ['04/01/2015','04/01/2015','04/01/2015','04/01/2015','04/01/2015','04/01/2015'];
-var test_times = ['8:30 AM','8:30 AM','8:30 AM','8:30 AM','8:30 AM','8:30 AM'];
+var test_times = ['8:30 AM','8:30 AM','8:30 AM','8:30 AM','8:30 AM','8:30 AM'];*/
+//AJAX Handler
+var data = "";
+function ajaxRequest(reqScript, returnDataType, reqData, callback){
+    $.ajax({
+        type: "POST",
+        dataType: returnDataType,
+        url: reqScript,
+        data: reqData,
+        success: function(data) {
+            console.log("AJAX request success.");
+            //console.log(data);
+            callback(data);
+        },
+        fail: function(){
+            console.log("AJAX request failed.");
+        },
+        error: function(){
+            console.log("Error on server-side!");
+        }
+    });
+}
+/*function ajaxRequestInsert(reqScript, returnDataType, reqData, callback){
+    $.ajax({
+        type: "POST",
+        dataType: returnDataType,
+        url: reqScript,
+        data: reqData,
+        //contentType: 'application/json; charset=UTF-8',
+        success: function(data) {
+            console.log("AJAX request success.");
+            callback(data);
+        },
+        fail: function(){
+            console.log("AJAX request failed.");
+        },
 
+    });
+}*/
+/*function ajaxRequest(reqScript, callback) {
+    var request;
+    //Make a new XML HTTP request object depending on the browser of the client
+    if (window.XMLHttpRequest) {
+        request = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        try {
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+    if(!request){
+        console.log("AJAX request failed.");
+        return false;
+    }
+    request.onreadystatechange = function(){
+        if (request.readyState==4) {
+            if (request.status==200) {
+                callback(request.responseText);
+            }
+        }
+    };
+    //Define the request
+    request.open("GET",reqScript+"&t="+Math.random(),true);
+    //Send the request
+    request.send();
+    console.log("AJAX request initiated & sent.");
+}*/
 //-----------Backbone-----------
 //Report ADT
 function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm,nte,del){
@@ -39,37 +109,37 @@ function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm,nte,del){
 }
 //-------------Database------------
 //Pushes report objects into database (Local arrays currently, switch to SQL later!)
-function databaseBuilder_initial(){
+/*function databaseBuilder_initial(){
     for(var i=0;i<6;i++){
         reports.push(new report(hash(i),test_names[i],test_phones[i],test_emails[i],test_departments[i],test_requests[i],test_customs[i],test_summaries[i],test_details[i],test_priorities[i],test_dates[i],test_times[i]));
     }
     //TEST: Console msg
     console.log("Database Build Complete!"); //TEST
-}
+}*/
 //Pushes new report object into database
-function databaseEntry(rep){
+/*function databaseEntry(rep){
     reports.push(rep);
     return rep.ID;
-}
+}*/
 //Updates fields of a certain report in the database
 /*function databaseUpdate(id,field,value){
     reports[id].field = value;
 }*/
 //-------------Database Utilities-------------
 //Deletes specified report from the database
-function database_dataDeleter(id){
+/*function database_dataDeleter(id){
    reports.splice(database_indexReturn(id),1);
    //TEST: console msg
    console.log("Report #" + id + " deleted.");
-}
+}*/
 //Returns the index of the specified report
-function database_indexReturn(id){
+/*function database_indexReturn(id){
     for(var i=0;i<reports.length;i++){
         if(id==reports[i].ID){
             return i;
         }
     }
-}
+}*/
 //ID Hashing Function
 function hash(n){
     return n + "" + Math.floor((Math.random()*1000)+1);
@@ -177,7 +247,7 @@ function finalValidationCheck(formType){
             //console.log(fields[i]+ ": self->" + $(fields[i]).css('background-color') + " parent->" + $(fields[i]).parent().css('background-color'));
             if(i==5){
                 if(($(fields[i]).parent().css('background-color')=='rgba(0, 0, 0, 0)') | ($(fields[i]).parent().css('background-color')=='rgb(203, 232, 150)')){
-                    newReport_valid == true;
+                    newReport_valid = true;
                 }else{
                     newReport_valid = false;
                     break;
@@ -235,7 +305,7 @@ function newReport_message(msg){
     $("#newReport_infoMsg").html(msg+"&nbsp&nbsp");
     //Set the default message back on after 5s
     setTimeout(function(){
-        $("#newReport_infoMsg").html("All fields are required, except details.&nbsp&nbsp")
+        $("#newReport_infoMsg").html("All fields are required, except details.&nbsp&nbsp");
     },5000);
 }
 //Other category field is only enabled when request category dropdown is selected as 'other'
@@ -274,45 +344,66 @@ function newReport_engine(){
 }
 //New Report Compilation
 function newReport_compilation(){
-    var temp = new report(hash(reports.length),$("#newReport_name").val(),$("#newReport_phone").val(),$("#newReport_email").val(),$("#newReport_department").val(),$("#newReport_requestCategory").val(),$("#newReport_otherRequest").val(),$("#newReport_summary").val(),$("#newReport_details").val(),$("input[type='radio'][name='priority']:checked").val(),$("#newReport_date").val(),$("#newReport_time").val());
+    //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
+    var formData = {reqType:2,id:hash(1),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:$("input[type='radio'][name='priority']:checked").val(),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
+    //var temp = new report(hash(reports.length),$("#newReport_name").val(),$("#newReport_phone").val(),$("#newReport_email").val(),$("#newReport_department").val(),$("#newReport_requestCategory").val(),$("#newReport_otherRequest").val(),$("#newReport_summary").val(),$("#newReport_details").val(),$("input[type='radio'][name='priority']:checked").val(),$("#newReport_date").val(),$("#newReport_time").val());
     //TEST: progress bar
     progressBar_modify("#newReport_progress",15);
-    return temp;
+    //TEST: console msg (JSON data)
+    console.log("Before Send: " + formData['na']);
+    return formData;
 }
 //New Report submit
 function newReport_formSubmission(){
     $("#newReport_submit").on('click',function(){
+        //Disable the submit button to prevent multiple submissions
+        $("#newReport_submit").attr('disabled',true);
         //Check the form if everything is valid (progress bar is the 3rd & final validation step)
         finalValidationCheck("newReport");
         if(newReport_valid==true){
             //Inform the user that the form is valid
             newReport_message("Looks great! Thanks!");
             //Compile the form, add to database, update progress bar and make an entry in the table
-            var newEntry_id = databaseEntry(newReport_compilation());
-            //Test: progress bar
-            progressBar_modify("#newReport_progress",20);
-            rowBuilder(newEntry_id);
-            //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
-            detailedReportBuilder();
-            reportDeletion();
-            //Test: progress bar
-            progressBar_modify("#newReport_progress",5);
-            //Disable the submit button to prevent multiple submissions
-            $("#newReport_submit").attr('disabled',true);
-            //Clear form and close AFTER 3.5s IF progress bar is FULL
-            if($("#newReport_progress").attr('aria-valuenow')==100){
-                setTimeout(function(){
-                    $("#newReport_clear").trigger("click");
-                    $("#newReport_close").trigger("click");
-                },3500);
-            }else{
-                //Inform the user that something went wrong
-                newReport_message("Submission failed! :( Something went wrong, try again later.");
+            var formData = newReport_compilation();
+            //TEST: console msg (returned JSON data)
+            console.log(formData);
+            //TODO: AJAX insert into database
+            ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
                 //TEST: console msg
-                console.log("Failed to record new report. :( " + $("#newReport_progress").attr('aria-valuenow'));
-            }
-            //The valid boolean will be set to false after the report goes into the database
-            newReport_valid = false;
+                //console.log("After Receive: " + returnedData);
+                //var newEntry_id = databaseEntry(newReport_compilation());
+                //Test: progress bar
+                progressBar_modify("#newReport_progress",25);
+                if(returnedData=="Query ok"){
+                    //The valid boolean will be set to false after the report goes into the database
+                    newReport_valid = false;
+                    //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
+                    detailedReportBuilder();
+                    reportDeletion();
+                    //Test: progress bar
+                    progressBar_modify("#newReport_progress",10);
+                    //Clear form and close AFTER 3.5s IF progress bar is FULL
+                    if($("#newReport_progress").attr('aria-valuenow')==100){
+                        setTimeout(function(){
+                            $("#newReport_clear").trigger("click");
+                            $("#newReport_close").trigger("click");
+                        },3500);
+                    }else{
+                        //Inform the user that something went wrong
+                        newReport_message("Submission failed! :( Something went wrong, try again later.");
+                        //TEST: console msg
+                        console.log("Creation stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
+                    }
+                    //Refresh page
+
+                }else{
+                    //TEST: console msg
+                    console.log("Submission failed");
+                    //Inform the user that something went wrong
+                    newReport_message("Submission failed! :( Something went wrong, try again later.");
+                }
+            });
+
         }else{
             //Inform the user that the form has some invalid fields
             newReport_message("Correct the fields in <b>red</b> first!");
@@ -447,7 +538,7 @@ function viewEditForm(){
     reportDeletion();
 }*/
 //Table Row Adder
-function rowBuilder(id){
+/*function rowBuilder(id){
     var index = database_indexReturn(id);
     $(".main-panel > tbody").append('<tr id="' + reports[index].ID + '"><td class="report-elements report-id">' + reports[index].ID + '</td><td class="report-elements report-title">' + reports[index].summary + '</td><td class="report-elements report-date">' + reports[index].date + '</td><td class="report-elements report-duration">' + reports[index].duration + ' day(s)</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[index].priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[index].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
     //Test: progress bar
@@ -456,10 +547,10 @@ function rowBuilder(id){
 function rowBuilder_refresh(){
     $(".main-panel > tbody").empty();
     rowBuilder_initial();
-}
+}*/
 //-----------------Reports Table Entries Tools/Utilities--------------
 //Priority Flag HTML generator
-function priorityFlagCodeGenerator(value){
+/*function priorityFlagCodeGenerator(value){
     switch(value){
         case "Inactive":
             return '<img src="assets/icons/grey-flag.png"/>';
@@ -472,7 +563,7 @@ function priorityFlagCodeGenerator(value){
         default:
             return '<img src="assets/icons/risk.png"/>';
     }
-}
+}*/
 function reportRestoration(id,deleteButton,delTimeout){
     //Report restoration //TODO: (FIX ID ACQUISITION/DELETE BUTTON/TIMER STOPPING - WHEN MULTIPLE REPORTS ARE BEING DELETED, IT WILL BE BUGGY)
     $("#restore"+id).on('click',function(){
@@ -483,13 +574,22 @@ function reportRestoration(id,deleteButton,delTimeout){
         //Hide itself
         $(this).hide();
         //Remove the deletion tag/marking on the report
-        reports[database_indexReturn(id)].markedForDeletion = false;
-        //Remove the greyOut
-        $("#"+id).removeClass("greyOut");
-        //Show the delete button again (after a delay)
-        setTimeout(function() {
-            $(deleteButton).show();
-        }, 3000);
+        //NOTE: review AJAX update
+        ajaxRequest("databaseButler.php?reqType="+1+"&reqParam="+0+"&queryID="+id, "text", null, function(returnedData){
+            if(returnedData=="Query ok"){
+                //TEST: Console msg
+                console.log("Report #"+id+" unmarked.");
+                //Remove the greyOut
+                $("#"+id).removeClass("greyOut");
+                //Show the delete button again (after a delay)
+                setTimeout(function() {
+                    $(deleteButton).show();
+                }, 3000);
+            }else{
+                //TEST: console msg
+                console.log("Report restoration failed.");
+            }
+        });
     });
 }
 function reportDeletion(){
@@ -499,27 +599,36 @@ function reportDeletion(){
         var reportID = $(this).parent().parent().attr('id');
         //var toggle = 0;
         //Mark report for deletion
-        reports[database_indexReturn(reportID)].markedForDeletion = true;
-        //TEST: Console msg
-        console.log("Report #" + reportID + " marked for deletion.");
-        //Remove report listing (after a delay)
-        $("#"+reportID).addClass("greyOut");
-        $(obj).css('display','none');
-        //Add a visual timer
-        $(obj).parent().append('<div class="timer" id="timer'+ reportID + '"></div>');
-        //Place the timer in the element inserted above
-        newTimer("#timer"+reportID,20);
-        //Delete the report from the database and the display after the time
-        var deleteTimeout = setTimeout(function(){
-            //Remove the table entry
-            obj.parent().parent().remove();
-            //Delete the report data from the database
-            database_dataDeleter(reportID);
-        },20000);
-        //Show the restoration button
-        $("#restore"+reportID).show();
-        //Allow restoration
-        reportRestoration(reportID,obj,deleteTimeout);
+        //NOTE: review AJAX update
+        ajaxRequest("databaseButler.php?reqType="+1+"&reqParam="+1+"&queryID="+reportID, "text", null, function(returnedData){
+            if(returnedData=="Query ok"){
+                //TEST: Console msg
+                console.log("Report #" + reportID + " marked for deletion.");
+                //Remove report listing (after a delay)
+                $("#"+reportID).addClass("greyOut");
+                $(obj).css('display','none');
+                //Add a visual timer
+                $(obj).parent().append('<div class="timer" id="timer'+ reportID + '"></div>');
+                //Place the timer in the element inserted above
+                newTimer("#timer"+reportID,60);
+                //Delete the report from the database and the display after the time
+                var deleteTimeout = setTimeout(function(){
+                    //Remove the table entry
+                    obj.parent().parent().remove();
+                    //Delete the report data from the database
+                    //TODO: AJAX deletion
+                    //database_dataDeleter(reportID);
+                },60000);
+                //Show the restoration button
+                $("#restore"+reportID).show();
+                //Allow restoration
+                reportRestoration(reportID,obj,deleteTimeout);
+            }else{
+                //TEST: Console msg
+                console.log("Report deletion failed.");
+            }
+        });
+        //reports[database_indexReturn(reportID)].markedForDeletion = true;
         //The timer can be toggled between pause/resume when clicked (FEATURE REMOVED)
         /*$("#timer"+reportID).on('click',function(){
             if(toggle==0){
@@ -544,11 +653,45 @@ function detailedReportBuilder(){
     $(".view").on("click", function (){
         //Acquire the index of the report entry
         var query_ID = $(this).parent().parent().attr('id');
-        var temp_index = database_indexReturn(query_ID);
+        //var temp_index = database_indexReturn(query_ID);
         //Set the ID of the modal container to the report ID (USED BY THE EDITING REPORT ENGINE)
         $(".modal-content").attr("id",query_ID);
+        //NOTE: Review following detailed view AJAX code
+        ajaxRequest("databaseButler.php?reqType="+0+"&queryID="+query_ID, "json", null, function(returnedData){
+            $("#full-info-title").text("#" + query_ID + " " + returnedData[0].reportSummary);
+            $(".full-info-text.name").text(returnedData[0].reportName);
+            $(".full-info-text.phone").text(returnedData[0].reportPhone);
+            $(".full-info-text.email").text(returnedData[0].reportEmail);
+            $(".full-info-text.department").text(returnedData[0].reportDepartment);
+            if(returnedData[0].reportRequest=="Other"){
+                $(".full-info-text.request").text(returnedData[0].reportCustomRequest);
+            }else{
+                $(".full-info-text.request").text(returnedData[0].reportRequest);
+            }
+            if(returnedData[0].reportDetails!=null){
+                $(".full-info-text.details").text(returnedData[0].reportDetails);
+            }
+            $(".full-info-text.priority").text(returnedData[0].reportPriority);
+            $(".full-info-text.date").text(returnedData[0].reportDate);
+            $(".full-info-text.time").text(returnedData[0].reportTime);
+            //Admin-Set information changed below
+            $(".full-info-text.adminPriority").text(returnedData[0].admin_priority);
+            $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
+            $(".full-info-text.notes").text(returnedData[0].admin_notes);
+            //Final Color-coding
+            detailedReport_ColorCoding(returnedData[0].reportPriority,"priority");
+            detailedReport_ColorCoding(returnedData[0].admin_priority,"adminPriority");
+            //Disable Resolution/Editing when the report has been marked for deletion
+            if(returnedData[0].markedForDeletion==1){
+                $(".resolutionTools").hide();
+                $("#edit_issue").hide();
+            }else{
+                $(".resolutionTools").show();
+                $("#edit_issue").show();
+            }
+        });
         //Change all the info fields to the data of the corresponding report
-        $("#full-info-title").text("#" + reports[temp_index].ID + " " + reports[temp_index].summary);
+        /*$("#full-info-title").text("#" + reports[temp_index].ID + " " + reports[temp_index].summary);
         $(".full-info-text.name").text(reports[temp_index].name);
         $(".full-info-text.phone").text(reports[temp_index].phone);
         $(".full-info-text.email").text(reports[temp_index].email);
@@ -576,7 +719,7 @@ function detailedReportBuilder(){
         }else{
             $(".resolutionTools").show();
             $("#edit_issue").show();
-        }
+        }*/
     });
 }
 //Detailed Report Color-coding
@@ -684,4 +827,6 @@ $(document).ready(function(){
     //rowBuilder_initial();
     //MOVED: Call to enable detailed report building
     detailedReportBuilder();
+    //MOVED: Call to enable report deletion
+    reportDeletion();
 });

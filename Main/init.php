@@ -6,8 +6,6 @@ function autoloadClasses($className) {
         require $filename;
     }
 }
+//Execute Classes (Database Connection)
 spl_autoload_register("autoloadClasses");
-require_once('functions.php');
-//fetchReports();
-displayReports(true);
 ?>
