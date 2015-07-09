@@ -38,15 +38,23 @@ function reportInsert(){
     //reportEntry();
     echo $result;
 }
-function reportEdit(){
+function reportEditView(){
     def();
     //Establish a new connection
     $repEditCon = new Db();
     //Get the report ID from the URL (src: AJAX request)
     $query_ID = $_GET['queryID'];
     //Run the editReport function from the DB class (Send it the report ID)
-    $result = $repEditCon->editReport($query_ID,$_GET['reqParam']);
+    $result = $repEditCon->editReportView($query_ID);
     echo json_encode($result);
+}
+function reportEditUpdate(){
+    def();
+    //Establish a new connection
+    $repEditUpCon = new Db();
+    //Run the editReportUpdate function from the DB class (Send it all the edit form data + the report ID)
+    $result = $repEditUpCon->editReportUpdate($_POST['id'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dat'],$_POST['tim'],$_POST['admPr'],$_POST['dur'],$_POST['nte']);
+    echo $result;
 }
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
@@ -61,7 +69,9 @@ if((isset($_REQUEST['reqType']))==1){
         //echo json_encode(array("name"=>$_POST['na'],"reqType"=>$_POST['reqType']));
         reportInsert();
     }else if($_REQUEST['reqType']==3){
-        reportEdit();
+        reportEditView();
+    }else if($_REQUEST['reqType']==4){
+        reportEditUpdate();
     }
 }
 ?>

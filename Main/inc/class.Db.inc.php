@@ -96,27 +96,44 @@ class Db {
         }
     }
 
-    public function editReport($id,$mode){
-        if($mode=="0"){
-            $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDate, reportTime, duration, admin_priority, admin_notes FROM reports WHERE reportID = ?');
-            $ajaxQuery->bind_param("i",$id);
-            $ajaxQuery->execute();
+    public function editReportView($id){
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDate, reportTime, duration, admin_priority, admin_notes FROM reports WHERE reportID = ?');
+        $ajaxQuery->bind_param("i",$id);
+        $ajaxQuery->execute();
 
-            //Error catch
-            if(!$ajaxQuery){
-                $error[0] = array("error"=>"Query fail");
-                return $error;
-            }
+        //Error catch
+        if(!$ajaxQuery){
+            $error[0] = array("error"=>"Query fail");
+            return $error;
+        }
 
-            $result = $ajaxQuery->get_result();
-            $json_result = array();
+        $result = $ajaxQuery->get_result();
+        $json_result = array();
 
-            while($row=$result->fetch_assoc()){
-                $assoc_result[] = $row;
-            }
-            return $assoc_result;
-        }else if($mode=="1"){
+        while($row=$result->fetch_assoc()){
+            $assoc_result[] = $row;
+        }
+        return $assoc_result;
+    }
 
+    public function editReportUpdate($id,$na,$ph,$em,$dat,$tim,$admPr,$dur,$nte){
+        //Clean the user input
+        $na = mysqli_real_escape_string($this->databaseConnection,$na);
+        $ph = mysqli_real_escape_string($this->databaseConnection,$ph);
+        $em = mysqli_real_escape_string($this->databaseConnection,$em);
+        $dat = mysqli_real_escape_string($this->databaseConnection,$dat);
+        $tim = mysqli_real_escape_string($this->databaseConnection,$tim);
+        $admPr = mysqli_real_escape_string($this->databaseConnection,$admPr);
+        $nte = mysqli_real_escape_string($this->databaseConnection,$nte);
+        //Make query
+        $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET reportName = ?, reportPhone = ?, reportEmail = ?, reportDate = ?, reportTime = ?, duration = ?, admin_priority = ?, admin_notes = ? WHERE reportID = ?');
+        $ajaxQuery->bind_param("sssssissi",$na,$ph,$em,$dat,$tim,$dur,$admPr,$nte,$id);
+        $ajaxQuery->execute();
+
+        if($ajaxQuery){
+            return "Query ok";
+        }else{
+            return "Query fail";
         }
     }
 }

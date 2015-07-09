@@ -8,6 +8,7 @@ body {
     background: url(assets/grid.png);
     background-color: #8FB59C;
     background-blend-mode: screen;
+    min-height: 456px;
 }
 .container-fluid {
     min-height: 100%;

@@ -329,11 +329,10 @@ function newReport_engine(){
 function newReport_compilation(){
     //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
     var formData = {reqType:2,id:hash(1),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:$("input[type='radio'][name='priority']:checked").val(),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
-    //var temp = new report(hash(reports.length),$("#newReport_name").val(),$("#newReport_phone").val(),$("#newReport_email").val(),$("#newReport_department").val(),$("#newReport_requestCategory").val(),$("#newReport_otherRequest").val(),$("#newReport_summary").val(),$("#newReport_details").val(),$("input[type='radio'][name='priority']:checked").val(),$("#newReport_date").val(),$("#newReport_time").val());
     //TEST: progress bar
     progressBar_modify("#newReport_progress",15);
     //TEST: console msg (JSON data)
-    console.log("Before Send: " + formData['na']);
+    console.log("Before Send: " + formData);
     return formData;
 }
 //New Report submit
@@ -350,9 +349,6 @@ function newReport_formSubmission(){
             console.log(formData);
             //NOTE: Review AJAX insert into database
             ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
-                //TEST: console msg
-                //console.log("After Receive: " + returnedData);
-                //var newEntry_id = databaseEntry(newReport_compilation());
                 //Test: progress bar
                 progressBar_modify("#newReport_progress",25);
                 if(returnedData=="Query ok"){
@@ -377,8 +373,11 @@ function newReport_formSubmission(){
                         //TEST: console msg
                         console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
                     }
-                    //Refresh page
-                    //possible js reload
+                    //TODO: AJAX refresh
+                    setTimeout(function(){
+                        location.reload();
+                    },3500);
+
                 }else{
                     //TEST: console msg
                     console.log("Submission failed. Database query error.");
@@ -410,16 +409,16 @@ function editReport_message(msg,time){
         $("#editReport_infoMsg").html("Hover over information for additional help text.");
     },time);
 }
-function editReport_updateChanges(id){
-    //DATABASE UPDATE (should me moved up to database section after backend is complete)
-    reports[id].name = $("#editReport_name").val();
-    reports[id].phone = $("#editReport_phone").val();
-    reports[id].email = $("#editReport_email").val();
-    reports[id].date = $("#editReport_date").val();
-    reports[id].time = $("#editReport_time").val();
-    reports[id].admin_priority = $("input[type='radio'][name='adminPriority']:checked").val();
-    reports[id].duration = $("#editReport_durationSlider").val();
-    reports[id].admin_notes = $("#editReport_notes").val();
+function editReport_compilation(id){
+    //Collect the edit form data
+    if($("input[type='radio'][name='adminPriority']:checked").val()!=undefined){
+        var formData = {reqType:4,id:id,na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:$("input[type='radio'][name='adminPriority']:checked").val(),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
+    }else{
+       var formData = {reqType:4,id:id,na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:"Inactive",dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
+    }
+    //TEST: console msg (JSON data)
+    console.log(formData);
+    return formData;
 }
 function viewEditForm(){
     $("#edit_issue").on("click",function(){
@@ -427,18 +426,30 @@ function viewEditForm(){
         //var temp_index = database_indexReturn($(this).parent().parent().attr("id"));
         var rep_ID = $(this).parent().parent().attr('id');
         //TODO: AJAX edit form
-        ajaxRequest("databaseButler.php?reqType="+3+"&reqParam="+0+"&queryID="+rep_ID, "json", null, function(returnedData){
+        ajaxRequest("databaseButler.php?reqType="+3+"&queryID="+rep_ID, "json", null, function(returnedData){
             if(returnedData[0].error=="Query fail"){
                 console.log("Populating edit report failed. Check Database Query.");
             }else{
-                //TEST:
-                console.log("Editing success!");
+                //TEST: console msg
+                console.log("Edit form populated");
                 //Fill the client part of the edit form with available info
                 $("#editReport_name").val(returnedData[0].reportName);
                 $("#editReport_phone").val(returnedData[0].reportPhone);
                 $("#editReport_email").val(returnedData[0].reportEmail);
                 $("#editReport_date").val(returnedData[0].reportDate);
                 $("#editReport_time").val(returnedData[0].reportTime);
+                if(returnedData[0].admin_priority=="Inactive"){
+                    $("input[type='radio'][name='adminPriority'][id='admIna']").prop("checked",true);
+                }else if(returnedData[0].admin_priority=="Low"){
+                    $("input[type='radio'][name='adminPriority'][id='admLow']").prop("checked",true);
+                }else if(returnedData[0].admin_priority=="Medium"){
+                    $("input[type='radio'][name='adminPriority'][id='admMed']").prop("checked",true);
+                }else if(returnedData[0].admin_priority=="High"){
+                $("input[type='radio'][name='adminPriority'][id='admHig']").prop("checked",true);
+                }else{
+                    //TEST: console.msg
+                    console.log("Reading invalid admin_priority string. (View Edit Form)");
+                }
                 //Setup the duration slider
                 $("#editReport_durationSlider").noUiSlider({
                     start: returnedData[0].duration,
@@ -471,33 +482,7 @@ function viewEditForm(){
                 editReport_message("Editing report...",5000);
             }
         });
-        /*//TEST: Fill the client part of the edit form with available info
-        $("#editReport_name").val(reports[temp_index].name);
-        $("#editReport_phone").val(reports[temp_index].phone);
-        $("#editReport_email").val(reports[temp_index].email);
-        $("#editReport_date").val(reports[temp_index].date);
-        $("#editReport_time").val(reports[temp_index].time);
-        //Setup the duration slider
-        $("#editReport_durationSlider").noUiSlider({
-            start: 3,
-            step: 1,
-            connect: "lower",
-            orientation: "horizontal",
-            range: {
-                'min': 1,
-                'max': 30
-            },
-            format: wNumb({
-                decimals: 0
-            })
-        });
-        //Show the initial value
-        $("#duration_tooltip").text(reports[temp_index].duration + " day(s)");
-        //Update the value in the label so the user knows what value the slider is at
-        $("#editReport_durationSlider").on('slide',function(){
-            $("#duration_tooltip").text($(this).val()+" day(s)");
-        });*/
-        //NOTE: code from closeEditForm was previously here.
+        //NOTE: code from closeEditForm onwards was previously here.
     });
 }
 function closeEditForm(op){
@@ -518,19 +503,26 @@ $("#editReport_save").on("click",function(){
     //Validate client section
     finalValidationCheck("editReport");
     if(editReport_valid==true){
-        //Update database entry
-        //editReport_updateChanges(database_indexReturn($(this).parent().parent().attr("id")));
+        //Collect edit form data
+        var formData = editReport_compilation($(this).parent().parent().attr("id"));
         //TODO: AJAX save edit form
-
-
-        //Close edit form & related
-        closeEditForm();
-        //Inform the user
-        editReport_message("Changes saved! Reopen this window to see changes.",5000);
-        //Refresh the report listing (WILL NEED TO BE REMOVED WHEN DATABASE IS INTEGRATED)
-        rowBuilder_refresh();
-        //Reset the boolean
-        editReport_valid = false;
+        ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
+            if(returnedData=="Query ok"){
+                //Close edit form & related
+                closeEditForm(true);
+                //Inform the user
+                editReport_message("Changes saved! Pigeon will refresh automatically.",5000);
+                //TODO: AJAX refresh
+                setTimeout(function(){
+                        location.reload();
+                },3500);
+                //Reset the boolean
+                editReport_valid = false;
+            }else{
+                //TEST: console msg
+                console.log("Edit form could not be submitted! SQL query error.");
+            }
+        });
     }else{
         //Inform the user that the form has some invalid fields
         editReport_message("Correct the fields in <b>red</b> first!",3500);
@@ -685,7 +677,6 @@ function detailedReportBuilder(){
         }
         //Acquire the index of the report entry
         var rep_ID = $(this).parent().parent().attr('id');
-        //var temp_index = database_indexReturn(query_ID);
         //Set the ID of the modal container to the report ID (USED BY THE EDITING REPORT ENGINE)
         $(".modal-content").attr("id",rep_ID);
         //NOTE: Review following detailed view AJAX code
@@ -725,37 +716,6 @@ function detailedReportBuilder(){
                     $("#edit_issue").show();
                 }
             }
-            /*$("#full-info-title").text("#" + rep_ID + " " + returnedData[0].reportSummary);
-            $(".full-info-text.name").text(returnedData[0].reportName);
-            $(".full-info-text.phone").text(returnedData[0].reportPhone);
-            $(".full-info-text.email").text(returnedData[0].reportEmail);
-            $(".full-info-text.department").text(returnedData[0].reportDepartment);
-            if(returnedData[0].reportRequest=="Other"){
-                $(".full-info-text.request").text(returnedData[0].reportCustomRequest);
-            }else{
-                $(".full-info-text.request").text(returnedData[0].reportRequest);
-            }
-            if(returnedData[0].reportDetails!=null){
-                $(".full-info-text.details").text(returnedData[0].reportDetails);
-            }
-            $(".full-info-text.priority").text(returnedData[0].reportPriority);
-            $(".full-info-text.date").text(returnedData[0].reportDate);
-            $(".full-info-text.time").text(returnedData[0].reportTime);
-            //Admin-Set information changed below
-            $(".full-info-text.adminPriority").text(returnedData[0].admin_priority);
-            $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
-            $(".full-info-text.notes").text(returnedData[0].admin_notes);
-            //Final Color-coding
-            detailedReport_ColorCoding(returnedData[0].reportPriority,"priority");
-            detailedReport_ColorCoding(returnedData[0].admin_priority,"adminPriority");
-            //Disable Resolution/Editing when the report has been marked for deletion
-            if(returnedData[0].markedForDeletion==1){
-                $(".resolutionTools").hide();
-                $("#edit_issue").hide();
-            }else{
-                $(".resolutionTools").show();
-                $("#edit_issue").show();
-            }*/
         });
         //Change all the info fields to the data of the corresponding report
         /*$("#full-info-title").text("#" + reports[temp_index].ID + " " + reports[temp_index].summary);
