@@ -14,5 +14,4 @@ function reportEntry(){
         }
     }
 }
-reportEntry();
 ?>

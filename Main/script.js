@@ -37,23 +37,6 @@ function ajaxRequest(reqScript, returnDataType, reqData, callback){
         }
     });
 }
-/*function ajaxRequestInsert(reqScript, returnDataType, reqData, callback){
-    $.ajax({
-        type: "POST",
-        dataType: returnDataType,
-        url: reqScript,
-        data: reqData,
-        //contentType: 'application/json; charset=UTF-8',
-        success: function(data) {
-            console.log("AJAX request success.");
-            callback(data);
-        },
-        fail: function(){
-            console.log("AJAX request failed.");
-        },
-
-    });
-}*/
 /*function ajaxRequest(reqScript, callback) {
     var request;
     //Make a new XML HTTP request object depending on the browser of the client
@@ -356,18 +339,16 @@ function newReport_compilation(){
 //New Report submit
 function newReport_formSubmission(){
     $("#newReport_submit").on('click',function(){
-        //Disable the submit button to prevent multiple submissions
-        $("#newReport_submit").attr('disabled',true);
         //Check the form if everything is valid (progress bar is the 3rd & final validation step)
         finalValidationCheck("newReport");
         if(newReport_valid==true){
-            //Inform the user that the form is valid
-            newReport_message("Looks great! Thanks!");
+            //Disable the submit button to prevent multiple submissions
+            $("#newReport_submit").attr('disabled',true);
             //Compile the form, add to database, update progress bar and make an entry in the table
             var formData = newReport_compilation();
             //TEST: console msg (returned JSON data)
             console.log(formData);
-            //TODO: AJAX insert into database
+            //NOTE: Review AJAX insert into database
             ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
                 //TEST: console msg
                 //console.log("After Receive: " + returnedData);
@@ -375,6 +356,8 @@ function newReport_formSubmission(){
                 //Test: progress bar
                 progressBar_modify("#newReport_progress",25);
                 if(returnedData=="Query ok"){
+                    //Inform the user that the form is valid
+                    newReport_message("Looks great! Thanks!");
                     //The valid boolean will be set to false after the report goes into the database
                     newReport_valid = false;
                     //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
@@ -392,15 +375,17 @@ function newReport_formSubmission(){
                         //Inform the user that something went wrong
                         newReport_message("Submission failed! :( Something went wrong, try again later.");
                         //TEST: console msg
-                        console.log("Creation stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
+                        console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
                     }
                     //Refresh page
-
+                    //possible js reload
                 }else{
                     //TEST: console msg
-                    console.log("Submission failed");
+                    console.log("Submission failed. Database query error.");
                     //Inform the user that something went wrong
                     newReport_message("Submission failed! :( Something went wrong, try again later.");
+                    //Re-enable the submit button on submission failure
+                    $("#newReport_submit").attr('disabled',false);
                 }
             });
 
@@ -439,8 +424,54 @@ function editReport_updateChanges(id){
 function viewEditForm(){
     $("#edit_issue").on("click",function(){
         //TEST: Get the ID of the report to be edited
-        var temp_index = database_indexReturn($(this).parent().parent().attr("id"));
-        //TEST: Fill the client part of the edit form with available info
+        //var temp_index = database_indexReturn($(this).parent().parent().attr("id"));
+        var rep_ID = $(this).parent().parent().attr('id');
+        //TODO: AJAX edit form
+        ajaxRequest("databaseButler.php?reqType="+3+"&reqParam="+0+"&queryID="+rep_ID, "json", null, function(returnedData){
+            if(returnedData[0].error=="Query fail"){
+                console.log("Populating edit report failed. Check Database Query.");
+            }else{
+                //TEST:
+                console.log("Editing success!");
+                //Fill the client part of the edit form with available info
+                $("#editReport_name").val(returnedData[0].reportName);
+                $("#editReport_phone").val(returnedData[0].reportPhone);
+                $("#editReport_email").val(returnedData[0].reportEmail);
+                $("#editReport_date").val(returnedData[0].reportDate);
+                $("#editReport_time").val(returnedData[0].reportTime);
+                //Setup the duration slider
+                $("#editReport_durationSlider").noUiSlider({
+                    start: returnedData[0].duration,
+                    step: 1,
+                    connect: "lower",
+                    orientation: "horizontal",
+                    range: {
+                        'min': 1,
+                        'max': 30
+                    },
+                    format: wNumb({
+                        decimals: 0
+                    })
+                });
+                //Show the initial value
+                $("#duration_tooltip").text(returnedData[0].duration + " day(s)");
+                //Update the value in the label so the user knows what value the slider is at
+                $("#editReport_durationSlider").on('slide',function(){
+                    $("#duration_tooltip").text($(this).val()+" day(s)");
+                });
+                //Disable itself
+                $(this).prop('disabled',true);
+                //Disable the resolution tools
+                $(".resolutionTools").prop('disabled',true);
+                //Show the edit form
+                $("#editReport").show();
+                //Show the save & discard buttons
+                $(".saveTools").show();
+                //Inform the user
+                editReport_message("Editing report...",5000);
+            }
+        });
+        /*//TEST: Fill the client part of the edit form with available info
         $("#editReport_name").val(reports[temp_index].name);
         $("#editReport_phone").val(reports[temp_index].phone);
         $("#editReport_email").val(reports[temp_index].email);
@@ -465,58 +496,53 @@ function viewEditForm(){
         //Update the value in the label so the user knows what value the slider is at
         $("#editReport_durationSlider").on('slide',function(){
             $("#duration_tooltip").text($(this).val()+" day(s)");
-        });
-        //Disable itself
-        $(this).prop('disabled',true);
-        //Disable the resolution tools
-        $(".resolutionTools").prop('disabled',true);
-        //Show the edit form
-        $("#editReport").show();
-        //Show the save & discard buttons
-        $(".saveTools").show();
-        //Inform the user
-        editReport_message("Editing report...",30000);
-    });
-    function closeEditForm(){
-        //Destroy the slider object
-        $("#editReport_durationSlider")[0].destroy();
-        //Hide the edit report form
-        $("#editReport").hide();
-        //Hide the save tools
-        $(".saveTools").hide();
-        //Enable the edit button
-        $("#edit_issue").prop('disabled',false);
-        //Enable the resolution tools
-        $(".resolutionTools").prop('disabled',false);
-    }
-    $("#editReport_save").on("click",function(){
-        //Validate client section
-        finalValidationCheck("editReport");
-        if(editReport_valid==true){
-            //Update database entry
-            editReport_updateChanges(database_indexReturn($(this).parent().parent().attr("id")));
-            //Close edit form & related
-            closeEditForm();
-            //Inform the user
-            editReport_message("Changes saved! Reopen this window to see changes.",5000);
-            //Refresh the report listing (WILL NEED TO BE REMOVED WHEN DATABASE IS INTEGRATED)
-            rowBuilder_refresh();
-            //Reset the boolean
-            editReport_valid = false;
-        }else{
-            //Inform the user that the form has some invalid fields
-            editReport_message("Correct the fields in <b>red</b> first!",3500);
-        }
-    });
-    $("#editReport_discard").on("click",function(){
-        //Close edit form & related
-        closeEditForm();
-        //Clear the edit form //TODO: probably unnecessary since hitting edit loads info while replacing existing content
-
-        //Inform the user
-        editReport_message("Changes discarded!",5000);
+        });*/
+        //NOTE: code from closeEditForm was previously here.
     });
 }
+function closeEditForm(op){
+    if(op){
+        //Destroy the slider object
+        $("#editReport_durationSlider")[0].destroy();
+    }
+    //Hide the edit report form
+    $("#editReport").hide();
+    //Hide the save tools
+    $(".saveTools").hide();
+    //Enable the edit button
+    $("#edit_issue").prop('disabled',false);
+    //Enable the resolution tools
+    $(".resolutionTools").prop('disabled',false);
+}
+$("#editReport_save").on("click",function(){
+    //Validate client section
+    finalValidationCheck("editReport");
+    if(editReport_valid==true){
+        //Update database entry
+        //editReport_updateChanges(database_indexReturn($(this).parent().parent().attr("id")));
+        //TODO: AJAX save edit form
+
+
+        //Close edit form & related
+        closeEditForm();
+        //Inform the user
+        editReport_message("Changes saved! Reopen this window to see changes.",5000);
+        //Refresh the report listing (WILL NEED TO BE REMOVED WHEN DATABASE IS INTEGRATED)
+        rowBuilder_refresh();
+        //Reset the boolean
+        editReport_valid = false;
+    }else{
+        //Inform the user that the form has some invalid fields
+        editReport_message("Correct the fields in <b>red</b> first!",3500);
+    }
+});
+$("#editReport_discard").on("click",function(){
+    //Close edit form & related
+    closeEditForm(true);
+    //Clear the edit form //TODO: probably unnecessary since hitting edit loads info while replacing existing content
+    //Inform the user
+    editReport_message("Changes discarded!",5000);
+});
 //--------------Reports Table Display------------
 //Table row builder
 /*function rowBuilder_initial(){
@@ -651,14 +677,55 @@ function detailedReportBuilder(){
     $(".report-tools .view").attr("data-target","#full-info");
     //Customize all fields for the exact report that was clicked
     $(".view").on("click", function (){
+        //Remove carry-over edit form data
+        if($("#editReport").css('display')=='block'){
+            closeEditForm(true);
+        }else if($("#editReport").css('display')=='none'){
+            closeEditForm(false);
+        }
         //Acquire the index of the report entry
-        var query_ID = $(this).parent().parent().attr('id');
+        var rep_ID = $(this).parent().parent().attr('id');
         //var temp_index = database_indexReturn(query_ID);
         //Set the ID of the modal container to the report ID (USED BY THE EDITING REPORT ENGINE)
-        $(".modal-content").attr("id",query_ID);
+        $(".modal-content").attr("id",rep_ID);
         //NOTE: Review following detailed view AJAX code
-        ajaxRequest("databaseButler.php?reqType="+0+"&queryID="+query_ID, "json", null, function(returnedData){
-            $("#full-info-title").text("#" + query_ID + " " + returnedData[0].reportSummary);
+        ajaxRequest("databaseButler.php?reqType="+0+"&queryID="+rep_ID, "json", null, function(returnedData){
+            if(returnedData[0].error=="Query fail"){
+                console.log("Populating detailed view failed. Check Database Query.");
+            }else{
+                $("#full-info-title").text("#" + rep_ID + " " + returnedData[0].reportSummary);
+                $(".full-info-text.name").text(returnedData[0].reportName);
+                $(".full-info-text.phone").text(returnedData[0].reportPhone);
+                $(".full-info-text.email").text(returnedData[0].reportEmail);
+                $(".full-info-text.department").text(returnedData[0].reportDepartment);
+                if(returnedData[0].reportRequest=="Other"){
+                    $(".full-info-text.request").text(returnedData[0].reportCustomRequest);
+                }else{
+                    $(".full-info-text.request").text(returnedData[0].reportRequest);
+                }
+                if(returnedData[0].reportDetails!=null){
+                    $(".full-info-text.details").text(returnedData[0].reportDetails);
+                }
+                $(".full-info-text.priority").text(returnedData[0].reportPriority);
+                $(".full-info-text.date").text(returnedData[0].reportDate);
+                $(".full-info-text.time").text(returnedData[0].reportTime);
+                //Admin-Set information changed below
+                $(".full-info-text.adminPriority").text(returnedData[0].admin_priority);
+                $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
+                $(".full-info-text.notes").text(returnedData[0].admin_notes);
+                //Final Color-coding
+                detailedReport_ColorCoding(returnedData[0].reportPriority,"priority");
+                detailedReport_ColorCoding(returnedData[0].admin_priority,"adminPriority");
+                //Disable Resolution/Editing when the report has been marked for deletion
+                if(returnedData[0].markedForDeletion==1){
+                    $(".resolutionTools").hide();
+                    $("#edit_issue").hide();
+                }else{
+                    $(".resolutionTools").show();
+                    $("#edit_issue").show();
+                }
+            }
+            /*$("#full-info-title").text("#" + rep_ID + " " + returnedData[0].reportSummary);
             $(".full-info-text.name").text(returnedData[0].reportName);
             $(".full-info-text.phone").text(returnedData[0].reportPhone);
             $(".full-info-text.email").text(returnedData[0].reportEmail);
@@ -688,7 +755,7 @@ function detailedReportBuilder(){
             }else{
                 $(".resolutionTools").show();
                 $("#edit_issue").show();
-            }
+            }*/
         });
         //Change all the info fields to the data of the corresponding report
         /*$("#full-info-title").text("#" + reports[temp_index].ID + " " + reports[temp_index].summary);

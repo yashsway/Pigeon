@@ -1,6 +1,4 @@
 <?php
-
-//notes is my feature
 class Db {
     public $databaseConnection;
 
@@ -43,9 +41,14 @@ class Db {
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
+        //Error catch
+        if(!$ajaxQuery){
+            $error[0] = array("error"=>"Query fail");
+            return $error;
+        }
+
         $result = $ajaxQuery->get_result();
         $json_result = array();
-
         while($row=$result->fetch_assoc()){
             $assoc_result[] = $row;
         }
@@ -69,6 +72,19 @@ class Db {
     }
 
     public function insertReport($id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim){
+        //Clean the user-input
+        $na = mysqli_real_escape_string($this->databaseConnection,$na);
+        $ph = mysqli_real_escape_string($this->databaseConnection,$ph);
+        $em = mysqli_real_escape_string($this->databaseConnection,$em);
+        $dep = mysqli_real_escape_string($this->databaseConnection,$dep);
+        $req = mysqli_real_escape_string($this->databaseConnection,$req);
+        $cus = mysqli_real_escape_string($this->databaseConnection,$cus);
+        $summ = mysqli_real_escape_string($this->databaseConnection,$summ);
+        $det = mysqli_real_escape_string($this->databaseConnection,$det);
+        $pri = mysqli_real_escape_string($this->databaseConnection,$pri);
+        $dat = mysqli_real_escape_string($this->databaseConnection,$dat);
+        $tim = mysqli_real_escape_string($this->databaseConnection,$tim);
+        //Make query
         $ajaxQuery = $this->databaseConnection->prepare('INSERT INTO reports (reportID,reportName,reportPhone,reportEmail,reportDepartment,reportRequest,reportCustomRequest,reportSummary,reportDetails,reportPriority,reportDate,reportTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         $ajaxQuery->bind_param("isssssssssss",$id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim);
         $ajaxQuery->execute();
@@ -77,6 +93,30 @@ class Db {
             return "Query ok";
         }else{
             return "Query fail";
+        }
+    }
+
+    public function editReport($id,$mode){
+        if($mode=="0"){
+            $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDate, reportTime, duration, admin_priority, admin_notes FROM reports WHERE reportID = ?');
+            $ajaxQuery->bind_param("i",$id);
+            $ajaxQuery->execute();
+
+            //Error catch
+            if(!$ajaxQuery){
+                $error[0] = array("error"=>"Query fail");
+                return $error;
+            }
+
+            $result = $ajaxQuery->get_result();
+            $json_result = array();
+
+            while($row=$result->fetch_assoc()){
+                $assoc_result[] = $row;
+            }
+            return $assoc_result;
+        }else if($mode=="1"){
+
         }
     }
 }

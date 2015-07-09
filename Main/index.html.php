@@ -77,6 +77,7 @@
                 <tbody>
                    <?php
                         include 'obj/reportEntry.php';
+                        reportEntry();
                     ?>
                     <!--<tr>
                         <td class="report-elements report-id">#001</td>

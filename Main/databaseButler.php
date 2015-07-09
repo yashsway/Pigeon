@@ -38,6 +38,16 @@ function reportInsert(){
     //reportEntry();
     echo $result;
 }
+function reportEdit(){
+    def();
+    //Establish a new connection
+    $repEditCon = new Db();
+    //Get the report ID from the URL (src: AJAX request)
+    $query_ID = $_GET['queryID'];
+    //Run the editReport function from the DB class (Send it the report ID)
+    $result = $repEditCon->editReport($query_ID,$_GET['reqParam']);
+    echo json_encode($result);
+}
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
 //echo "it works";
@@ -47,9 +57,11 @@ if((isset($_REQUEST['reqType']))==1){
         reportLookup();
     }else if($_REQUEST['reqType']==1){
         reportMark();
-    }else if($_POST['reqType']==2){
+    }else if($_REQUEST['reqType']==2){
         //echo json_encode(array("name"=>$_POST['na'],"reqType"=>$_POST['reqType']));
         reportInsert();
+    }else if($_REQUEST['reqType']==3){
+        reportEdit();
     }
 }
 ?>
