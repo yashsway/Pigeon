@@ -97,7 +97,7 @@ class Db {
     }
 
     public function editReportView($id){
-        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDate, reportTime, duration, admin_priority, admin_notes FROM reports WHERE reportID = ?');
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportSummary, reportName, reportPhone, reportEmail, reportDate, reportTime, duration, admin_priority, admin_notes FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
@@ -116,8 +116,9 @@ class Db {
         return $assoc_result;
     }
 
-    public function editReportUpdate($id,$na,$ph,$em,$dat,$tim,$admPr,$dur,$nte){
+    public function editReportUpdate($id,$summ,$na,$ph,$em,$dat,$tim,$admPr,$dur,$nte){
         //Clean the user input
+        $summ = mysqli_real_escape_string($this->databaseConnection,$summ);
         $na = mysqli_real_escape_string($this->databaseConnection,$na);
         $ph = mysqli_real_escape_string($this->databaseConnection,$ph);
         $em = mysqli_real_escape_string($this->databaseConnection,$em);
@@ -126,8 +127,8 @@ class Db {
         $admPr = mysqli_real_escape_string($this->databaseConnection,$admPr);
         $nte = mysqli_real_escape_string($this->databaseConnection,$nte);
         //Make query
-        $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET reportName = ?, reportPhone = ?, reportEmail = ?, reportDate = ?, reportTime = ?, duration = ?, admin_priority = ?, admin_notes = ? WHERE reportID = ?');
-        $ajaxQuery->bind_param("sssssissi",$na,$ph,$em,$dat,$tim,$dur,$admPr,$nte,$id);
+        $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET reportSummary = ?, reportName = ?, reportPhone = ?, reportEmail = ?, reportDate = ?, reportTime = ?, duration = ?, admin_priority = ?, admin_notes = ? WHERE reportID = ?');
+        $ajaxQuery->bind_param("ssssssissi",$summ,$na,$ph,$em,$dat,$tim,$dur,$admPr,$nte,$id);
         $ajaxQuery->execute();
 
         if($ajaxQuery){

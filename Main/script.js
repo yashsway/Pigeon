@@ -201,7 +201,7 @@ function newReport_validation(){
             }
         }
         //Summary Validation
-        regX = /.{5,}/g; //Standard email.
+        regX = /.{5,}/g;
         validationColors($("#newReport_summary").val(),regX,"#newReport_summary",1,1);
         //Date & Time Validation
         regX = /.{10,}/g;
@@ -252,7 +252,7 @@ function finalValidationCheck(formType){
             }
         }
     }else if(formType=="editReport"){
-        var fields = ["#editReport_name","#editReport_phone","#editReport_email","#editReport_date","#editReport_time"];
+        var fields = ["#editReport_summary","#editReport_name","#editReport_phone","#editReport_email","#editReport_date","#editReport_time"];
         for(var i=0;i<fields.length;i++){
             if(($(fields[i]).parent().css('background-color')=='rgb(203, 232, 150)')){
                 editReport_valid = true;
@@ -266,6 +266,9 @@ function finalValidationCheck(formType){
 //Edit Report validation
 function editReport_validation(){
     $("#editReport_save").mouseover(function(){
+        //Summary validation
+        regX = /.{5,}/g;
+        validationColors($("#editReport_summary").val(),regX,"#editReport_summary",1,1);
         //Name validation
         var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
         validationColors($("#editReport_name").val(),regX,"#editReport_name",1,1);
@@ -412,9 +415,9 @@ function editReport_message(msg,time){
 function editReport_compilation(id){
     //Collect the edit form data
     if($("input[type='radio'][name='adminPriority']:checked").val()!=undefined){
-        var formData = {reqType:4,id:id,na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:$("input[type='radio'][name='adminPriority']:checked").val(),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
+        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:$("input[type='radio'][name='adminPriority']:checked").val(),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
     }else{
-       var formData = {reqType:4,id:id,na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:"Inactive",dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
+       var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:"Inactive",dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
     }
     //TEST: console msg (JSON data)
     console.log(formData);
@@ -433,6 +436,7 @@ function viewEditForm(){
                 //TEST: console msg
                 console.log("Edit form populated");
                 //Fill the client part of the edit form with available info
+                $("#editReport_summary").val(returnedData[0].reportSummary);
                 $("#editReport_name").val(returnedData[0].reportName);
                 $("#editReport_phone").val(returnedData[0].reportPhone);
                 $("#editReport_email").val(returnedData[0].reportEmail);
@@ -511,7 +515,7 @@ $("#editReport_save").on("click",function(){
                 //Close edit form & related
                 closeEditForm(true);
                 //Inform the user
-                editReport_message("Changes saved! Pigeon will refresh automatically.",5000);
+                editReport_message("Changes saved! Pigeon will refresh shortly...",5000);
                 //TODO: AJAX refresh
                 setTimeout(function(){
                         location.reload();
