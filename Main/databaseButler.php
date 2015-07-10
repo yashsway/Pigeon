@@ -56,6 +56,16 @@ function reportEditUpdate(){
     $result = $repEditUpCon->editReportUpdate($_POST['id'],$_POST['summ'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dat'],$_POST['tim'],$_POST['admPr'],$_POST['dur'],$_POST['nte']);
     echo $result;
 }
+function reportResolve(){
+    def();
+    //Establish a new connection
+    $repRes = new Db();
+    //Get the report ID from the URL (src: AJAX request)
+    $query_ID = $_GET['queryID'];
+    //Run the resolveReport function from the DB class (send it the report ID)
+    $result = $repRes->resolveReport($query_ID,$_GET['reqParam']);
+    echo $result;
+}
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
 //echo "it works";
@@ -72,6 +82,8 @@ if((isset($_REQUEST['reqType']))==1){
         reportEditView();
     }else if($_REQUEST['reqType']==4){
         reportEditUpdate();
+    }else if($_REQUEST['reqType']==5){
+        reportResolve();
     }
 }
 ?>

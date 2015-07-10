@@ -99,6 +99,7 @@
     <!--Report Full Detail modal overlay-->
     <?php
         include 'forms/reportDetailView.html';
+        include 'forms/confirmation.html';
     ?>
     <!--New Report Filing modal-->
     <?php

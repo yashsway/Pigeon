@@ -90,6 +90,20 @@ function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm,nte,del){
     this.admin_notes = "";
     this.markedForDeletion = false;
 }
+//-------------Confirmation Popup-------------
+var confirm_response;
+function confirmation_init(obj,callback){
+    $(obj).attr("data-toggle","modal");
+    $(obj).attr("data-target","#confirmation");
+    $("#confirm_yes").on('click',function(){
+        confirm_response = 1;
+        callback(confirm_response);
+    });
+    $("#confirm_no").on('click',function(){
+        confirm_response = 0;
+        callback(confirm_response);
+    });
+}
 //-------------Database------------
 //Pushes report objects into database (Local arrays currently, switch to SQL later!)
 /*function databaseBuilder_initial(){
@@ -454,6 +468,7 @@ function viewEditForm(){
                     //TEST: console.msg
                     console.log("Reading invalid admin_priority string. (View Edit Form)");
                 }
+                $("#editReport_notes").val(returnedData[0].admin_notes);
                 //Setup the duration slider
                 $("#editReport_durationSlider").noUiSlider({
                     start: returnedData[0].duration,
@@ -483,7 +498,7 @@ function viewEditForm(){
                 //Show the save & discard buttons
                 $(".saveTools").show();
                 //Inform the user
-                editReport_message("Editing report...",5000);
+                editReport_message("Editing report...",2500);
             }
         });
         //NOTE: code from closeEditForm onwards was previously here.
@@ -515,7 +530,7 @@ $("#editReport_save").on("click",function(){
                 //Close edit form & related
                 closeEditForm(true);
                 //Inform the user
-                editReport_message("Changes saved! Pigeon will refresh shortly...",5000);
+                editReport_message("Changes saved! Pigeon will refresh shortly...",7000);
                 //TODO: AJAX refresh
                 setTimeout(function(){
                         location.reload();
@@ -719,6 +734,20 @@ function detailedReportBuilder(){
                     $(".resolutionTools").show();
                     $("#edit_issue").show();
                 }
+                //When the report is resolved turn off editing and disable the resolve button
+                if(returnedData[0].resolved==1){
+                    $("#resolve_issue").text("Resolved");
+                    $("#resolve_issue").prop('disabled',true);
+                    $("#edit_issue").hide();
+                    $("#resolved_icon").show();
+                    $("#resolve_issue").parent().parent().find(".modal-body").addClass("greyOut");
+                }else{
+                    $("#resolve_issue").text("Resolve");
+                    $("#resolve_issue").prop('disabled',false);
+                    $("#edit_issue").show();
+                    $("#resolved_icon").hide();
+                    $("#resolve_issue").parent().parent().find(".modal-body").removeClass("greyOut");
+                }
             }
         });
         //Change all the info fields to the data of the corresponding report
@@ -837,6 +866,31 @@ function newTimer(elem,time,obj,id){
     }
     return p;
 }*/
+//---------------Report Resolution---------------
+$("#resolve_issue").click(function(){
+    var rep_ID = $(this).parent().parent().attr('id');
+    var obj = $(this);
+    //Detailed Report Modal View for Resolve button inside form
+    confirmation_init("#resolve_issue",function(response){
+        if(response==0){
+            $("#confirm_close").trigger('click');
+        }else{
+            ajaxRequest("databaseButler.php?reqType="+5+"&reqParam="+1+"&queryID="+rep_ID,"text",null,function(returnedData){
+                if(returnedData=="Query ok"){
+                    $("#confirm_close").trigger('click');
+                    $(obj).text("Resolved");
+                    $(obj).prop('disabled',true);
+                    $(obj).parent().parent().find(".modal-body").addClass("greyOut");
+                    //TEST: console msg
+                    console.log("Report #" + rep_ID + " resolved.");
+                }else{
+                    //TEST: console msg
+                    console.log("Could not resolve #" + rep_ID);
+                }
+            });
+        }
+    });
+});
 //---------------Page Load---------------
 // Functions to execute upon page load
 $(document).ready(function(){

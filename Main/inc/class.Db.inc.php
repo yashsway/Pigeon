@@ -37,7 +37,7 @@ class Db {
     }
 
     public function getReportDetails($id){
-        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion FROM reports WHERE reportID = ?');
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
@@ -118,17 +118,34 @@ class Db {
 
     public function editReportUpdate($id,$summ,$na,$ph,$em,$dat,$tim,$admPr,$dur,$nte){
         //Clean the user input
-        $summ = mysqli_real_escape_string($this->databaseConnection,$summ);
+        /*$summ = mysqli_real_escape_string($this->databaseConnection,$summ);
         $na = mysqli_real_escape_string($this->databaseConnection,$na);
         $ph = mysqli_real_escape_string($this->databaseConnection,$ph);
         $em = mysqli_real_escape_string($this->databaseConnection,$em);
         $dat = mysqli_real_escape_string($this->databaseConnection,$dat);
         $tim = mysqli_real_escape_string($this->databaseConnection,$tim);
         $admPr = mysqli_real_escape_string($this->databaseConnection,$admPr);
-        $nte = mysqli_real_escape_string($this->databaseConnection,$nte);
+        $nte = mysqli_real_escape_string($this->databaseConnection,$nte);*/
         //Make query
         $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET reportSummary = ?, reportName = ?, reportPhone = ?, reportEmail = ?, reportDate = ?, reportTime = ?, duration = ?, admin_priority = ?, admin_notes = ? WHERE reportID = ?');
         $ajaxQuery->bind_param("ssssssissi",$summ,$na,$ph,$em,$dat,$tim,$dur,$admPr,$nte,$id);
+        $ajaxQuery->execute();
+
+        if($ajaxQuery){
+            return "Query ok";
+        }else{
+            return "Query fail";
+        }
+    }
+
+    public function resolveReport($id,$res){
+        if($res=="0"){
+            $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET resolved = 0 WHERE reportID = ?');
+        }else if($res=="1"){
+            $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET resolved = 1 WHERE reportID = ?');
+        }
+
+        $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
         if($ajaxQuery){

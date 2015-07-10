@@ -115,6 +115,22 @@
 #full-info-title {
     color: #cdcdcd;
 }
+/*Resolved icons*/
+#resolved_icon {
+    float: left;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    display: none;
+}
+/*Confirmation Popup*/
+#confirm-title {
+    color: #cdcdcd;
+    display: inline-block;
+}
+#confirm_close {
+    display: inline-block;
+}
 /*Priority container text color*/
 .priority_container {
     color: white;
