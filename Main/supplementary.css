@@ -30,7 +30,6 @@
     font-family: 'Oswald', sans-serif;
 }
 /* Size of the icon division of the top nav bar buttons */
-
 .ym-button:before {
     width: 2em;
 }
@@ -69,8 +68,8 @@
 .report-title {
     text-align: left;
 }
-/* Flag size of the urgency column */
-.report-urgency > img {
+/* Flag/icon sizes of elements in each report */
+.report-icons > img {
     height: 40px;
     width: 40px;
 }

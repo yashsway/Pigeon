@@ -37,39 +37,19 @@ function ajaxRequest(reqScript, returnDataType, reqData, callback){
         }
     });
 }
-/*function ajaxRequest(reqScript, callback) {
-    var request;
-    //Make a new XML HTTP request object depending on the browser of the client
-    if (window.XMLHttpRequest) {
-        request = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        try {
-            request = new ActiveXObject("Msxml2.XMLHTTP");
-        } catch (e) {
-            try {
-                request = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e) {
-                console.log(e);
-            }
-        }
+//AJAX background refreshes
+function ajaxRefresh(mode,id){
+    switch(mode){
+            case 1:
+                $(".main-panel").find("#"+id).find(".report-adminPriority").empty();
+                $(".main-panel").find("#"+id).find(".report-adminPriority").html('<img src="assets/icons/checkmark.png"/>');
+                break;
+            default:
+                console.log("Invalid AJAX refresh request");
+                break;
     }
-    if(!request){
-        console.log("AJAX request failed.");
-        return false;
-    }
-    request.onreadystatechange = function(){
-        if (request.readyState==4) {
-            if (request.status==200) {
-                callback(request.responseText);
-            }
-        }
-    };
-    //Define the request
-    request.open("GET",reqScript+"&t="+Math.random(),true);
-    //Send the request
-    request.send();
-    console.log("AJAX request initiated & sent.");
-}*/
+
+}
 //-----------Backbone-----------
 //Report ADT
 function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm,nte,del){
@@ -97,10 +77,12 @@ function confirmation_init(obj,callback){
     $(obj).attr("data-target","#confirmation");
     $("#confirm_yes").on('click',function(){
         confirm_response = 1;
+        $("#confirm_close").trigger('click');
         callback(confirm_response);
     });
     $("#confirm_no").on('click',function(){
         confirm_response = 0;
+        $("#confirm_close").trigger('click');
         callback(confirm_response);
     });
 }
@@ -877,10 +859,10 @@ $("#resolve_issue").click(function(){
         }else{
             ajaxRequest("databaseButler.php?reqType="+5+"&reqParam="+1+"&queryID="+rep_ID,"text",null,function(returnedData){
                 if(returnedData=="Query ok"){
-                    $("#confirm_close").trigger('click');
                     $(obj).text("Resolved");
                     $(obj).prop('disabled',true);
                     $(obj).parent().parent().find(".modal-body").addClass("greyOut");
+                    ajaxRefresh(1,rep_ID);
                     //TEST: console msg
                     console.log("Report #" + rep_ID + " resolved.");
                 }else{
@@ -894,6 +876,8 @@ $("#resolve_issue").click(function(){
 //---------------Page Load---------------
 // Functions to execute upon page load
 $(document).ready(function(){
+    //NOTE:
+    //Report ID's are attached in the DOM in 2 places: each table row and the report detail modal, whenever it is opened
     //New Report Modal View for Report button
     $("#report").attr("data-toggle","modal");
     $("#report").attr("data-target","#file-new-report");
@@ -914,4 +898,18 @@ $(document).ready(function(){
     detailedReportBuilder();
     //MOVED: Call to enable report deletion
     reportDeletion();
+    //REFRESH
+    /*var time = new Date().getTime();
+     $(document.body).bind("click keypress", function(e) {
+         time = new Date().getTime();
+     });
+
+     function refresh() {
+         if(new Date().getTime() - time >= 7000)
+             window.location.reload(true);
+         else
+             setTimeout(refresh, 5000);
+     }
+
+     setTimeout(refresh, 5000);*/
 });

@@ -55,9 +55,9 @@
         <a href="#" class="ym-button ym-add nav-element nav-buttons ym-danger" id="report">Report</a>
     </nav>
     <div class="container-fluid">
-        <div class="col-md-2 col-sm-2 side-panel">
+        <div class="col-md-1 col-sm-1 side-panel">
         </div>
-        <div class="col-md-8 col-sm-8 main-panel-container">
+        <div class="col-md-10 col-sm-10 main-panel-container">
             <!--REMOVED table-responsive from below-->
             <table class="table main-panel">
                 <thead>
@@ -70,6 +70,10 @@
                     <th class="main-panel-header-contents"><img src="assets/icons/timeframe.png" />
                     </th>
                     <th class="main-panel-header-contents"><img src="assets/icons/risk.png" />
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/risk_assesment.png">
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/checkmark.png">
                     </th>
                     <th class="main-panel-header-contents"><img src="assets/icons/gear.png" />
                     </th>
@@ -93,7 +97,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-2 col-sm-2 side-panel">
+        <div class="col-md-1 col-sm-1 side-panel">
         </div>
     </div>
     <!--Report Full Detail modal overlay-->

@@ -14,7 +14,7 @@ function fetchReports(){
     }
     require_once('obj/reportBlueprint.php');
     while($row = mysqli_fetch_array($result)){
-        $reports[] = new reportBlueprint($row['reportID'],$row['reportName'],$row['reportPhone'],$row['reportEmail'],$row['reportDepartment'],$row['reportRequest'],$row['reportCustomRequest'],$row['reportSummary'],$row['reportDetails'],$row['reportPriority'],$row['reportDate'],$row['reportTime'],$row['duration'],$row['admin_priority'],$row['admin_notes'],$row['markedForDeletion']);
+        $reports[] = new reportBlueprint($row['reportID'],$row['reportName'],$row['reportPhone'],$row['reportEmail'],$row['reportDepartment'],$row['reportRequest'],$row['reportCustomRequest'],$row['reportSummary'],$row['reportDetails'],$row['reportPriority'],$row['reportDate'],$row['reportTime'],$row['duration'],$row['admin_priority'],$row['admin_notes'],$row['markedForDeletion'],$row['resolved']);
     }
     //TEST: Console msg
     //echo '<script>console.log("Report(s) in the database: '. count($reports) . '");</script>';
@@ -42,10 +42,19 @@ function priorityFlagCodeGenerator($value){
         case "High":
             return '<img src="assets/icons/red-flag.png"/>';
         default:
-            return '<img src="assets/icons/risk.png"/>';
+            return '<img src="assets/icons/bomb.png"/>';
     }
 }
-
+function resolutionFlagCodeGenerator($value){
+    switch($value){
+        case 0:
+            return '<img src="assets/icons/close.png"/>';
+        case 1:
+            return '<img src="assets/icons/checkmark.png"/>';
+        default:
+            return '<img src="assets/icons/bomb.png"/>';
+    }
+}
 function displayReports($d){
     $GLOBALS['displayReports'] = $d;
 }
