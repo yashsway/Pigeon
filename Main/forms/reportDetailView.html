@@ -11,7 +11,7 @@
                     <!--Column 1-->
                     <div class="col-md-4">
                         <div class="name_container">
-                            <span class="fa fa-user fa-lg full-info-icons" aria-hidden="true"></span>
+                            <span class="fa fa-user fa-lg full-info-icons" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Name"></span>
                             <p class="full-info-text name"></p>
                         </div>
                         <div class="department_container">
@@ -22,14 +22,14 @@
                     <!--Column 2-->
                     <div class="col-md-4">
                         <div class="phone_container">
-                            <span class="fa fa-phone fa-lg full-info-icons" aria-hidden="true"></span>
+                            <span class="fa fa-phone fa-lg full-info-icons" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Phone"></span>
                             <p class="full-info-text phone"></p>
                         </div>
                     </div>
                     <!--Column 3 -->
                     <div class="col-md-4">
                         <div class="email_container">
-                            <span class="fa fa-envelope fa-lg full-info-icons" aria-hidden="true"></span>
+                            <span class="fa fa-envelope fa-lg full-info-icons" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Email"></span>
                             <p class="full-info-text email"></p>
                         </div>
                     </div>
@@ -58,13 +58,13 @@
                     </div>
                     <div class="col-md-3">
                         <div class="date_container">
-                            <span class="fa fa-calendar fa-lg full-info-icons"></span>
+                            <span class="fa fa-calendar fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Date Due"></span>
                             <p class="full-info-text date"></p>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="time_container">
-                            <span class="fa fa-clock-o fa-lg full-info-icons"></span>
+                            <span class="fa fa-clock-o fa-lg full-info-icons" data-toggle="tooltip" data-placement="top" title="Time Due"></span>
                             <p class="full-info-text time"></p>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                     <div class="col-md-6 paperBackground">
                         <div class="adminPriority_container">
                             <span class="">
-                                    <span class="fa fa-bell-o fa-lg full-info-icons"  data-toggle="tooltip" data-placement="top" title="Your Priority"></span>
+                                    <span class="fa fa-ambulance fa-lg full-info-icons"  data-toggle="tooltip" data-placement="top" title="Your Priority"></span>
                             <p class="full-info-text adminPriority"></p>
                             </span>
                         </div>
@@ -164,6 +164,7 @@
             <div class="modal-footer">
                 <button class="btn btn-sm btn-default" id="edit_issue">Edit</button>
                 <img id="resolved_icon" src="assets/icons/checkmark.png">
+                <em id="viewReport_dateMsg"></em>
                 <div class="vDivider saveTools" id="editForm_divider"></div>
                 <button class="btn btn-sm btn-primary saveTools" id="editReport_save">Save</button>
                 <button class="btn btn-sm btn-warning saveTools" id="editReport_discard">Discard</button>

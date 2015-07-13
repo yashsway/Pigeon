@@ -41,6 +41,66 @@ function ajaxRequest(reqScript, returnDataType, reqData, callback){
 function ajaxRefresh(mode,id){
     switch(mode){
             case 1:
+                //NOTE: can change it to change the details from normal array
+                ajaxRequest("databaseButler.php?reqType="+0+"&queryID="+id, "json", null, function(returnedData){
+                    if(returnedData[0].error=="Query fail"){
+                        console.log("Populating detailed view failed. Check Database Query.");
+                    }else{
+                        $("#full-info-title").text("#" + id + " " + returnedData[0].reportSummary);
+                        $(".full-info-text.name").text(returnedData[0].reportName);
+                        $(".full-info-text.phone").text(returnedData[0].reportPhone);
+                        $(".full-info-text.email").text(returnedData[0].reportEmail);
+                        $(".full-info-text.department").text(returnedData[0].reportDepartment);
+                        if(returnedData[0].reportRequest=="Other"){
+                            $(".full-info-text.request").text(returnedData[0].reportCustomRequest);
+                        }else{
+                            $(".full-info-text.request").text(returnedData[0].reportRequest);
+                        }
+                        if(returnedData[0].reportDetails!=null){
+                            $(".full-info-text.details").text(returnedData[0].reportDetails);
+                        }
+                        $(".full-info-text.priority").text(returnedData[0].reportPriority);
+                        $(".full-info-text.date").text(returnedData[0].reportDate);
+                        $(".full-info-text.time").text(returnedData[0].reportTime);
+                        //Admin-Set information changed below
+                        $(".full-info-text.adminPriority").text(returnedData[0].admin_priority);
+                        $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
+                        $(".full-info-text.notes").text(returnedData[0].admin_notes);
+                        //Final Color-coding
+                        detailedReport_ColorCoding(returnedData[0].reportPriority,"priority");
+                        detailedReport_ColorCoding(returnedData[0].admin_priority,"adminPriority");
+                        //Disable Resolution/Editing when the report has been marked for deletion
+                        if(returnedData[0].markedForDeletion==1){
+                            $(".resolutionTools").hide();
+                            $("#edit_issue").hide();
+                        }else{
+                            $(".resolutionTools").show();
+                            $("#edit_issue").show();
+                        }
+                        //When the report is resolved turn off editing and disable the resolve button
+                        if(returnedData[0].resolved==1){
+                            $("#resolve_issue").text("Resolved");
+                            $("#resolve_issue").prop('disabled',true);
+                            $("#edit_issue").hide();
+                            $("#resolved_icon").show();
+                            $("#resolve_issue").parent().parent().find(".modal-body").addClass("greyOut");
+                        }else{
+                            $("#resolve_issue").text("Resolve");
+                            $("#resolve_issue").prop('disabled',false);
+                            $("#edit_issue").show();
+                            $("#resolved_icon").hide();
+                            $("#resolve_issue").parent().parent().find(".modal-body").removeClass("greyOut");
+                        }
+                        //Set date resolved in the date message box
+                        if(returnedData[0].dateResolved!=""){
+                            $("#viewReport_dateMsg").text("on " + returnedData[0].dateResolved);
+                        }else{
+                            $("#viewReport_dateMsg").empty();
+                        }
+                    }
+                });
+                break;
+            case 2:
                 $(".main-panel").find("#"+id).find(".report-adminPriority").empty();
                 $(".main-panel").find("#"+id).find(".report-adminPriority").html('<img src="assets/icons/checkmark.png"/>');
                 break;
@@ -48,7 +108,6 @@ function ajaxRefresh(mode,id){
                 console.log("Invalid AJAX refresh request");
                 break;
     }
-
 }
 //-----------Backbone-----------
 //Report ADT
@@ -87,41 +146,12 @@ function confirmation_init(obj,callback){
     });
 }
 //-------------Database------------
-//Pushes report objects into database (Local arrays currently, switch to SQL later!)
-/*function databaseBuilder_initial(){
-    for(var i=0;i<6;i++){
-        reports.push(new report(hash(i),test_names[i],test_phones[i],test_emails[i],test_departments[i],test_requests[i],test_customs[i],test_summaries[i],test_details[i],test_priorities[i],test_dates[i],test_times[i]));
-    }
-    //TEST: Console msg
-    console.log("Database Build Complete!"); //TEST
-}*/
-//Pushes new report object into database
-/*function databaseEntry(rep){
-    reports.push(rep);
-    return rep.ID;
-}*/
-//Updates fields of a certain report in the database
-/*function databaseUpdate(id,field,value){
-    reports[id].field = value;
-}*/
-//-------------Database Utilities-------------
-//Deletes specified report from the database
-/*function database_dataDeleter(id){
-   reports.splice(database_indexReturn(id),1);
-   //TEST: console msg
-   console.log("Report #" + id + " deleted.");
-}*/
-//Returns the index of the specified report
-/*function database_indexReturn(id){
-    for(var i=0;i<reports.length;i++){
-        if(id==reports[i].ID){
-            return i;
-        }
-    }
-}*/
 //ID Hashing Function
-function hash(n){
-    return n + "" + Math.floor((Math.random()*1000)+1);
+function hash(){
+    //100 reports a day, frequency is per minute
+    var now = new Date();
+    var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMinutes().toString().split("").reverse().join("")[0];
+    return curr + "" + Math.floor((Math.random()*100)+1);
 }
 //-----------All Validation-----------------
 //Validation colors
@@ -327,7 +357,7 @@ function newReport_engine(){
 //New Report Compilation
 function newReport_compilation(){
     //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
-    var formData = {reqType:2,id:hash(1),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:$("input[type='radio'][name='priority']:checked").val(),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
+    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:$("input[type='radio'][name='priority']:checked").val(),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
     //TEST: progress bar
     progressBar_modify("#newReport_progress",15);
     //TEST: console msg (JSON data)
@@ -505,18 +535,20 @@ $("#editReport_save").on("click",function(){
     finalValidationCheck("editReport");
     if(editReport_valid==true){
         //Collect edit form data
-        var formData = editReport_compilation($(this).parent().parent().attr("id"));
+        var rep_ID = $(this).parent().parent().attr("id");
+        var formData = editReport_compilation(rep_ID);
         //TODO: AJAX save edit form
         ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
             if(returnedData=="Query ok"){
                 //Close edit form & related
                 closeEditForm(true);
                 //Inform the user
-                editReport_message("Changes saved! Pigeon will refresh shortly...",7000);
+                editReport_message("Changes saved!",3500);
                 //TODO: AJAX refresh
-                setTimeout(function(){
+                ajaxRefresh(1,rep_ID);
+                /*setTimeout(function(){
                         location.reload();
-                },3500);
+                },3500);*/
                 //Reset the boolean
                 editReport_valid = false;
             }else{
@@ -730,6 +762,12 @@ function detailedReportBuilder(){
                     $("#resolved_icon").hide();
                     $("#resolve_issue").parent().parent().find(".modal-body").removeClass("greyOut");
                 }
+                //Set date resolved in the date message box
+                if(returnedData[0].dateResolved!=""){
+                    $("#viewReport_dateMsg").text("on " + returnedData[0].dateResolved);
+                }else{
+                    $("#viewReport_dateMsg").empty();
+                }
             }
         });
         //Change all the info fields to the data of the corresponding report
@@ -829,25 +867,6 @@ function newTimer(elem,time,obj,id){
     });
     $(elem).pietimer('start');
 }
-//Priority String Setter
-/*function priorityString(value){
-    var p;
-    switch(value){
-        case 0:
-            p = "Low";
-            break;
-        case 1:
-            p = "Medium";
-            break;
-        case 2:
-            p = "High";
-            break;
-        default:
-            p = "Error!";
-            break;
-    }
-    return p;
-}*/
 //---------------Report Resolution---------------
 $("#resolve_issue").click(function(){
     var rep_ID = $(this).parent().parent().attr('id');
@@ -857,12 +876,17 @@ $("#resolve_issue").click(function(){
         if(response==0){
             $("#confirm_close").trigger('click');
         }else{
-            ajaxRequest("databaseButler.php?reqType="+5+"&reqParam="+1+"&queryID="+rep_ID,"text",null,function(returnedData){
+            //Get the current datestamp
+            var now = new Date();
+            var currDat = now.getDate()+"/"+now.getMonth()+"/"+now.getFullYear();
+            ajaxRequest("databaseButler.php?reqType="+5+"&reqParam="+1+"&queryID="+rep_ID+"&currDate="+currDat,"text",null,function(returnedData){
                 if(returnedData=="Query ok"){
                     $(obj).text("Resolved");
                     $(obj).prop('disabled',true);
+                    $("#edit_issue").hide();
+                    $("#resolved_icon").show();
                     $(obj).parent().parent().find(".modal-body").addClass("greyOut");
-                    ajaxRefresh(1,rep_ID);
+                    ajaxRefresh(2,rep_ID);
                     //TEST: console msg
                     console.log("Report #" + rep_ID + " resolved.");
                 }else{

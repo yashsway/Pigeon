@@ -63,7 +63,7 @@ function reportResolve(){
     //Get the report ID from the URL (src: AJAX request)
     $query_ID = $_GET['queryID'];
     //Run the resolveReport function from the DB class (send it the report ID)
-    $result = $repRes->resolveReport($query_ID,$_GET['reqParam']);
+    $result = $repRes->resolveReport($query_ID,$_GET['reqParam'],$_GET['currDate']);
     echo $result;
 }
 //TEST:

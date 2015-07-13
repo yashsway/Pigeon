@@ -1,14 +1,14 @@
-.main-text {
-    font-family: 'Oswald', sans-serif;
-}
-#product-title {
-    font-size: 12em;
-}
 body {
     background: url(assets/grid.png);
     background-color: #8FB59C;
     background-blend-mode: screen;
-    min-height: 456px;
+    min-height: 465px;
+}
+.main-text {
+    font-family: 'Oswald', sans-serif;
+}
+#product-title {
+    font-size: 15em;
 }
 .container-fluid {
     min-height: 100%;
@@ -47,7 +47,7 @@ body {
 }
 #newReport_ticketNumber {
     font-style: bold;
-    font-size: 30px;
+    font-size: 50px;
     text-align: center;
     color: #301330;
 }
@@ -64,6 +64,14 @@ body {
     margin-left: 10px;
     cursor: pointer;
 }
+.back {
+    margin-left: 50%;
+}
+@media (max-width: 809px) {
+    #product-title {
+        font-size: 12em;
+    }
+}
 @media (max-width: 510px) {
     #product-title {
         font-size: 8em;
@@ -75,9 +83,22 @@ body {
         padding: 20px;
     }
 }
-@media (max-width: 321px) {
+@media (max-width: 470px){
+    #checkTicket {
+        top: 60vh;
+        left: 35vw;
+        position: static;
+    }
+    #userQuery {
+        width: 80%;
+    }
+}
+@media (max-width: 370px) {
     #product-title {
-        font-size: 6em;
+        font-size: 7em;
+    }
+    .body-text {
+        font-size: 25px;
     }
     #newReport_trigger {
         padding: 20px;
@@ -85,10 +106,10 @@ body {
     #checkStatus_trigger {
         padding: 20px;
     }
-}
-#landing-buttons-wrapper {
-    display: none;
-}
-#newReport-ticketNumber-wrapper {
-/*    display: none;*/
+    #checkTicket {
+        position: static;
+    }
+    html {
+        min-height: 460px;
+    }
 }

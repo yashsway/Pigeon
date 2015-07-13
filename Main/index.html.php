@@ -61,21 +61,21 @@
             <!--REMOVED table-responsive from below-->
             <table class="table main-panel">
                 <thead>
-                    <th class="main-panel-header-contents"><img src="assets/icons/info.png" />
+                    <th class="main-panel-header-contents"><img src="assets/icons/info.png" data-toggle="tooltip" data-placement="top" title="ID"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/clipboard.png" />
+                    <th class="main-panel-header-contents"><img src="assets/icons/clipboard.png" data-toggle="tooltip" data-placement="top" title="Summary"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/calendar_month.png" />
+                    <th class="main-panel-header-contents"><img src="assets/icons/calendar_month.png" data-toggle="tooltip" data-placement="top" title="Date Due"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/timeframe.png" />
+                    <th class="main-panel-header-contents"><img src="assets/icons/timeframe.png" data-toggle="tooltip" data-placement="top" title="How long it will take"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/risk.png" />
+                    <th class="main-panel-header-contents"><img src="assets/icons/risk.png" data-toggle="tooltip" data-placement="top" title="Client Priority"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/risk_assesment.png">
+                    <th class="main-panel-header-contents"><img src="assets/icons/ambulance.png" data-toggle="tooltip" data-placement="top" title="Your Priority"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/checkmark.png">
+                    <th class="main-panel-header-contents"><img src="assets/icons/hammer.png" data-toggle="tooltip" data-placement="top" title="Resolved?"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/gear.png" />
+                    <th class="main-panel-header-contents"><img src="assets/icons/gear.png" data-toggle="tooltip" data-placement="top" title="Tools"/>
                     </th>
                 </thead>
                 <tbody>
