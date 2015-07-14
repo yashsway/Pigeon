@@ -22,8 +22,10 @@
 }
 /* Buttons inside top nav bar */
 .nav-buttons {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.24);
     float: right;
     margin: 10px;
+    padding: 5px;
 }
 /* Styling of the website title */
 #nav-title {
@@ -272,9 +274,38 @@ input::-webkit-input-placeholder {
         width: 25px;
     }
 }
+@media (max-width: 600px) {
 
+}
 @media (max-width: 507px) {
     .main-panel > tbody > tr {
         height: 150px;
     }
+    #logout {
+        width: 45px;
+        height: 35px;
+    }
+    #report {
+        width: 45px;
+        height: 35px;
+    }
+    .btn-icons {
+        padding-top: 3px;
+    }
+    #logout > span:nth-of-type(2) {
+        display: none;
+    }
+    #report > span:nth-of-type(2) {
+        display: none;
+    }
 }
+/*@media (max-width: 409px) {
+    .ym-hlist {
+        height: 100px;
+    }
+}
+@media (max-width: 300px) {
+    #nav-title {
+        font-size: 24px;
+    }
+}*/

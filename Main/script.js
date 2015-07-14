@@ -16,7 +16,7 @@ var test_details = ['test','test','test','test','test','test'];
 var test_priorities = ["Low","Medium","Medium","Low","High","High"];
 var test_dates = ['04/01/2015','04/01/2015','04/01/2015','04/01/2015','04/01/2015','04/01/2015'];
 var test_times = ['8:30 AM','8:30 AM','8:30 AM','8:30 AM','8:30 AM','8:30 AM'];*/
-//AJAX Handler
+//--------------------AJAX Handler-------------------
 var data = "";
 function ajaxRequest(reqScript, returnDataType, reqData, callback){
     $.ajax({
@@ -101,8 +101,9 @@ function ajaxRefresh(mode,id){
                 });
                 break;
             case 2:
-                $(".main-panel").find("#"+id).find(".report-adminPriority").empty();
-                $(".main-panel").find("#"+id).find(".report-adminPriority").html('<img src="assets/icons/checkmark.png"/>');
+                console.log("work");
+                $(".main-panel").find("#"+id).find(".report-resolution").empty();
+                $(".main-panel").find("#"+id).find(".report-resolution").html('<img src="assets/icons/checkmark.png"/>');
                 break;
             default:
                 console.log("Invalid AJAX refresh request");
@@ -600,21 +601,6 @@ function rowBuilder_refresh(){
     rowBuilder_initial();
 }*/
 //-----------------Reports Table Entries Tools/Utilities--------------
-//Priority Flag HTML generator
-/*function priorityFlagCodeGenerator(value){
-    switch(value){
-        case "Inactive":
-            return '<img src="assets/icons/grey-flag.png"/>';
-        case "Low":
-            return '<img src="assets/icons/green-flag.png"/>';
-        case "Medium":
-            return '<img src="assets/icons/orange-flag.png"/>';
-        case "High":
-            return '<img src="assets/icons/red-flag.png"/>';
-        default:
-            return '<img src="assets/icons/risk.png"/>';
-    }
-}*/
 function reportRestoration(id,deleteButton,delTimeout){
     //Report restoration //TODO: (FIX ID ACQUISITION/DELETE BUTTON/TIMER STOPPING - WHEN MULTIPLE REPORTS ARE BEING DELETED, IT WILL BE BUGGY)
     $("#restore"+id).on('click',function(){
@@ -896,6 +882,12 @@ $("#resolve_issue").click(function(){
             });
         }
     });
+});
+//---------------Logout------------------
+$("#logout").on('click',function(){
+    console.log("logging out..");
+    $.post("index.html.php", {log_out: "1"});
+    window.location.assign("http://localhost/HCSProjects/Pigeon/Main/landing-page.html");
 });
 //---------------Page Load---------------
 // Functions to execute upon page load

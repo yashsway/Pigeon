@@ -1,5 +1,20 @@
 <?php
     require_once("init.php");
+    session_start();//starts session
+
+    if(isset($_POST['log_out'])){
+        CheckLogin::kill_session();
+        header("Location: landing-page.html");
+        exit;
+    }
+
+    //check if there is a cookie upon page load - if there is one, check the age of the current session and if still active, extend by a few hours.
+    if (!isset($_SESSION['hcs_helpDesk_cookie'])){
+        header("Location: landing-page.html");
+        exit;
+    }else{
+        CheckLogin::check_session_age();
+    }
     //Load all functions
     require_once('functions.php');
     //Display reports?
@@ -51,8 +66,8 @@
                 <h2 class="nav-title nav-element" id="nav-title"><span class="glyphicon glyphicon-flag"></span> HCS IT Help Desk</h2>
             </li>
         </ul>
-        <a href="#" class="ym-button ym-edit nav-element nav-buttons ym-success" id="login">Login</a>
-        <a href="#" class="ym-button ym-add nav-element nav-buttons ym-danger" id="report">Report</a>
+        <a href="#" class="btn nav-element nav-buttons btn-danger" id="logout"><span class="btn-icons glyphicon glyphicon-off"></span><span class="text">&nbsp;Logout</span></a>
+        <a href="#" class="btn nav-element nav-buttons btn-success" id="report"><span class="btn-icons glyphicon glyphicon-plus"></span><span class="text">&nbsp;Report</span></a>
     </nav>
     <div class="container-fluid">
         <div class="col-md-1 col-sm-1 side-panel">

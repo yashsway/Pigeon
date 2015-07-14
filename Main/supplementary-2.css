@@ -8,7 +8,7 @@ body {
     font-family: 'Oswald', sans-serif;
 }
 #product-title {
-    font-size: 15em;
+    font-size: 17em;
 }
 .container-fluid {
     min-height: 100%;
@@ -37,7 +37,7 @@ body {
 #newReport_trigger {
     width: 150px;
 }
-#checkStatus_trigger {
+#login_trigger {
     width: 150px;
 }
 .body-text {
@@ -52,9 +52,23 @@ body {
     color: #301330;
 }
 #help-text {
+    margin: 5px;
+    margin-left: 30px;
     font-size: 15px;
     font-style: italic;
     text-align: center;
+}
+.loginForm {
+    display: block;
+    margin: 5px;
+    margin-left: 40%;
+}
+.loginTxt {
+    width: 175px;
+    text-align: center;
+}
+#label-username {
+    margin-top: 30px;
 }
 #checkTicket {
     position: absolute;
@@ -79,7 +93,7 @@ body {
     #newReport_trigger {
         padding: 20px;
     }
-    #checkStatus_trigger {
+    #login_trigger {
         padding: 20px;
     }
 }
@@ -103,7 +117,7 @@ body {
     #newReport_trigger {
         padding: 20px;
     }
-    #checkStatus_trigger {
+    #login_trigger {
         padding: 20px;
     }
     #checkTicket {

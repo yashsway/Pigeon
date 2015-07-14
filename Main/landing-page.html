@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!--Datedropper-->
     <link rel="stylesheet" type="text/css" href="../Frameworks/datedropper-master/datedropper-master/datedropper.css" />
+    <!--Animate css-->
+    <link href="../Frameworks/animate.css" rel="stylesheet">
     <!--noUiSlider-->
     <link href="../Frameworks/noUiSlider/jquery.nouislider.min.css" rel="stylesheet">
     <!--Custom Stylesheet-->
@@ -37,7 +39,7 @@
                         <button type="button" class="btn btn-danger" id="newReport_trigger">Report or Request</button>
                     </div>
                     <div class="col-md-6 center landing-buttons">
-                        <button type="button" class="btn btn-primary" id="checkStatus_trigger">Check Status</button>
+                        <button type="button" class="btn btn-success" id="login_trigger">Login</button>
                     </div>
                 </div>
                 <div id="newReport-wrapper">
@@ -45,26 +47,34 @@
                 </div>
                 <div id="newReport-ticketNumber-wrapper">
                     <p class="body-text">Your ticket number is
-                    <p id="newReport_ticketNumber">1280</p><p id="help-text">Remember this unique number! Refer back to Pigeon with this exact number to check the status of your ticket, at any time.</p>
+                    <p id="newReport_ticketNumber">1280</p>
                     </p>
                 </div>
-                <div id="checkStatus-input-wrapper">
+                <div id="login-wrapper">
+                    <label class="loginForm loginTxt" id="label-username">Username</label>
+                    <input class="loginForm" type="text" style="text-align:center" id="user_name"/>
+                    <label class="loginForm loginTxt" id="label-pass">Password</label>
+                    <input class="loginForm" type="password" style="text-align:center" id="pass_word"/>
+                </div>
+                <!--<div id="checkStatus-input-wrapper">
                     <p class="body-text">What's your ticket number?<br/>
                     <input type="text" id="userQuery" style="text-align:center;color:#301330;"/><img id="checkTicket" src="assets/icons/rightArrow.png">
                     <p id="help-text">This number was given to you when you filed a report on Pigeon.</p>
                     </p>
-                </div>
+                </div>-->
                 <div id="checkStatus-display-wrapper">
 
                 </div>
             </div>
+            <p id="help-text"></p>
             <button class="btn btn-sm btn-default back">Back</button>
+            <button class="btn btn-sm btn-success login">Login</button>
         </div>
         <div class="col-md-2 col-sm-2 side-panel">
         </div>
     </div>
     <div id="info-bar">
-        <p>&#169; 2015, Made with &#9829 by Yash Kadaru</p>
+        <p>&#169; 2015, Made with &#9829 by Yash Kadaru with the help of Rade Kuruc</p>
     </div>
     <!--jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
