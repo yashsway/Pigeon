@@ -302,6 +302,8 @@ $(document).ready(function(){
     newReport_engine();
     //Datedroppers
     $("#newReport_date").dateDropper();
+    //Enable tooltips
+    $('[data-toggle="tooltip"]').tooltip();
     //Other UI stuff
     $("#help-text").text(welcome_msg);
     $("#landing-buttons-wrapper").show();

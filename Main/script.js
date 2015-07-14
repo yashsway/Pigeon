@@ -64,6 +64,8 @@ function ajaxRefresh(mode,id){
                         $(".full-info-text.time").text(returnedData[0].reportTime);
                         //Admin-Set information changed below
                         $(".full-info-text.adminPriority").text(returnedData[0].admin_priority);
+                        //$(".main-panel").find("#"+id).find(".report-adminPriority").empty();
+                        //$(".main-panel").find("#"+id).find(".report-adminPriority").html(priorityFlagCodeGenerator(returnedData[0].admin_priority));
                         $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
                         $(".full-info-text.notes").text(returnedData[0].admin_notes);
                         //Final Color-coding
@@ -101,11 +103,11 @@ function ajaxRefresh(mode,id){
                 });
                 break;
             case 2:
-                console.log("work");
                 $(".main-panel").find("#"+id).find(".report-resolution").empty();
                 $(".main-panel").find("#"+id).find(".report-resolution").html('<img src="assets/icons/checkmark.png"/>');
                 break;
             default:
+                //TEST: console msg
                 console.log("Invalid AJAX refresh request");
                 break;
     }
@@ -842,6 +844,7 @@ $("#resolve_issue").click(function(){
                     $("#edit_issue").hide();
                     $("#resolved_icon").show();
                     $(obj).parent().parent().find(".modal-body").addClass("greyOut");
+                    //Refresh anything on the app as necessary without the user having to reload the page
                     ajaxRefresh(2,rep_ID);
                     //TEST: console msg
                     console.log("Report #" + rep_ID + " resolved.");
@@ -856,7 +859,7 @@ $("#resolve_issue").click(function(){
 //---------------Logout------------------
 $("#logout").on('click',function(){
     //TEST: Console msg
-    console.log("logging out..");
+    console.log("logging out...");
     $.post("index.html.php", {log_out: "1"});
     window.location.assign("http://localhost/HCSProjects/Pigeon/Main/landing-page.html.php");
 });
@@ -894,8 +897,8 @@ $(document).ready(function(){
          if(new Date().getTime() - time >= 7000)
              window.location.reload(true);
          else
-             setTimeout(refresh, 5000);
+             setTimeout(refresh, 10000);
      }
 
-     setTimeout(refresh, 5000);*/
+     setTimeout(refresh, 10000);*/
 });

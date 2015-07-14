@@ -91,6 +91,7 @@ class CheckLogin{
     }
 
     public function kill_session(){
+        //Set the SESSION equal to an empty array
         $_SESSION = array();
         // If it's desired to kill the session, also delete the session cookie.
         // Note: This will destroy the session, and not just the session data!
@@ -101,7 +102,7 @@ class CheckLogin{
                 $params["secure"], $params["httponly"]
             );
         }
-            session_destroy();
+        session_destroy();
     }
 }
 ?>

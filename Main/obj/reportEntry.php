@@ -9,7 +9,7 @@ function reportEntry(){
             echo '<td class="report-elements report-date text">' . htmlspecialchars($reports[$i]->_date,ENT_QUOTES,'UTF-8') . '</td>';
             echo '<td class="report-elements report-duration text">' . htmlspecialchars($reports[$i]->duration . ' day(s)',ENT_QUOTES,'UTF-8') . '</td>';
             echo '<td class="report-elements report-icons">' . priorityFlagCodeGenerator($reports[$i]->priority) . '</td>';
-            echo '<td class="report-elements report-icons">' . priorityFlagCodeGenerator($reports[$i]->admin_priority) . '</td>';
+            echo '<td class="report-elements report-icons report-adminPriority">' . priorityFlagCodeGenerator($reports[$i]->admin_priority) . '</td>';
             echo '<td class="report-elements report-icons report-resolution">' . resolutionFlagCodeGenerator($reports[$i]->resolved) . '</td>';
             echo '<td class="report-elements report-tools"><button class="btn btn-default view org-repTools">View</button><img class="view alt-repTools" src="assets/icons/zoom.png"><button class="btn btn-success restore" id="restore' . $reports[$i]->ID . '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete org-repTools">Delete</button><img class="delete alt-repTools" src="assets/icons/delete.png">';
             echo '</tr>';

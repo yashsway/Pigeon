@@ -42,29 +42,29 @@
                                 <label>Request Category</label>
                                 <select id="newReport_requestCategory">
                                     <option value="blank" selected="selected"></option>
-                                    <option value="PC Issues" title="PC Issues">PC Issue (Slow, Malware etc)</option>
-                                    <option value="PC Setup" title="PC Setup">PC Setup</option>
-                                    <option value="Printer Setup" title="Printer Setup">Printer Setup</option>
-                                    <option value="Printer Issue" title="Printer Issues">Printer Issue</option>
+                                    <option value="Email (Outlook/Thunderbird)" title="Email">Email (Outlook/Thunderbird)</option>
+                                    <option value="PC Issues" title="PC Issues">Computer Issue (Slow, Malware etc)</option>
+                                    <option value="PC Setup" title="PC Setup">Computer Setup</option>
+                                    <option value="Devices & Printers" title="Printer Setup">Devices & Printers</option>
                                     <option value="Internet/Network Issues" title="Network Issues">Internet/Network Issues</option>
                                     <option value="Shared Drives" title="Shared Drive Setup">Shared Drives</option>
                                     <option value="Other" title="Other">Other</option>
                                 </select>
                             </div>
                             <div data-field-span="2">
-                                <label>If Other, please specify</label>
+                                <label>If Other, please specify (Keyword please)</label>
                                 <input type="text" id="newReport_otherRequest" maxlength="48" disabled>
                             </div>
                         </div>
                         <div data-row-span="4">
                             <div data-field-span="4">
-                                <label>Report Summary (60 characters max)</label>
+                                <label>Summarize your problem (60 characters max)</label>
                                 <input type="text" id="newReport_summary" minlength="10" maxlength="60" required>
                             </div>
                         </div>
                         <div data-row-span="4">
                             <div data-field-span="4">
-                                <label>Details (500 characters max)</label>
+                                <label>Details (500 characters max) (Optional)</label>
                                 <textarea rows="2" cols="20" name="report_details" wrap="hard" maxlength="500" style="resize:none;height:130px" id="newReport_details"></textarea>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                             <div data-field-span="1" id="newReport_meetingTime">
                                 <label>When are you free?</label>
                                 <input type="text" placeholder="mm/dd/yyyy" id="newReport_date">
-                                <input type="text" placeholder="2:30 PM or 'anytime'" id="newReport_time">
+                                <input type="text" placeholder="2:30 PM or 'anytime'" data-toggle="tooltip" data-placement="top" title="Write '2:30PM' or '9:00 am' for example, if you're free at a specific time or write 'anytime' if you're free all day." id="newReport_time">
                             </div>
                         </div>
                     </fieldset>

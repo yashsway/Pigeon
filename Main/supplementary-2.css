@@ -8,7 +8,7 @@ body {
     font-family: 'Oswald', sans-serif;
 }
 #product-title {
-    font-size: 17em;
+    font-size: 10em;
 }
 .container-fluid {
     min-height: 100%;
@@ -86,7 +86,7 @@ body {
     margin-left: 47%;
 }
 /* New Report Form Stuff */
-/*Date container in New Report form*/
+/* Date container in New Report form */
 #newReport_date {
     width: 200px;
 }

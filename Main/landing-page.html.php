@@ -32,7 +32,7 @@
         <div class="col-md-2 col-sm-2 side-panel">
         </div>
         <div class="col-md-8 col-sm-8 main-panel-container">
-            <h1 class="main-text center" id="product-title">Pigeon</h1>
+            <h1 class="main-text center" id="product-title">HCS Help Desk</h1>
             <div class="row">
                 <div id="landing-buttons-wrapper">
                     <div class="col-md-6 center landing-buttons">
@@ -52,9 +52,9 @@
                 </div>
                 <div id="login-wrapper">
                     <label class="loginForm loginTxt" id="label-username">Username</label>
-                    <input class="loginForm" type="text" style="text-align:center" id="user_name"/>
+                    <input class="loginForm" type="text" style="text-align:center;color:#301330;" id="user_name"/>
                     <label class="loginForm loginTxt" id="label-pass">Password</label>
-                    <input class="loginForm" type="password" style="text-align:center" id="pass_word"/>
+                    <input class="loginForm" type="password" style="text-align:center;color:#301330;" id="pass_word"/>
                 </div>
                 <!--<div id="checkStatus-input-wrapper">
                     <p class="body-text">What's your ticket number?<br/>
@@ -74,7 +74,7 @@
         </div>
     </div>
     <div id="info-bar">
-        <p>&#169; 2015, Made with &#9829 by Yash Kadaru with the help of Rade Kuruc</p>
+        <p>&#169; 2015, Made with &#9829 by Yash Kadaru</p>
     </div>
     <!--New Report Filing modal-->
     <?php
