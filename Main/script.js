@@ -455,7 +455,7 @@ function viewEditForm(){
         //TEST: Get the ID of the report to be edited
         //var temp_index = database_indexReturn($(this).parent().parent().attr("id"));
         var rep_ID = $(this).parent().parent().attr('id');
-        //TODO: AJAX edit form
+        //NOTE: Review AJAX edit form
         ajaxRequest("databaseButler.php?reqType="+3+"&queryID="+rep_ID, "json", null, function(returnedData){
             if(returnedData[0].error=="Query fail"){
                 console.log("Populating edit report failed. Check Database Query.");
@@ -538,14 +538,14 @@ $("#editReport_save").on("click",function(){
         //Collect edit form data
         var rep_ID = $(this).parent().parent().attr("id");
         var formData = editReport_compilation(rep_ID);
-        //TODO: AJAX save edit form
+        //NOTE: Review AJAX save edit form
         ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
             if(returnedData=="Query ok"){
                 //Close edit form & related
                 closeEditForm(true);
                 //Inform the user
                 editReport_message("Changes saved!",3500);
-                //TODO: AJAX refresh
+                //NOTE: Review AJAX refresh
                 ajaxRefresh(1,rep_ID);
                 /*setTimeout(function(){
                         location.reload();
@@ -756,36 +756,6 @@ function detailedReportBuilder(){
                 }
             }
         });
-        //Change all the info fields to the data of the corresponding report
-        /*$("#full-info-title").text("#" + reports[temp_index].ID + " " + reports[temp_index].summary);
-        $(".full-info-text.name").text(reports[temp_index].name);
-        $(".full-info-text.phone").text(reports[temp_index].phone);
-        $(".full-info-text.email").text(reports[temp_index].email);
-        $(".full-info-text.department").text(reports[temp_index].department);
-        if(reports[temp_index].request=="Other"){
-            $(".full-info-text.request").text(reports[temp_index].custom_request);
-        }else{
-            $(".full-info-text.request").text(reports[temp_index].request);
-        }
-        $(".full-info-text.date").text(reports[temp_index].date);
-        $(".full-info-text.details").text(reports[temp_index].details);
-        $(".full-info-text.priority").text(reports[temp_index].priority); //priorityString() call REMOVED
-        $(".full-info-text.time").text(reports[temp_index].time);
-        //Admin-Set information changed below
-        $(".full-info-text.adminPriority").text(reports[temp_index].admin_priority);
-        $(".full-info-text.duration").text("Will take approximately " + reports[temp_index].duration+" day(s) to complete");
-        $(".full-info-text.notes").text(reports[temp_index].admin_notes);
-        //Final Color-coding
-        detailedReport_ColorCoding(reports[temp_index].priority,"priority");
-        detailedReport_ColorCoding(reports[temp_index].admin_priority,"adminPriority");
-        //Disable Resolution/Editing when the report has been marked for deletion
-        if(reports[database_indexReturn(query_ID)].markedForDeletion==true){
-            $(".resolutionTools").hide();
-            $("#edit_issue").hide();
-        }else{
-            $(".resolutionTools").show();
-            $("#edit_issue").show();
-        }*/
     });
 }
 //Detailed Report Color-coding
@@ -885,15 +855,15 @@ $("#resolve_issue").click(function(){
 });
 //---------------Logout------------------
 $("#logout").on('click',function(){
+    //TEST: Console msg
     console.log("logging out..");
     $.post("index.html.php", {log_out: "1"});
-    window.location.assign("http://localhost/HCSProjects/Pigeon/Main/landing-page.html");
+    window.location.assign("http://localhost/HCSProjects/Pigeon/Main/landing-page.html.php");
 });
 //---------------Page Load---------------
 // Functions to execute upon page load
 $(document).ready(function(){
-    //NOTE:
-    //Report ID's are attached in the DOM in 2 places: each table row and the report detail modal, whenever it is opened
+    //NOTE: Report ID's are attached in the DOM in 2 places: each table row and the report detail modal, whenever it is opened.
     //New Report Modal View for Report button
     $("#report").attr("data-toggle","modal");
     $("#report").attr("data-target","#file-new-report");

@@ -27,7 +27,6 @@ class CheckLogin{
         }
     }
 
-
     public function connect(){
         $_mode = 0;
         if($_mode == 0){
@@ -60,7 +59,6 @@ class CheckLogin{
         //echo '<script type="text/javascript">console.log("' . $output . '");</script>';
     }
 
-
     public function init_session($user_name, $pass_word){
 
         $hash_pass = sha1($pass_word);
@@ -81,7 +79,7 @@ class CheckLogin{
 
     public static function check_session_age(){
         if (time('now') > $_SESSION['hcs_helpDesk_cookie']){
-            header("Location: landing-page.html");
+            header("Location: landing-page.html.php");
             exit;
         }else{
             CheckLogin::extend_session(3);
@@ -91,8 +89,6 @@ class CheckLogin{
     public static function extend_session($seconds){
         $_SESSION['hcs_helpDesk_cookie'] += $seconds;
     }
-
-
 
     public function kill_session(){
         $_SESSION = array();

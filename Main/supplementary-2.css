@@ -44,6 +44,10 @@ body {
     font-family: "Slabo 27px", sans-serif;
     font-size: 35px;
     text-align: center;
+    color: #301330;
+}
+#newReport-ticketNumber-wrapper {
+    margin-top: 20px;
 }
 #newReport_ticketNumber {
     font-style: bold;
@@ -79,7 +83,38 @@ body {
     cursor: pointer;
 }
 .back {
-    margin-left: 50%;
+    margin-left: 47%;
+}
+/* New Report Form Stuff */
+/*Date container in New Report form*/
+#newReport_date {
+    width: 200px;
+}
+/*Time container in New Report form*/
+#newReport_time {
+    width: 200px;
+}
+/*Global placeholder text*/
+input::-webkit-input-placeholder {
+    color: #cdcdcd;
+    opacity: 0.3;
+}
+/*#newReport_priority span img {
+    height: 50px;
+    width: 50px;
+}*/
+#newReport_date {
+    padding: 20px;
+}
+#newReport_time {
+    width: 205px;
+    padding: 20px;
+}
+.progress {
+    float: left;
+    width: 200px;
+    position: absolute;
+    margin-top: 12px;
 }
 @media (max-width: 809px) {
     #product-title {

@@ -46,8 +46,8 @@
 
                 </div>
                 <div id="newReport-ticketNumber-wrapper">
-                    <p class="body-text">Your ticket number is
-                    <p id="newReport_ticketNumber">1280</p>
+                    <p class="body-text">Submission successful!
+                    <p id="newReport_ticketNumber"></p>
                     </p>
                 </div>
                 <div id="login-wrapper">
@@ -76,8 +76,14 @@
     <div id="info-bar">
         <p>&#169; 2015, Made with &#9829 by Yash Kadaru with the help of Rade Kuruc</p>
     </div>
+    <!--New Report Filing modal-->
+    <?php
+        include 'forms/newReportForm.html';
+    ?>
     <!--jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="../Frameworks/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../Frameworks/datedropper-master/datedropper-master/datedropper.js"></script>
     <script src="script-2.js"></script>
 </body>
 </html>

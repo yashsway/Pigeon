@@ -1,3 +1,5 @@
+//Global Vars
+var welcome_msg = "Hi! How can I help you today?";
 //------AJAX Requests-----------
 var data = "";
 function ajaxRequest(reqScript, returnDataType, reqData, callback){
@@ -19,19 +21,294 @@ function ajaxRequest(reqScript, returnDataType, reqData, callback){
         }
     });
 }
-//------Page Load----------
-var welcome_msg = "Hi! How can I help you today?";
+//-------------Database------------
+//ID Hashing Function
+function hash(){
+    //100 reports a day, frequency is per minute
+    var now = new Date();
+    var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMinutes().toString().split("").reverse().join("")[0];
+    return curr + "" + Math.floor((Math.random()*100)+1);
+}
+//-----------Validation-----------------
+//Validation colors
+function validationColors(val,regEx,obj,mode,locale){
+    if(mode==0){
+        if(regEx==false){
+            if(locale==1){
+                $(obj).parent().css('background-color','pink');
+            }else{
+                $(obj).css('background-color','pink');
+            }
+        }else if(regEx==true){
+            if(locale==1){
+                $(obj).parent().css('background-color','#CBE896');
+            }else{
+                $(obj).css('background-color','#CBE896');
+            }
+        }
+    }
+    else if(regEx.test(val)){
+        if(locale==1){
+            $(obj).parent().css('background-color','#CBE896');
+        }else{
+            $(obj).css('background-color','#CBE896');
+        }
+    }else{
+        if(locale==1){
+            $(obj).parent().css('background-color','pink');
+        }else{
+            $(obj).css('background-color','pink');
+        }
+    }
+}
+//New Report Validation
+function newReport_validation(){
+    $("#newReport_submit").mouseover(function () {
+        //Name Validation
+        var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
+        validationColors($("#newReport_name").val(),regX,"#newReport_name",1,1);
+        //Phone Validation
+        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        validationColors($("#newReport_phone").val(),regX,"#newReport_phone",1,1);
+        //Email Validation
+        regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
+        validationColors($("#newReport_email").val(),regX,"#newReport_email",1,1);
+        //Department Validation
+        if($("#newReport_department").val()=="blank" || $("#newReport_department").text()==""){
+            validationColors($("#newReport_department").val(),false,"#newReport_department",0,1);
+        }else{
+            validationColors($("#newReport_department").val(),true,"#newReport_department",0,1);
+        }
+        //Request Category Validation
+        var v = $("#newReport_requestCategory").val();
+        if(v=="blank"){
+            validationColors($("#newReport_requestCategory").val(),false,"#newReport_requestCategory",0,1);
+        }else{
+            validationColors($("#newReport_requestCategory").val(),true,"#newReport_requestCategory",0,1);
+            //Remove color coding in this section when the category is changed back to something different from 'Other'
+            if(v!="Other"){
+                //Clear background coloring
+                $("#newReport_otherRequest").parent().css('background-color','');
+                //And residual text
+                $("#newReport_otherRequest").val('');
+            }
+        }
+        //Other Request Validation
+        regX = /.{5,}/g;
+        if($("#newReport_requestCategory").val()=="Other"){
+            if($("#newReport_otherRequest").text()==""){
+                validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1);
+            }else{
+                validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1);
+            }
+        }
+        //Summary Validation
+        regX = /.{5,}/g;
+        validationColors($("#newReport_summary").val(),regX,"#newReport_summary",1,1);
+        //Date & Time Validation
+        regX = /.{10,}/g;
+        var regX2 = /(\d{1,2}:?\s?\d{2,2}\s?(AM|am|PM|pm))|(anytime|Anytime)/g;
+        //Color coding for this section is separate for both fields. Locale argument is therefore 0, meaning 'local' instead of 1, which means 'parent'
+        validationColors($("#newReport_date").val(),regX,"#newReport_date",1,0);
+        validationColors($("#newReport_time").val(),regX2,"#newReport_time",1,0);
+        //Priority Validation
+        if ($("input[name='priority']:checked").val()) {
+            validationColors($("#newReport_priority").val(),true,"#newReport_priority",0);
+        }else if(!$("input[name='priority']:checked").val()){
+            validationColors($("#newReport_priority").val(),false,"#newReport_priority",0);
+        }
+    });
+}
+//Pre Submission Validation Check for New Reports
+function finalValidationCheck(){
+    //rgb(255, 192, 203) = pink
+    //rgb(203, 232, 150) = green
+    var fields = ["#newReport_name","#newReport_phone","#newReport_email","#newReport_department","#newReport_requestCategory","#newReport_otherRequest","#newReport_summary","#newReport_priority","#newReport_date","#newReport_time"];
+    for(var i=0;i<fields.length;i++){
+        //TEST: Progress bar
+        progressBar_modify("#newReport_progress",5);
+        //TEST: console msg
+        //console.log(fields[i]+ ": self->" + $(fields[i]).css('background-color') + " parent->" + $(fields[i]).parent().css('background-color'));
+        if(i==5){
+            if(($(fields[i]).parent().css('background-color')=='rgba(0, 0, 0, 0)') | ($(fields[i]).parent().css('background-color')=='rgb(203, 232, 150)')){
+                newReport_valid = true;
+            }else{
+                newReport_valid = false;
+                break;
+            }
+        }
+        else if(i>=7){
+            if(($(fields[i]).css('background-color')=='rgb(203, 232, 150)')){
+                newReport_valid = true;
+            }else{
+                newReport_valid = false;
+                break;
+            }
+        }
+        else if(($(fields[i]).parent().css('background-color')=='rgb(203, 232, 150)')){
+            newReport_valid = true;
+        }else{
+            newReport_valid = false;
+            break;
+        }
+    }
+}
+//------------New Report UI/Utilities/Tools---------------
+function newReport_message(msg){
+    //Display the message received
+    $("#newReport_infoMsg").html(msg+"&nbsp&nbsp");
+    //Set the default message back on after 5s
+    setTimeout(function(){
+        $("#newReport_infoMsg").html("All fields are required, except details.&nbsp&nbsp");
+    },5000);
+}
+//Other category field is only enabled when request category dropdown is selected as 'other'
+$("#newReport_requestCategory").on("click",function(){
+    if($(this).val()=="Other"){
+        $("#newReport_otherRequest").prop('disabled',false);
+    }else{
+        $("#newReport_otherRequest").prop('disabled',true);
+    }
+});
+//Clear button of the new Report formn
+$("#newReport_clear").click(function(){
+    $("#newReport_name").val('');$("#newReport_name").parent().css('background-color','');
+    $("#newReport_phone").val('');$("#newReport_phone").parent().css('background-color','');
+    $("#newReport_email").val('');$("#newReport_email").parent().css('background-color','');
+    $("#newReport_department").val('blank');$("#newReport_department").parent().css('background-color','');
+    $("#newReport_requestCategory").val('blank');$("#newReport_requestCategory").parent().css('background-color','');
+    $("#newReport_otherRequest").val('');$("#newReport_otherRequest").parent().css('background-color','');
+    $("#newReport_summary").val('');$("#newReport_summary").parent().css('background-color','');
+    $("#newReport_details").val('');
+    $('input[name="priority"]').prop('checked', false);$("#newReport_priority").css('background-color','');
+    $('#newReport_date').val('');$('#newReport_date').css('background-color','');
+    $('#newReport_time').val('');$('#newReport_time').css('background-color','');
+    $("#newReport_otherRequest").prop('disabled',true);
+    //Renable the Submit button
+    $("#newReport_submit").attr('disabled',false);
+    //Inform the user
+    newReport_message("Form cleared! You may start over.");
+});
+//-----------New Report Submission--------------
+function newReport_engine(){
+    //New Report Validation
+    newReport_validation();
+    //Enable new report submission
+    newReport_formSubmission();
+}
+//New Report Compilation
+function newReport_compilation(){
+    //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
+    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:$("input[type='radio'][name='priority']:checked").val(),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
+    //TEST: progress bar
+    progressBar_modify("#newReport_progress",15);
+    //TEST: console msg (JSON data)
+    console.log("Before Send: " + formData);
+    return formData;
+}
+//New Report submit
+function newReport_formSubmission(){
+    $("#newReport_submit").on('click',function(){
+        //Check the form if everything is valid (progress bar is the 3rd & final validation step)
+        finalValidationCheck();
+        if(newReport_valid==true){
+            //Disable the submit button to prevent multiple submissions
+            $("#newReport_submit").attr('disabled',true);
+            //Compile the form, add to database, update progress bar and make an entry in the table
+            var formData = newReport_compilation();
+            //TEST: console msg (returned JSON data)
+            console.log(formData);
+            //NOTE: Review AJAX insert into database
+            ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
+                //Test: progress bar
+                progressBar_modify("#newReport_progress",25);
+                if(returnedData=="Query ok"){
+                    //Inform the user that the form is valid
+                    newReport_message("Looks great! Thanks!");
+                    //The valid boolean will be set to false after the report goes into the database
+                    newReport_valid = false;
+                    //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
+                    //detailedReportBuilder();
+                    //reportDeletion();
+                    //Test: progress bar
+                    progressBar_modify("#newReport_progress",10);
+                    //Clear form and close AFTER 3.5s IF progress bar is FULL
+                    if($("#newReport_progress").attr('aria-valuenow')==100){
+                        setTimeout(function(){
+                            $("#newReport_clear").trigger("click");
+                            $("#newReport_close").trigger("click");
+                        },3500);
+                    }else{
+                        //Inform the user that something went wrong
+                        newReport_message("Submission failed! :( Something went wrong, try again later.");
+                        //TEST: console msg
+                        console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
+                    }
+                    $("#landing-buttons-wrapper").hide();
+                    $("#newReport-ticketNumber-wrapper").show();
+                    $(".back").attr('id','fromSubmission');
+                    $(".back").show();
+                    $("#help-text").text("We'll get back to you as soon as possible.");
+                    $("#fromSubmission").on('click',function() {
+                        $("#newReport-ticketNumber-wrapper").hide();
+                        $("#landing-buttons-wrapper").show();
+                        $(".back").hide();
+                        $("#help-text").text(welcome_msg);
+                    });
+                    //TODO: AJAX refresh
+                    /*setTimeout(function(){
+                        location.reload();
+                    },3500);*/
+                }else{
+                    //TEST: console msg
+                    console.log("Submission failed. Database query error.");
+                    //Inform the user that something went wrong
+                    newReport_message("Submission failed! :( Something went wrong, try again later.");
+                    //Re-enable the submit button on submission failure
+                    $("#newReport_submit").attr('disabled',false);
+                }
+            });
+
+        }else{
+            //Inform the user that the form has some invalid fields
+            newReport_message("Correct the fields in <b>red</b> first!");
+        }
+    });
+}
+//--------------------UTILITIES/UI--------------------
+//Progress Bar Controller
+function progressBar_modify(elem,quant){
+    //If quant = 0, reset the progress bar
+    if(quant==0){
+        $(elem).css('width',0+'%');
+        $(elem).attr('aria-valuenow',0);
+    }else{
+        var temp = (parseInt($(elem).attr('aria-valuenow'))+quant);
+        $(elem).attr('aria-valuenow',temp);
+        $(elem).css('width',temp+"%");
+        //Reset after 3s
+        setTimeout(function(){
+          $(elem).css('width',0+'%');
+            $(elem).attr('aria-valuenow',0);
+        },3000);
+    }
+}
+//----------------------------Page Load--------------------------
 $(document).ready(function(){
+    //New Report Modal View for Report button
+    $("#newReport_trigger").attr("data-toggle","modal");
+    $("#newReport_trigger").attr("data-target","#file-new-report");
+    //Enable new reports
+    newReport_engine();
+    //Datedroppers
+    $("#newReport_date").dateDropper();
+    //Other UI stuff
     $("#help-text").text(welcome_msg);
     $("#landing-buttons-wrapper").show();
     $("#newReport-ticketNumber-wrapper").hide();
     $("#login-wrapper").hide();
     $(".back").hide();
     $(".login").hide();
-});
-
-$("#newReport_trigger").on('click',function(){
-
 });
 
 $("#login_trigger").on('click',function() {
@@ -47,7 +324,6 @@ $("#login_trigger").on('click',function() {
         $("#user_name").val('');
         $("#pass_word").val('');
         $("#landing-buttons-wrapper").show();
-        $("#newReport-ticketNumber-wrapper").hide();
         $("#login-wrapper").hide();
         $(".back").hide();
         $(".login").hide();

@@ -4,13 +4,13 @@
 
     if(isset($_POST['log_out'])){
         CheckLogin::kill_session();
-        header("Location: landing-page.html");
+        header("Location: landing-page.html.php");
         exit;
     }
 
     //check if there is a cookie upon page load - if there is one, check the age of the current session and if still active, extend by a few hours.
     if (!isset($_SESSION['hcs_helpDesk_cookie'])){
-        header("Location: landing-page.html");
+        header("Location: landing-page.html.php");
         exit;
     }else{
         CheckLogin::check_session_age();
