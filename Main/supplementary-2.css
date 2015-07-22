@@ -2,13 +2,13 @@ body {
     background: url(assets/grid.png);
     background-color: #8FB59C;
     background-blend-mode: screen;
-    min-height: 465px;
+    height: 100%;
 }
 .main-text {
     font-family: 'Oswald', sans-serif;
 }
 #product-title {
-    font-size: 10em;
+    font-size: 17em;
 }
 .container-fluid {
     min-height: 100%;
@@ -17,12 +17,23 @@ body {
 #header {
     padding: 10px;
 }
+.main {
+    height: 100%;
+}
 #info-bar{
-    position: absolute;
-    bottom: 0;
+    overflow: hidden;
+    height: 30px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    z-index: 150;
     margin-bottom: 0px;
     width: 100%;
     background-color: #301330;
+}
+#footer_push {
+    clear: both;
+    height: 30px;
 }
 #info-bar > p {
     color: white;
@@ -40,6 +51,12 @@ body {
 #login_trigger {
     width: 150px;
 }
+#login-wrapper {
+    display: none;
+}
+.login {
+    display: none;
+}
 .body-text {
     font-family: "Slabo 27px", sans-serif;
     font-size: 35px;
@@ -48,6 +65,7 @@ body {
 }
 #newReport-ticketNumber-wrapper {
     margin-top: 20px;
+    display: none;
 }
 #newReport_ticketNumber {
     font-style: bold;
@@ -56,11 +74,12 @@ body {
     color: #301330;
 }
 #help-text {
-    margin: 5px;
-    margin-left: 30px;
+    padding: 5px;
+    margin-left: 0%;
     font-size: 15px;
     font-style: italic;
     text-align: center;
+    display: block;
 }
 .loginForm {
     display: block;
@@ -84,6 +103,7 @@ body {
 }
 .back {
     margin-left: 47%;
+    display: none;
 }
 /* New Report Form Stuff */
 /* Date container in New Report form */
@@ -116,7 +136,45 @@ input::-webkit-input-placeholder {
     position: absolute;
     margin-top: 12px;
 }
+#welcome-icon {
+    height: 75px;
+    width: 75px;
+    position: relative;
+    display: block;
+    margin-left: 43%;
+    padding: 5px;
+}
+@media (min-width: 1190px) {
+    #welcome-icon {
+        margin-left: 45%;
+    }
+}
+@media (max-width: 1090px) {
+    #login-wrapper {
+        margin-left: -2%;
+    }
+    #sit-nav-btns {
+        margin-left: -2%;
+    }
+    #product-title {
+        font-size: 14em;
+    }
+}
+@media (max-width: 865px) {
+    #login-wrapper {
+        margin-left: -4%;
+    }
+    #sit-nav-btns {
+        margin-left: -4%;
+    }
+}
 @media (max-width: 809px) {
+    #login-wrapper {
+        margin-left: -15%;
+    }
+    #sit-nav-btns {
+        margin-left: -15%;
+    }
     #product-title {
         font-size: 12em;
     }
@@ -133,6 +191,15 @@ input::-webkit-input-placeholder {
     }
 }
 @media (max-width: 470px){
+    #login-wrapper {
+        margin-left: -25%;
+    }
+    #sit-nav-btns {
+        margin-left: -25%;
+    }
+    #welcome-icon {
+        margin-left: 40%;
+    }
     #checkTicket {
         top: 60vh;
         left: 35vw;
@@ -143,6 +210,15 @@ input::-webkit-input-placeholder {
     }
 }
 @media (max-width: 370px) {
+    #login-wrapper {
+        margin-left: -35%;
+    }
+    #sit-nav-btns {
+        margin-left: -35%;
+    }
+    #welcome-icon {
+        margin-left: 35%;
+    }
     #product-title {
         font-size: 7em;
     }

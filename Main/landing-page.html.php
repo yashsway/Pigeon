@@ -27,12 +27,13 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="supplementary-2.css" />
 </head>
+
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid main">
         <div class="col-md-2 col-sm-2 side-panel">
         </div>
         <div class="col-md-8 col-sm-8 main-panel-container">
-            <h1 class="main-text center" id="product-title">HCS Help Desk</h1>
+            <h1 class="main-text center" id="product-title">Pigeon</h1>
             <div class="row">
                 <div id="landing-buttons-wrapper">
                     <div class="col-md-6 center landing-buttons">
@@ -42,19 +43,21 @@
                         <button type="button" class="btn btn-success" id="login_trigger">Login</button>
                     </div>
                 </div>
-                <div id="newReport-wrapper">
+                <!--<div id="newReport-wrapper">
 
-                </div>
+                </div>-->
                 <div id="newReport-ticketNumber-wrapper">
                     <p class="body-text">Submission successful!
-                    <p id="newReport_ticketNumber"></p>
+                        <p id="newReport_ticketNumber"></p>
                     </p>
                 </div>
                 <div id="login-wrapper">
-                    <label class="loginForm loginTxt" id="label-username">Username</label>
-                    <input class="loginForm" type="text" style="text-align:center;color:#301330;" id="user_name"/>
-                    <label class="loginForm loginTxt" id="label-pass">Password</label>
-                    <input class="loginForm" type="password" style="text-align:center;color:#301330;" id="pass_word"/>
+                    <form>
+                        <label class="loginForm loginTxt" id="label-username">Username</label>
+                        <input class="loginForm" type="text" style="text-align:center;color:#301330;" id="user_name" />
+                        <label class="loginForm loginTxt" id="label-pass">Password</label>
+                        <input class="loginForm" type="password" style="text-align:center;color:#301330;" id="pass_word" />
+                    </form>
                 </div>
                 <!--<div id="checkStatus-input-wrapper">
                     <p class="body-text">What's your ticket number?<br/>
@@ -62,28 +65,31 @@
                     <p id="help-text">This number was given to you when you filed a report on Pigeon.</p>
                     </p>
                 </div>-->
-                <div id="checkStatus-display-wrapper">
+                <!--<div id="checkStatus-display-wrapper">
 
-                </div>
+                </div>-->
             </div>
+            <img src="assets/icons/smile.png" id="welcome-icon" />
             <p id="help-text"></p>
-            <button class="btn btn-sm btn-default back">Back</button>
-            <button class="btn btn-sm btn-success login">Login</button>
+            <div id="sit-nav-btns">
+                <button class="btn btn-sm btn-default back">Back</button>
+                <button class="btn btn-sm btn-success login">Login</button>
+            </div>
         </div>
         <div class="col-md-2 col-sm-2 side-panel">
         </div>
     </div>
+    <div id="footer_push"></div>
     <div id="info-bar">
         <p>&#169; 2015, Made with &#9829 by Yash Kadaru</p>
     </div>
     <!--New Report Filing modal-->
-    <?php
-        include 'forms/newReportForm.html';
-    ?>
+    <?php include 'forms/newReportForm.html'; ?>
     <!--jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="../Frameworks/bootstrap/js/bootstrap.min.js"></script>
     <script src="../Frameworks/datedropper-master/datedropper-master/datedropper.js"></script>
     <script src="script-2.js"></script>
 </body>
+
 </html>

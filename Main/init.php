@@ -1,5 +1,6 @@
 <?php
-$GLOBALS['appMode'] = 0;
+//Set the appMode for mySQL connections
+$GLOBALS['appMode'] = 1;
 function autoloadClasses($className) {
     $filename = 'inc/class.' . $className . '.inc.php';
     if (is_readable($filename)) {

@@ -6,7 +6,7 @@ require_once('init.php');
 
 if (isset($_REQUEST['user_name'])){
     $check_login = new CheckLogin();
-    $result = $check_login->init_session($_GET['user_name'], $_GET['pass_word']);
+    $result = $check_login->init_session($_REQUEST['user_name'], $_REQUEST['pass_word']);
     echo $result;
 }
 ?>

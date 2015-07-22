@@ -98,17 +98,6 @@
                         include 'obj/reportEntry.php';
                         reportEntry();
                     ?>
-                    <!--<tr>
-                        <td class="report-elements report-id">#001</td>
-                        <td class="report-elements report-title">Setup BrandonPro Workstations</td>
-                        <td class="report-elements report-date">April 27th</td>
-                        <td class="report-elements report-duration">10mins</td>
-                        <td class="report-elements report-urgency">High</td>
-                        <td class="report-elements report-tools">
-                            <button class="btn btn-default view">View</button>
-                            <button class="btn btn-danger delete">Delete</button>
-                        </td>
-                    </tr>-->
                 </tbody>
             </table>
         </div>

@@ -66,6 +66,16 @@ function reportResolve(){
     $result = $repRes->resolveReport($query_ID,$_GET['reqParam'],$_GET['currDate']);
     echo $result;
 }
+function reportDelete(){
+    def();
+    //Establish a new connection
+    $repDel = new Db();
+    //Get the report ID from the URL (src: AJAX request)
+    $query_ID = $_GET['queryID'];
+    //Run the deleteReport function from the DB class (send it the report ID)
+    $result = $repDel->deleteReport($query_ID);
+    echo $result;
+}
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
 //echo "it works";
@@ -84,6 +94,8 @@ if((isset($_REQUEST['reqType']))==1){
         reportEditUpdate();
     }else if($_REQUEST['reqType']==5){
         reportResolve();
+    }else if($_REQUEST['reqType']==6){
+        reportDelete();
     }
 }
 ?>

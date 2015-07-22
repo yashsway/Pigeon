@@ -299,7 +299,7 @@ input::-webkit-input-placeholder {
         display: none;
     }
 }
-/*@media (max-width: 409px) {
+@media (max-width: 409px) {
     .ym-hlist {
         height: 100px;
     }
@@ -308,4 +308,4 @@ input::-webkit-input-placeholder {
     #nav-title {
         font-size: 24px;
     }
-}*/
+}

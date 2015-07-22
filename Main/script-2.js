@@ -1,5 +1,6 @@
 //Global Vars
 var welcome_msg = "Hi! How can I help you today?";
+var newReport_valid = false;
 //------AJAX Requests-----------
 var data = "";
 function ajaxRequest(reqScript, returnDataType, reqData, callback){
@@ -26,7 +27,7 @@ function ajaxRequest(reqScript, returnDataType, reqData, callback){
 function hash(){
     //100 reports a day, frequency is per minute
     var now = new Date();
-    var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMinutes().toString().split("").reverse().join("")[0];
+    var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMonth().toString().split("").reverse().join("")[0];
     return curr + "" + Math.floor((Math.random()*100)+1);
 }
 //-----------Validation-----------------
@@ -68,7 +69,7 @@ function newReport_validation(){
         var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
         validationColors($("#newReport_name").val(),regX,"#newReport_name",1,1);
         //Phone Validation
-        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
         validationColors($("#newReport_phone").val(),regX,"#newReport_phone",1,1);
         //Email Validation
         regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
@@ -125,7 +126,7 @@ function finalValidationCheck(){
     //rgb(203, 232, 150) = green
     var fields = ["#newReport_name","#newReport_phone","#newReport_email","#newReport_department","#newReport_requestCategory","#newReport_otherRequest","#newReport_summary","#newReport_priority","#newReport_date","#newReport_time"];
     for(var i=0;i<fields.length;i++){
-        //TEST: Progress bar
+        //TEST: Progress bar 50%
         progressBar_modify("#newReport_progress",5);
         //TEST: console msg
         //console.log(fields[i]+ ": self->" + $(fields[i]).css('background-color') + " parent->" + $(fields[i]).parent().css('background-color'));
@@ -200,7 +201,7 @@ function newReport_engine(){
 function newReport_compilation(){
     //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
     var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:$("input[type='radio'][name='priority']:checked").val(),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
-    //TEST: progress bar
+    //TEST: progress bar 65%
     progressBar_modify("#newReport_progress",15);
     //TEST: console msg (JSON data)
     console.log("Before Send: " + formData);
@@ -212,6 +213,8 @@ function newReport_formSubmission(){
         //Check the form if everything is valid (progress bar is the 3rd & final validation step)
         finalValidationCheck();
         if(newReport_valid==true){
+            //The valid boolean should be set to false immediately
+            newReport_valid = false;
             //Disable the submit button to prevent multiple submissions
             $("#newReport_submit").attr('disabled',true);
             //Compile the form, add to database, update progress bar and make an entry in the table
@@ -220,41 +223,42 @@ function newReport_formSubmission(){
             console.log(formData);
             //NOTE: Review AJAX insert into database
             ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
-                //Test: progress bar
+                //Test: progress bar 90%
                 progressBar_modify("#newReport_progress",25);
                 if(returnedData=="Query ok"){
                     //Inform the user that the form is valid
                     newReport_message("Looks great! Thanks!");
-                    //The valid boolean will be set to false after the report goes into the database
-                    newReport_valid = false;
                     //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
                     //detailedReportBuilder();
                     //reportDeletion();
-                    //Test: progress bar
+                    //Test: progress bar 100%
                     progressBar_modify("#newReport_progress",10);
+                    progressBar_reset("#newReport_progress");
                     //Clear form and close AFTER 3.5s IF progress bar is FULL
                     if($("#newReport_progress").attr('aria-valuenow')==100){
                         setTimeout(function(){
                             $("#newReport_clear").trigger("click");
                             $("#newReport_close").trigger("click");
                         },3500);
+                        $("#welcome-icon").hide();
+                        $("#landing-buttons-wrapper").hide();
+                        $("#newReport-ticketNumber-wrapper").show();
+                        $(".back").attr('id','fromSubmission');
+                        $(".back").show();
+                        $("#help-text").text("We'll get back to you as soon as possible.");
+                        $("#fromSubmission").on('click',function() {
+                            $("#welcome-icon").show();
+                            $("#newReport-ticketNumber-wrapper").hide();
+                            $("#landing-buttons-wrapper").show();
+                            $(".back").hide();
+                            $("#help-text").text(welcome_msg);
+                        });
                     }else{
                         //Inform the user that something went wrong
                         newReport_message("Submission failed! :( Something went wrong, try again later.");
                         //TEST: console msg
                         console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
                     }
-                    $("#landing-buttons-wrapper").hide();
-                    $("#newReport-ticketNumber-wrapper").show();
-                    $(".back").attr('id','fromSubmission');
-                    $(".back").show();
-                    $("#help-text").text("We'll get back to you as soon as possible.");
-                    $("#fromSubmission").on('click',function() {
-                        $("#newReport-ticketNumber-wrapper").hide();
-                        $("#landing-buttons-wrapper").show();
-                        $(".back").hide();
-                        $("#help-text").text(welcome_msg);
-                    });
                     //TODO: AJAX refresh
                     /*setTimeout(function(){
                         location.reload();
@@ -286,15 +290,24 @@ function progressBar_modify(elem,quant){
         var temp = (parseInt($(elem).attr('aria-valuenow'))+quant);
         $(elem).attr('aria-valuenow',temp);
         $(elem).css('width',temp+"%");
-        //Reset after 3s
-        setTimeout(function(){
-          $(elem).css('width',0+'%');
-            $(elem).attr('aria-valuenow',0);
-        },3000);
     }
+}
+function progressBar_reset(elem){
+    //RESET after 3s
+    setTimeout(function(){
+      $(elem).css('width',0+'%');
+        $(elem).attr('aria-valuenow',0);
+    },3000);
 }
 //----------------------------Page Load--------------------------
 $(document).ready(function(){
+    //Login when the enter key is pressed in the password input
+    $('#pass_word').bind('keypress', function(e) {
+        var code = e.keyCode || e.which;
+        if(code == 13) { //Enter keycode
+           $(".login").trigger('click');
+        }
+    });
     //New Report Modal View for Report button
     $("#newReport_trigger").attr("data-toggle","modal");
     $("#newReport_trigger").attr("data-target","#file-new-report");
@@ -314,6 +327,7 @@ $(document).ready(function(){
 });
 
 $("#login_trigger").on('click',function() {
+    $("#welcome-icon").hide();
     $("#help-text").text("Contact the administrator if you forgot your password.");
     $("#landing-buttons-wrapper").hide();
     $("#newReport-ticketNumber-wrapper").hide();
@@ -323,6 +337,7 @@ $("#login_trigger").on('click',function() {
     $(".back").show();
     $(".login").show();
     $("#fromLogin").on('click',function() {
+        $("#welcome-icon").show();
         $("#user_name").val('');
         $("#pass_word").val('');
         $("#landing-buttons-wrapper").show();
@@ -336,8 +351,8 @@ $("#login_trigger").on('click',function() {
 $(".login").on('click',function(){
     var usr = $("#user_name").val();
     var pass = $("#pass_word").val();
-    ajaxRequest("login.php?user_name="+usr+"&pass_word="+pass, "text", null, function(returnedData){
-        //console.log(returnedData);
+    var formData = {user_name:usr,pass_word:pass};
+    ajaxRequest("login.php", "text", formData, function(returnedData){
         if(returnedData=="fail"){
             $("#user_name").addClass('animated flash');
             $("#pass_word").addClass('animated flash');
@@ -348,7 +363,7 @@ $(".login").on('click',function(){
                 $("#pass_word").removeClass('animated flash');
             },3500);
         }else if(returnedData=="success"){
-            window.location.assign("http://localhost/HCSProjects/Pigeon/Main/index.html.php");
+            window.location.assign("index.html.php");
         }
     });
 });

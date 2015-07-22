@@ -3,7 +3,6 @@ var reports = new Array();
 var ID, name, phone, email, department, request, custom_request, summary, details, priority, date, time, duration, admin_priority;
 var newReport_valid = false;
 var editReport_valid = false;
-var newReport_complete = false;
 //TEST: all of the following arrays are test report data
 /*var test_names = ['Peter Gregory','Rade Kuruc','Jaimie Dickson','Marta Prancho','Mia Cai','Goranka Gaechesca'];
 var test_phones = ['905-525-9140','905-525-9140','905-525-9140','905-525-9140','905-525-9140','905-525-9140'];
@@ -153,7 +152,7 @@ function confirmation_init(obj,callback){
 function hash(){
     //100 reports a day, frequency is per minute
     var now = new Date();
-    var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMinutes().toString().split("").reverse().join("")[0];
+    var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMonth().toString().split("").reverse().join("")[0];
     return curr + "" + Math.floor((Math.random()*100)+1);
 }
 //-----------All Validation-----------------
@@ -195,7 +194,7 @@ function newReport_validation(){
         var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
         validationColors($("#newReport_name").val(),regX,"#newReport_name",1,1);
         //Phone Validation
-        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
         validationColors($("#newReport_phone").val(),regX,"#newReport_phone",1,1);
         //Email Validation
         regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
@@ -302,7 +301,7 @@ function editReport_validation(){
         var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
         validationColors($("#editReport_name").val(),regX,"#editReport_name",1,1);
         //Phone Validation
-        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
         validationColors($("#editReport_phone").val(),regX,"#editReport_phone",1,1);
         //Email Validation
         regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
@@ -373,6 +372,8 @@ function newReport_formSubmission(){
         //Check the form if everything is valid (progress bar is the 3rd & final validation step)
         finalValidationCheck("newReport");
         if(newReport_valid==true){
+            //The valid boolean should be set to false immediately
+            newReport_valid = false;
             //Disable the submit button to prevent multiple submissions
             $("#newReport_submit").attr('disabled',true);
             //Compile the form, add to database, update progress bar and make an entry in the table
@@ -386,30 +387,28 @@ function newReport_formSubmission(){
                 if(returnedData=="Query ok"){
                     //Inform the user that the form is valid
                     newReport_message("Looks great! Thanks!");
-                    //The valid boolean will be set to false after the report goes into the database
-                    newReport_valid = false;
                     //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
-                    detailedReportBuilder();
-                    reportDeletion();
+                    //detailedReportBuilder();
+                    //reportDeletion();
                     //Test: progress bar
                     progressBar_modify("#newReport_progress",10);
+                    progressBar_reset("#newReport_progress");
                     //Clear form and close AFTER 3.5s IF progress bar is FULL
                     if($("#newReport_progress").attr('aria-valuenow')==100){
                         setTimeout(function(){
                             $("#newReport_clear").trigger("click");
                             $("#newReport_close").trigger("click");
                         },3500);
+                        //TODO: AJAX refresh
+                        /*setTimeout(function(){
+                            location.reload();
+                        },3500);*/
                     }else{
                         //Inform the user that something went wrong
                         newReport_message("Submission failed! :( Something went wrong, try again later.");
                         //TEST: console msg
                         console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
                     }
-                    //TODO: AJAX refresh
-                    setTimeout(function(){
-                        location.reload();
-                    },3500);
-
                 }else{
                     //TEST: console msg
                     console.log("Submission failed. Database query error.");
@@ -656,7 +655,16 @@ function reportDeletion(){
                     obj.parent().parent().remove();
                     //Delete the report data from the database
                     //TODO: AJAX deletion
-                    //database_dataDeleter(reportID);
+                    ajaxRequest("databaseButler.php?reqType="+6+"&queryID="+reportID,"text",null,function(returnedData){
+                        if(returnedData=="Query ok"){
+                            //TEST: console msg
+                            console.log("Report #"+reportID+" deleted.");
+                            $(".main-panel").find("#"+reportID).remove();
+                        }else{
+                            //TEST: console msg
+                            console.log("Deleting report #"+reportID+" failed.");
+                        }
+                    });
                 },60000);
                 //Show the restoration button
                 $("#restore"+reportID).show();
@@ -667,7 +675,6 @@ function reportDeletion(){
                 console.log("Report deletion failed.");
             }
         });
-        //reports[database_indexReturn(reportID)].markedForDeletion = true;
         //The timer can be toggled between pause/resume when clicked (FEATURE REMOVED)
         /*$("#timer"+reportID).on('click',function(){
             if(toggle==0){
@@ -808,12 +815,14 @@ function progressBar_modify(elem,quant){
         var temp = (parseInt($(elem).attr('aria-valuenow'))+quant);
         $(elem).attr('aria-valuenow',temp);
         $(elem).css('width',temp+"%");
-        //Reset after 3s
-        setTimeout(function(){
-          $(elem).css('width',0+'%');
-            $(elem).attr('aria-valuenow',0);
-        },3000);
     }
+}
+function progressBar_reset(elem){
+    //RESET after 3s
+    setTimeout(function(){
+      $(elem).css('width',0+'%');
+        $(elem).attr('aria-valuenow',0);
+    },3000);
 }
 //Report Deletion delay timer
 function newTimer(elem,time,obj,id){
@@ -861,7 +870,7 @@ $("#logout").on('click',function(){
     //TEST: Console msg
     console.log("logging out...");
     $.post("index.html.php", {log_out: "1"});
-    window.location.assign("http://localhost/HCSProjects/Pigeon/Main/landing-page.html.php");
+    window.location.assign("landing-page.html.php");
 });
 //---------------Page Load---------------
 // Functions to execute upon page load

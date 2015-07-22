@@ -1,19 +1,30 @@
 <?php
 class Db {
     public $databaseConnection;
+    //Database Settings
+    public $database = 'pigeon';
+    public $servAddress = 'localhost';
+    public $user = 'root';
+    public $pass = '';
 
     public function __construct(){
         $this->databaseConnect();
     }
     public function databaseConnect(){
+        global $database;
+        global $servAddress;
+        global $user;
+        global $pass;
+
         if($GLOBALS['appMode']==0){
             //Connection to test database
-            $this->databaseConnection = mysqli_connect('localhost','root','');
-        }else{
+            $this->databaseConnection = mysqli_connect($servAddress,$user,$pass);
+        }else if($GLOBALS['appMode']==1){
             //Production database
+            $this->databaseConnection = mysqli_connect("130.113.143.45:3306", "yash", "y@$#mysQl!", "pigeon");
         }
 
-        if(!$this->databaseConnection){
+        /*if(!$this->databaseConnection){
             $output = "Unable to connect to database server.";
             //TEST: console msg
             echo '<script type="text/javascript">console.log("' . $output . '");</script>';
@@ -25,12 +36,12 @@ class Db {
             echo '<script type="text/javascript">console.log("' . $output . '");</script>';
             exit();
         }
-        if(!mysqli_select_db($this->databaseConnection,'pigeonReportsTest')){
+        if(!mysqli_select_db($this->databaseConnection,$database)){
             $output = "Unable to locate database.";
             //TEST: console msg
             echo '<script type="text/javascript">console.log("' . $output . '");</script>';
             exit();
-        }
+        }*/
         $output = "Database connection established.";
         //TEST: console msg
         //echo '<script type="text/javascript">console.log("' . $output . '");</script>';
@@ -72,18 +83,6 @@ class Db {
     }
 
     public function insertReport($id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim){
-        //Clean the user-input
-        $na = mysqli_real_escape_string($this->databaseConnection,$na);
-        $ph = mysqli_real_escape_string($this->databaseConnection,$ph);
-        $em = mysqli_real_escape_string($this->databaseConnection,$em);
-        $dep = mysqli_real_escape_string($this->databaseConnection,$dep);
-        $req = mysqli_real_escape_string($this->databaseConnection,$req);
-        $cus = mysqli_real_escape_string($this->databaseConnection,$cus);
-        $summ = mysqli_real_escape_string($this->databaseConnection,$summ);
-        $det = mysqli_real_escape_string($this->databaseConnection,$det);
-        $pri = mysqli_real_escape_string($this->databaseConnection,$pri);
-        $dat = mysqli_real_escape_string($this->databaseConnection,$dat);
-        $tim = mysqli_real_escape_string($this->databaseConnection,$tim);
         //Make query
         $ajaxQuery = $this->databaseConnection->prepare('INSERT INTO reports (reportID,reportName,reportPhone,reportEmail,reportDepartment,reportRequest,reportCustomRequest,reportSummary,reportDetails,reportPriority,reportDate,reportTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         $ajaxQuery->bind_param("isssssssssss",$id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim);
@@ -117,15 +116,6 @@ class Db {
     }
 
     public function editReportUpdate($id,$summ,$na,$ph,$em,$dat,$tim,$admPr,$dur,$nte){
-        //Clean the user input
-        /*$summ = mysqli_real_escape_string($this->databaseConnection,$summ);
-        $na = mysqli_real_escape_string($this->databaseConnection,$na);
-        $ph = mysqli_real_escape_string($this->databaseConnection,$ph);
-        $em = mysqli_real_escape_string($this->databaseConnection,$em);
-        $dat = mysqli_real_escape_string($this->databaseConnection,$dat);
-        $tim = mysqli_real_escape_string($this->databaseConnection,$tim);
-        $admPr = mysqli_real_escape_string($this->databaseConnection,$admPr);
-        $nte = mysqli_real_escape_string($this->databaseConnection,$nte);*/
         //Make query
         $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET reportSummary = ?, reportName = ?, reportPhone = ?, reportEmail = ?, reportDate = ?, reportTime = ?, duration = ?, admin_priority = ?, admin_notes = ? WHERE reportID = ?');
         $ajaxQuery->bind_param("ssssssissi",$summ,$na,$ph,$em,$dat,$tim,$dur,$admPr,$nte,$id);
@@ -146,6 +136,18 @@ class Db {
         }
 
         $ajaxQuery->bind_param("si",$dat,$id);
+        $ajaxQuery->execute();
+
+        if($ajaxQuery){
+            return "Query ok";
+        }else{
+            return "Query fail";
+        }
+    }
+
+    public function deleteReport($id){
+        $ajaxQuery = $this->databaseConnection->prepare('DELETE FROM reports WHERE reportID = ? LIMIT 1');
+        $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
         if($ajaxQuery){

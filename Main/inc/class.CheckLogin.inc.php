@@ -1,5 +1,10 @@
 <?php
 class CheckLogin{
+    //Database Settings
+    public $database = "hcs-starrez-help";
+    public $servAddress = 'localhost';
+    public $user = 'root';
+    public $pass = '';
 
     public static $_login_status = false;
     public $_con;
@@ -12,7 +17,7 @@ class CheckLogin{
         //$mysqli = $this->mysqli;
         $this->connect();
 
-        $query_1 = $this->_con->prepare('select * from pigeonUsers where username = ? and password = ? LIMIT 1');
+        $query_1 = $this->_con->prepare('select * from user where username = ? and password = ? LIMIT 1');
 
         $query_1->bind_param("ss", $username, $password);
         $query_1->execute();
@@ -28,15 +33,19 @@ class CheckLogin{
     }
 
     public function connect(){
-        $_mode = 0;
-        if($_mode == 0){
+        global $servAddress;
+        global $user;
+        global $pass;
+        global $database;
+
+        if($GLOBALS['appMode']==0){
             //Mac 127.0.0.1
-            $this->_con = mysqli_connect('localhost','root','');
-        }else{
-//            $this->_con = new mysqli("130.113.143.45:3306", "psousa", "B3asl3y", "hcs-starrez-help");	//prod connection - do not use
+            $this->_con = mysqli_connect($servAddress,$user,$pass);
+        }else if($GLOBALS['appMode']==1){
+            $this->_con = mysqli_connect("130.113.143.45:3306","psousa", "B3asl3y", "hcs-starrez-help");
         }
 
-        if(!$this->_con){
+       /* if(!$this->_con){
             $output = "Unable to connect to database server.";
             //TEST: console msg
             echo '<script type="text/javascript">console.log("' . $output . '");</script>';
@@ -48,13 +57,13 @@ class CheckLogin{
             echo '<script type="text/javascript">console.log("' . $output . '");</script>';
             exit();
         }
-        if(!mysqli_select_db($this->_con,'keys')){
-            $output = "Unable to locate database keys.";
+        if(!mysqli_select_db($this->_con,'hcs-starrez-help')){
+            $output = "Unable to locate database " . $GLOBALS['appMode'];
             //TEST: console msg
             echo '<script type="text/javascript">console.log("' . $output . '");</script>';
             exit();
-        }
-        $output = "Database connection established to keys.";
+        }*/
+        $output = "Database connection established.";
         //TEST: console msg
         //echo '<script type="text/javascript">console.log("' . $output . '");</script>';
     }
@@ -68,7 +77,7 @@ class CheckLogin{
             session_start();
             $_SESSION['hcs_helpDesk_cookie'] = time('now') + 25000;
             $_SESSION['user_name'] = $user_name;
-            //header("Location: http://localhost/HCSProjects/Pigeon/Main/index.html.php");
+            //header("Location: index.html.php");
             //exit;
             return "success";
         }else{
