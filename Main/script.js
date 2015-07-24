@@ -372,7 +372,7 @@ function newReport_engine(){
 //New Report Compilation
 function newReport_compilation(){
     //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
-    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:$("input[type='radio'][name='priority']:checked").val(),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
+    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
     //TEST: progress bar
     progressBar_modify("#newReport_progress",15);
     //TEST: console msg (JSON data)
@@ -413,9 +413,9 @@ function newReport_formSubmission(){
                             $("#newReport_close").trigger("click");
                         },3500);
                         //TODO: AJAX refresh
-                        /*setTimeout(function(){
+                        setTimeout(function(){
                             location.reload();
-                        },3500);*/
+                        },3500);
                     }else{
                         //Inform the user that something went wrong
                         newReport_message("Submission failed! :( Something went wrong, try again later.");
@@ -456,9 +456,9 @@ function editReport_message(msg,time){
 function editReport_compilation(id){
     //Collect the edit form data
     if($("input[type='radio'][name='adminPriority']:checked").val()!=undefined){
-        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:$("input[type='radio'][name='adminPriority']:checked").val(),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val(),edtDate:currDat};
+        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:priorityNumberGenerator($("input[type='radio'][name='adminPriority']:checked").val()),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val(),edtDate:currDat};
     }else{
-       var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:"Inactive",dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
+       var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:0,dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
     }
     //TEST: console msg (JSON data)
     console.log(formData);
@@ -709,11 +709,11 @@ function detailedReportBuilder(){
                 if(returnedData[0].reportDetails!=null){
                     $(".full-info-text.details").text(returnedData[0].reportDetails);
                 }
-                $(".full-info-text.priority").text(returnedData[0].reportPriority);
+                $(".full-info-text.priority").text(priorityStringGenerator(returnedData[0].reportPriority));
                 $(".full-info-text.date").text(returnedData[0].reportDate);
                 $(".full-info-text.time").text(returnedData[0].reportTime);
                 //Admin-Set information changed below
-                $(".full-info-text.adminPriority").text(returnedData[0].admin_priority);
+                $(".full-info-text.adminPriority").text(priorityStringGenerator(returnedData[0].admin_priority));
                 $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
                 $(".full-info-text.notes").text(returnedData[0].admin_notes);
                 //Final Color-coding
@@ -761,13 +761,13 @@ function detailedReportBuilder(){
 function detailedReport_ColorCoding(value,field){
     if(field=="priority"){
         switch(value){
-            case "Low":
+            case 1:
                 $(".priority_container").css("background-color","#7AC74F");
                 break;
-            case "Medium":
+            case 2:
                 $(".priority_container").css("background-color","#E8C571");
                 break;
-            case "High":
+            case 3:
                 $(".priority_container").css("background-color","salmon");
                 break;
             default:
@@ -776,20 +776,20 @@ function detailedReport_ColorCoding(value,field){
         }
     }else if(field=="adminPriority"){
         switch(value){
-            case "Inactive":
+            case 0:
                 $(".adminPriority_container").css("background-color","rgba(205, 205, 205, 0.5)");
                 break;
-            case "Low":
+            case 1:
                 $(".adminPriority_container").css("background-color","rgba(122, 199, 79, 0.5)");
                 break;
-            case "Medium":
+            case 2:
                 $(".adminPriority_container").css("background-color","rgba(232, 197, 113, 0.5)");
                 break;
-            case "High":
+            case 3:
                 $(".adminPriority_container").css("background-color","rgba(250, 128, 114, 0.5)");
                 break;
             default:
-                $(".adminPriority_container").css("background-color","");
+                $(".adminPriority_container").css("background-color","black");
                 break;
         }
     }
@@ -826,16 +826,54 @@ function newTimer(elem,time,obj,id){
 }
 function priorityFlagCodeGenerator(val){
     switch(val){
-        case "Inactive":
+        case 0:
             return '<img src="assets/icons/grey-flag.png"/>';
-        case "Low":
+        case 1:
             return '<img src="assets/icons/green-flag.png"/>';
-        case "Medium":
+        case 2:
             return '<img src="assets/icons/orange-flag.png"/>';
-        case "High":
+        case 3:
             return '<img src="assets/icons/red-flag.png"/>';
         default:
             return '<img src="assets/icons/bomb.png"/>';
+    }
+}
+function resolutionFlagCodeGenerator(val){
+    switch(val){
+        case 0:
+            return '<img src="assets/icons/close.png"/>';
+        case 1:
+            return '<img src="assets/icons/checkmark.png"/>';
+        default:
+            return '<img src="assets/icons/bomb.png"/>';
+    }
+}
+function priorityNumberGenerator(val){
+    switch(val){
+        case "Inactive":
+            return 0;
+        case "Low":
+            return 1;
+        case "Medium":
+            return 2;
+        case "High":
+            return 3;
+        default:
+            return 4;
+    }
+}
+function priorityStringGenerator(val){
+    switch(val){
+        case 0:
+            return "Inactive";
+        case 1:
+            return "Low";
+        case 2:
+            return "Medium";
+        case 3:
+            return "High";
+        default:
+            return "Error";
     }
 }
 //---------------Report Resolution---------------

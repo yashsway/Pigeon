@@ -200,7 +200,7 @@ function newReport_engine(){
 //New Report Compilation
 function newReport_compilation(){
     //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
-    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:$("input[type='radio'][name='priority']:checked").val(),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
+    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
     //TEST: progress bar 65%
     progressBar_modify("#newReport_progress",15);
     //TEST: console msg (JSON data)
@@ -298,6 +298,20 @@ function progressBar_reset(elem){
       $(elem).css('width',0+'%');
         $(elem).attr('aria-valuenow',0);
     },3000);
+}
+function priorityNumberGenerator(val){
+    switch(val){
+        case "Inactive":
+            return 0;
+        case "Low":
+            return 1;
+        case "Medium":
+            return 2;
+        case "High":
+            return 3;
+        default:
+            return 4;
+    }
 }
 //----------------------------Page Load--------------------------
 $(document).ready(function(){

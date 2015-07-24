@@ -33,13 +33,13 @@ function reports_indexReturn($id){
 }
 function priorityFlagCodeGenerator($value){
     switch($value){
-        case "Inactive":
+        case 0:
             return '<img src="assets/icons/grey-flag.png"/>';
-        case "Low":
+        case 1:
             return '<img src="assets/icons/green-flag.png"/>';
-        case "Medium":
+        case 2:
             return '<img src="assets/icons/orange-flag.png"/>';
-        case "High":
+        case 3:
             return '<img src="assets/icons/red-flag.png"/>';
         default:
             return '<img src="assets/icons/bomb.png"/>';
