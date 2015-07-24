@@ -48,7 +48,7 @@ class Db {
     }
 
     public function getReportDetails($id){
-        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved, dateResolved FROM reports WHERE reportID = ?');
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved, dateResolved, dateEdited FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
@@ -115,10 +115,10 @@ class Db {
         return $assoc_result;
     }
 
-    public function editReportUpdate($id,$summ,$na,$ph,$em,$dat,$tim,$admPr,$dur,$nte){
+    public function editReportUpdate($id,$summ,$na,$ph,$em,$dat,$tim,$admPr,$dur,$nte,$edtDate){
         //Make query
-        $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET reportSummary = ?, reportName = ?, reportPhone = ?, reportEmail = ?, reportDate = ?, reportTime = ?, duration = ?, admin_priority = ?, admin_notes = ? WHERE reportID = ?');
-        $ajaxQuery->bind_param("ssssssissi",$summ,$na,$ph,$em,$dat,$tim,$dur,$admPr,$nte,$id);
+        $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET reportSummary = ?, reportName = ?, reportPhone = ?, reportEmail = ?, reportDate = ?, reportTime = ?, duration = ?, admin_priority = ?, admin_notes = ?, dateEdited = ? WHERE reportID = ?');
+        $ajaxQuery->bind_param("ssssssisssi",$summ,$na,$ph,$em,$dat,$tim,$dur,$admPr,$nte,$edtDate,$id);
         $ajaxQuery->execute();
 
         if($ajaxQuery){

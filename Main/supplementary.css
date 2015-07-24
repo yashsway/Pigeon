@@ -171,7 +171,7 @@ input::-webkit-input-placeholder {
 }
 #viewReport_dateMsg {
     margin-left: 5px;
-    margin-top: 5px;
+    padding-top: 5px;
     float: left;
 }
 .vDivider {
@@ -232,6 +232,12 @@ input::-webkit-input-placeholder {
 }
 .noUi-connect {
     background-color: #301330;
+}
+#adminDetailsSection {
+    bottom: 0px;
+}
+.notes_container {
+    min-height: 100px;
 }
 #adminDetailsSection_icon {
     margin-left: 50%;
@@ -299,7 +305,7 @@ input::-webkit-input-placeholder {
         display: none;
     }
 }
-@media (max-width: 409px) {
+@media (max-width: 429px) {
     .ym-hlist {
         height: 100px;
     }

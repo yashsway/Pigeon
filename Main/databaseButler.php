@@ -53,7 +53,7 @@ function reportEditUpdate(){
     //Establish a new connection
     $repEditUpCon = new Db();
     //Run the editReportUpdate function from the DB class (Send it all the edit form data + the report ID)
-    $result = $repEditUpCon->editReportUpdate($_POST['id'],$_POST['summ'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dat'],$_POST['tim'],$_POST['admPr'],$_POST['dur'],$_POST['nte']);
+    $result = $repEditUpCon->editReportUpdate($_POST['id'],$_POST['summ'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dat'],$_POST['tim'],$_POST['admPr'],$_POST['dur'],$_POST['nte'],date("l jS, F Y"));
     echo $result;
 }
 function reportResolve(){
@@ -63,7 +63,7 @@ function reportResolve(){
     //Get the report ID from the URL (src: AJAX request)
     $query_ID = $_GET['queryID'];
     //Run the resolveReport function from the DB class (send it the report ID)
-    $result = $repRes->resolveReport($query_ID,$_GET['reqParam'],$_GET['currDate']);
+    $result = $repRes->resolveReport($query_ID,$_GET['reqParam'],date("l jS, F Y"));
     echo $result;
 }
 function reportDelete(){

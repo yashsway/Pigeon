@@ -30,6 +30,7 @@ body {
     margin-bottom: 0px;
     width: 100%;
     background-color: #301330;
+    box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.30);
 }
 #footer_push {
     clear: both;

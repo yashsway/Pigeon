@@ -63,8 +63,6 @@ function ajaxRefresh(mode,id){
                         $(".full-info-text.time").text(returnedData[0].reportTime);
                         //Admin-Set information changed below
                         $(".full-info-text.adminPriority").text(returnedData[0].admin_priority);
-                        //$(".main-panel").find("#"+id).find(".report-adminPriority").empty();
-                        //$(".main-panel").find("#"+id).find(".report-adminPriority").html(priorityFlagCodeGenerator(returnedData[0].admin_priority));
                         $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
                         $(".full-info-text.notes").text(returnedData[0].admin_notes);
                         //Final Color-coding
@@ -97,7 +95,22 @@ function ajaxRefresh(mode,id){
                             $("#viewReport_dateMsg").text("on " + returnedData[0].dateResolved);
                         }else{
                             $("#viewReport_dateMsg").empty();
+                            //Set date last edited in the date message box (if the report has been edited previously)
+                            if(returnedData[0].dateEdited!=""){
+                                $("#viewReport_dateMsg").text("Last edited on " + returnedData[0].dateEdited);
+                            }else{
+                                $("#viewReport_dateMsg").empty();
+                            }
                         }
+                        //Report Listing Changes
+                        $(".main-panel").find("#"+id).find(".report-title").empty();
+                        $(".main-panel").find("#"+id).find(".report-title").html(returnedData[0].reportSummary);
+                        $(".main-panel").find("#"+id).find(".report-date").empty();
+                        $(".main-panel").find("#"+id).find(".report-date").html(returnedData[0].reportDate);
+                        $(".main-panel").find("#"+id).find(".report-duration").empty();
+                        $(".main-panel").find("#"+id).find(".report-duration").html(returnedData[0].duration+" day(s)");
+                        $(".main-panel").find("#"+id).find(".report-adminPriority").empty();
+                        $(".main-panel").find("#"+id).find(".report-adminPriority").html(priorityFlagCodeGenerator(returnedData[0].admin_priority));
                     }
                 });
                 break;
@@ -443,7 +456,7 @@ function editReport_message(msg,time){
 function editReport_compilation(id){
     //Collect the edit form data
     if($("input[type='radio'][name='adminPriority']:checked").val()!=undefined){
-        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:$("input[type='radio'][name='adminPriority']:checked").val(),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
+        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:$("input[type='radio'][name='adminPriority']:checked").val(),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val(),edtDate:currDat};
     }else{
        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:"Inactive",dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
     }
@@ -532,6 +545,7 @@ function closeEditForm(op){
     //Enable the resolution tools
     $(".resolutionTools").prop('disabled',false);
 }
+//Saving Edits
 $("#editReport_save").on("click",function(){
     //Validate client section
     finalValidationCheck("editReport");
@@ -541,6 +555,7 @@ $("#editReport_save").on("click",function(){
         var formData = editReport_compilation(rep_ID);
         //NOTE: Review AJAX save edit form
         ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
+            console.log(returnedData);
             if(returnedData=="Query ok"){
                 //Close edit form & related
                 closeEditForm(true);
@@ -570,37 +585,6 @@ $("#editReport_discard").on("click",function(){
     //Inform the user
     editReport_message("Changes discarded!",5000);
 });
-//--------------Reports Table Display------------
-//Table row builder
-/*function rowBuilder_initial(){
-    //var temp_priority;
-    //Add an entry in the panel for each report
-    for(var i=0;i<reports.length;i++){
-        //Determine priority in a client-understandable form
-        //temp_priority = priorityString(reports[i].priority);
-        //Report ID is also the ID of the table row.
-        //Replace priority column with admin priority setting if admin priority field is NOT empty
-        if(reports[i].admin_priority!=""){
-            $(".main-panel > tbody").append('<tr id="' + reports[i].ID + '"><td class="report-elements report-id">' + reports[i].ID + '</td><td class="report-elements report-title">' + reports[i].summary + '</td><td class="report-elements report-date">' + reports[i].date + '</td><td class="report-elements report-duration">' + reports[i].duration + ' day(s)</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[i].admin_priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[i].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
-        }else{
-            $(".main-panel > tbody").append('<tr id="' + reports[i].ID + '"><td class="report-elements report-id">' + reports[i].ID + '</td><td class="report-elements report-title">' + reports[i].summary + '</td><td class="report-elements report-date">' + reports[i].date + '</td><td class="report-elements report-duration">' + reports[i].duration + ' day(s)</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[i].priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[i].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
-        }
-    }
-    //Build the detailed view
-    detailedReportBuilder();
-    reportDeletion();
-}*/
-//Table Row Adder
-/*function rowBuilder(id){
-    var index = database_indexReturn(id);
-    $(".main-panel > tbody").append('<tr id="' + reports[index].ID + '"><td class="report-elements report-id">' + reports[index].ID + '</td><td class="report-elements report-title">' + reports[index].summary + '</td><td class="report-elements report-date">' + reports[index].date + '</td><td class="report-elements report-duration">' + reports[index].duration + ' day(s)</td><td class="report-elements report-urgency">' + priorityFlagCodeGenerator(reports[index].priority) + '</td><td class="report-elements report-tools"><button class="btn btn-default view">View</button><button class="btn btn-success restore" id="restore'+ reports[index].ID + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete">Delete</button></td></tr>');
-    //Test: progress bar
-    progressBar_modify("#newReport_progress",10);
-}
-function rowBuilder_refresh(){
-    $(".main-panel > tbody").empty();
-    rowBuilder_initial();
-}*/
 //-----------------Reports Table Entries Tools/Utilities--------------
 function reportRestoration(id,deleteButton,delTimeout){
     //Report restoration //TODO: (FIX ID ACQUISITION/DELETE BUTTON/TIMER STOPPING - WHEN MULTIPLE REPORTS ARE BEING DELETED, IT WILL BE BUGGY)
@@ -757,11 +741,17 @@ function detailedReportBuilder(){
                     $("#resolved_icon").hide();
                     $("#resolve_issue").parent().parent().find(".modal-body").removeClass("greyOut");
                 }
-                //Set date resolved in the date message box
+                //Set date resolved in the date message box (if the report has been resolved)
                 if(returnedData[0].dateResolved!=""){
                     $("#viewReport_dateMsg").text("on " + returnedData[0].dateResolved);
                 }else{
                     $("#viewReport_dateMsg").empty();
+                    //Set date last edited in the date message box (if the report has been edited previously)
+                    if(returnedData[0].dateEdited!=""){
+                        $("#viewReport_dateMsg").text("Last edited on " + returnedData[0].dateEdited);
+                    }else{
+                        $("#viewReport_dateMsg").empty();
+                    }
                 }
             }
         });
@@ -834,6 +824,20 @@ function newTimer(elem,time,obj,id){
     });
     $(elem).pietimer('start');
 }
+function priorityFlagCodeGenerator(val){
+    switch(val){
+        case "Inactive":
+            return '<img src="assets/icons/grey-flag.png"/>';
+        case "Low":
+            return '<img src="assets/icons/green-flag.png"/>';
+        case "Medium":
+            return '<img src="assets/icons/orange-flag.png"/>';
+        case "High":
+            return '<img src="assets/icons/red-flag.png"/>';
+        default:
+            return '<img src="assets/icons/bomb.png"/>';
+    }
+}
 //---------------Report Resolution---------------
 $("#resolve_issue").click(function(){
     var rep_ID = $(this).parent().parent().attr('id');
@@ -843,10 +847,7 @@ $("#resolve_issue").click(function(){
         if(response==0){
             $("#confirm_close").trigger('click');
         }else{
-            //Get the current datestamp
-            var now = new Date();
-            var currDat = now.getDate()+"/"+now.getMonth()+"/"+now.getFullYear();
-            ajaxRequest("databaseButler.php?reqType="+5+"&reqParam="+1+"&queryID="+rep_ID+"&currDate="+currDat,"text",null,function(returnedData){
+            ajaxRequest("databaseButler.php?reqType="+5+"&reqParam="+1+"&queryID="+rep_ID,"text",null,function(returnedData){
                 if(returnedData=="Query ok"){
                     $(obj).text("Resolved");
                     $(obj).prop('disabled',true);
