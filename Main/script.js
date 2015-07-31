@@ -58,12 +58,12 @@ function ajaxRefresh(mode,id){
                         if(returnedData[0].reportDetails!=null){
                             $(".full-info-text.details").text(returnedData[0].reportDetails);
                         }
-                        $(".full-info-text.priority").text(returnedData[0].reportPriority);
+                        $(".full-info-text.priority").text(priorityStringGenerator(returnedData[0].reportPriority));
                         $(".full-info-text.date").text(returnedData[0].reportDate);
                         $(".full-info-text.time").text(returnedData[0].reportTime);
                         //Admin-Set information changed below
-                        $(".full-info-text.adminPriority").text(returnedData[0].admin_priority);
-                        $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
+                        $(".full-info-text.adminPriority").text(priorityStringGenerator(returnedData[0].admin_priority));
+                        $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " hr(s) to complete");
                         $(".full-info-text.notes").text(returnedData[0].admin_notes);
                         //Final Color-coding
                         detailedReport_ColorCoding(returnedData[0].reportPriority,"priority");
@@ -108,7 +108,7 @@ function ajaxRefresh(mode,id){
                         $(".main-panel").find("#"+id).find(".report-date").empty();
                         $(".main-panel").find("#"+id).find(".report-date").html(returnedData[0].reportDate);
                         $(".main-panel").find("#"+id).find(".report-duration").empty();
-                        $(".main-panel").find("#"+id).find(".report-duration").html(returnedData[0].duration+" day(s)");
+                        $(".main-panel").find("#"+id).find(".report-duration").html(returnedData[0].duration+" hr");
                         $(".main-panel").find("#"+id).find(".report-adminPriority").empty();
                         $(".main-panel").find("#"+id).find(".report-adminPriority").html(priorityFlagCodeGenerator(returnedData[0].admin_priority));
                     }
@@ -456,7 +456,7 @@ function editReport_message(msg,time){
 function editReport_compilation(id){
     //Collect the edit form data
     if($("input[type='radio'][name='adminPriority']:checked").val()!=undefined){
-        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:priorityNumberGenerator($("input[type='radio'][name='adminPriority']:checked").val()),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val(),edtDate:currDat};
+        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:priorityNumberGenerator($("input[type='radio'][name='adminPriority']:checked").val()),dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
     }else{
        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:0,dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
     }
@@ -483,13 +483,13 @@ function viewEditForm(){
                 $("#editReport_email").val(returnedData[0].reportEmail);
                 $("#editReport_date").val(returnedData[0].reportDate);
                 $("#editReport_time").val(returnedData[0].reportTime);
-                if(returnedData[0].admin_priority=="Inactive"){
+                if(returnedData[0].admin_priority==0){
                     $("input[type='radio'][name='adminPriority'][id='admIna']").prop("checked",true);
-                }else if(returnedData[0].admin_priority=="Low"){
+                }else if(returnedData[0].admin_priority==1){
                     $("input[type='radio'][name='adminPriority'][id='admLow']").prop("checked",true);
-                }else if(returnedData[0].admin_priority=="Medium"){
+                }else if(returnedData[0].admin_priority==2){
                     $("input[type='radio'][name='adminPriority'][id='admMed']").prop("checked",true);
-                }else if(returnedData[0].admin_priority=="High"){
+                }else if(returnedData[0].admin_priority==3){
                 $("input[type='radio'][name='adminPriority'][id='admHig']").prop("checked",true);
                 }else{
                     //TEST: console.msg
@@ -504,17 +504,17 @@ function viewEditForm(){
                     orientation: "horizontal",
                     range: {
                         'min': 1,
-                        'max': 30
+                        'max': 48
                     },
                     format: wNumb({
                         decimals: 0
                     })
                 });
                 //Show the initial value
-                $("#duration_tooltip").text(returnedData[0].duration + " day(s)");
+                $("#duration_tooltip").text(returnedData[0].duration + " hr(s)");
                 //Update the value in the label so the user knows what value the slider is at
                 $("#editReport_durationSlider").on('slide',function(){
-                    $("#duration_tooltip").text($(this).val()+" day(s)");
+                    $("#duration_tooltip").text($(this).val()+" hr(s)");
                 });
                 //Disable itself
                 $(this).prop('disabled',true);
@@ -714,7 +714,7 @@ function detailedReportBuilder(){
                 $(".full-info-text.time").text(returnedData[0].reportTime);
                 //Admin-Set information changed below
                 $(".full-info-text.adminPriority").text(priorityStringGenerator(returnedData[0].admin_priority));
-                $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " day(s) to complete");
+                $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " hr(s) to complete");
                 $(".full-info-text.notes").text(returnedData[0].admin_notes);
                 //Final Color-coding
                 detailedReport_ColorCoding(returnedData[0].reportPriority,"priority");
@@ -876,6 +876,54 @@ function priorityStringGenerator(val){
             return "Error";
     }
 }
+function tagCodeGenerator(val){
+    switch(val){
+        case 0:
+            return '';
+        case 1:
+            return '<img src="assets/icons/new.png"/>';
+        case 2:
+            return '<img src="assets/icons/targetSoon.png"/>';
+        case 3:
+            return '<img src="assets/icons/targetNow.png"/>';
+        case 4:
+            return '<img src="assets/icons/sad.png"/>';
+        case 5:
+            return '<img src="assets/icons/view.png"/>';
+        default:
+            return '<img src="assets/icons/bomb.png"/>';
+    }
+}
+//---------------Updating Tags-------------------
+//Manual tag refresh
+$(".main-panel th:nth-of-type(4)").on('click',function(){
+    for(var i=0;i<$("#report-listing > tr").length;i++){
+        //console.log($("#report-listing > tr:eq("+i+")").attr('id'));
+        ajaxTagUpdater($("#report-listing > tr:eq("+i+")").attr('id'));
+    }
+});
+//Periodic Report Checker/Updater
+function tagUpdater(){
+    var alg = setInterval(function(){
+        for(var i=0;i<$("#report-listing > tr").length;i++){
+            //console.log($("#report-listing > tr:eq("+i+")").attr('id'));
+            ajaxTagUpdater($("#report-listing > tr:eq("+i+")").attr('id'));
+        }
+    },240000);
+}
+//AJAX Updater (Single Report)
+function ajaxTagUpdater(id){
+    ajaxRequest("databaseButler.php?reqType="+7+"&queryID="+id,"json",null,function(returnedData){
+        if(returnedData[0].error=="Query fail"){
+            console.log("Updating tag failed. Check Database Query.");
+        }else{
+            $(".main-panel").find("#"+id).find(".report-tag").empty();
+            //TEST: Console msg
+            console.log(returnedData[0].tag + " #" + id);
+            $(".main-panel").find("#"+id).find(".report-tag").html(tagCodeGenerator(returnedData[0].tag));
+        }
+    });
+}
 //---------------Report Resolution---------------
 $("#resolve_issue").click(function(){
     var rep_ID = $(this).parent().parent().attr('id');
@@ -935,6 +983,8 @@ $(document).ready(function(){
     detailedReportBuilder();
     //MOVED: Call to enable report deletion
     reportDeletion();
+    //Tag Updating
+    tagUpdater();
     //REFRESH
     /*var time = new Date().getTime();
      $(document.body).bind("click keypress", function(e) {

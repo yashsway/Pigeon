@@ -19,8 +19,10 @@ class reportBlueprint{
     public $admin_notes;
     public $markedForDeletion;
     public $resolved;
+    public $timesViewed;
+    public $tag;
 
-    public function __construct($id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim,$dur=1,$admPr="",$nte="",$del=0,$res=0){
+    public function __construct($id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim,$dur=1,$admPr="",$nte="",$del=0,$res=0,$viewed=0,$tag=0){
         $this->ID = $id;
         $this->name = $na;
         $this->phone = $ph;
@@ -38,6 +40,8 @@ class reportBlueprint{
         $this->admin_notes = $nte;
         $this->markedForDeletion = $del;
         $this->resolved = $res;
+        $this->timesViewed = $viewed;
+        $this->tag = $tag;
     }
 }
 ?>

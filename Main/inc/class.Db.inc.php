@@ -48,7 +48,7 @@ class Db {
     }
 
     public function getReportDetails($id){
-        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved, dateResolved, dateEdited FROM reports WHERE reportID = ?');
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved, dateResolved, dateEdited, timesViewed FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
@@ -63,6 +63,18 @@ class Db {
         while($row=$result->fetch_assoc()){
             $assoc_result[] = $row;
         }
+
+        $views = $assoc_result[0]["timesViewed"] + 1;
+        $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET timesViewed = ? WHERE reportID = ?');
+        $ajaxQuery->bind_param("ii",$views,$id);
+        $ajaxQuery->execute();
+
+        //Error catch
+        if(!$ajaxQuery){
+            $error[0] = array("error"=>"Query fail");
+            return $error;
+        }
+
         return $assoc_result;
     }
 
@@ -155,6 +167,36 @@ class Db {
         }else{
             return "Query fail";
         }
+    }
+
+    public function tagUpdate($id){
+        $val = -1;
+
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportPriority, reportDate, reportTime, duration, admin_priority, resolved, dateEdited, timesViewed, tag FROM reports WHERE reportID = ?');
+        $ajaxQuery->bind_param("i",$id);
+        $ajaxQuery->execute();
+
+        $result = $ajaxQuery->get_result();
+        $json_result = array();
+
+        while($row=$result->fetch_assoc()){
+            $assoc_result[] = $row;
+        }
+
+        $val = tagGenerator($assoc_result);
+
+        $ajaxQuery = $this->databaseConnection->prepare('UPDATE reports SET tag = ? WHERE reportID = ?');
+        $ajaxQuery->bind_param("ii",$val,$id);
+        $ajaxQuery->execute();
+
+        //Error catch
+        if(!$ajaxQuery){
+            $error[0] = array("error"=>"Query fail");
+            return $error;
+        }
+
+        $data[0] = array("tag"=>$val);
+        return $data;
     }
 }
 ?>

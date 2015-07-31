@@ -80,20 +80,22 @@
                     </th>
                     <th class="main-panel-header-contents"><img src="assets/icons/clipboard.png" data-toggle="tooltip" data-placement="top" title="Summary"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/calendar_month.png" data-toggle="tooltip" data-placement="top" title="Date Due"/>
+                    <th class="main-panel-header-contents"><img src="assets/icons/hammer.png" data-toggle="tooltip" data-placement="top" title="Resolved?"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/timeframe.png" data-toggle="tooltip" data-placement="top" title="How long it will take"/>
+                    <th class="main-panel-header-contents"><img src="assets/icons/tag.png" data-toggle="tooltip" data-placement="top" title="Tag (Click to Update)"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/calendar_month.png" data-toggle="tooltip" data-placement="top" title="Date Due"/>
                     </th>
                     <th class="main-panel-header-contents"><img src="assets/icons/risk.png" data-toggle="tooltip" data-placement="top" title="Client Priority"/>
                     </th>
                     <th class="main-panel-header-contents"><img src="assets/icons/ambulance.png" data-toggle="tooltip" data-placement="top" title="Your Priority"/>
                     </th>
-                    <th class="main-panel-header-contents"><img src="assets/icons/hammer.png" data-toggle="tooltip" data-placement="top" title="Resolved?"/>
+                    <th class="main-panel-header-contents"><img src="assets/icons/timeframe.png" data-toggle="tooltip" data-placement="top" title="How long it will take"/>
                     </th>
                     <th class="main-panel-header-contents"><img src="assets/icons/gear.png" data-toggle="tooltip" data-placement="top" title="Tools"/>
                     </th>
                 </thead>
-                <tbody>
+                <tbody id="report-listing">
                    <?php
                         include 'obj/reportEntry.php';
                         reportEntry();

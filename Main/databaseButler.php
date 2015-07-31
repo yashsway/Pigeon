@@ -53,7 +53,7 @@ function reportEditUpdate(){
     //Establish a new connection
     $repEditUpCon = new Db();
     //Run the editReportUpdate function from the DB class (Send it all the edit form data + the report ID)
-    $result = $repEditUpCon->editReportUpdate($_POST['id'],$_POST['summ'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dat'],$_POST['tim'],$_POST['admPr'],$_POST['dur'],$_POST['nte'],date("l jS, F Y"));
+    $result = $repEditUpCon->editReportUpdate($_POST['id'],$_POST['summ'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dat'],$_POST['tim'],$_POST['admPr'],$_POST['dur'],$_POST['nte'],date("jS F, Y"));
     echo $result;
 }
 function reportResolve(){
@@ -63,7 +63,7 @@ function reportResolve(){
     //Get the report ID from the URL (src: AJAX request)
     $query_ID = $_GET['queryID'];
     //Run the resolveReport function from the DB class (send it the report ID)
-    $result = $repRes->resolveReport($query_ID,$_GET['reqParam'],date("l jS, F Y"));
+    $result = $repRes->resolveReport($query_ID,$_GET['reqParam'],date("jS F, Y"));
     echo $result;
 }
 function reportDelete(){
@@ -75,6 +75,17 @@ function reportDelete(){
     //Run the deleteReport function from the DB class (send it the report ID)
     $result = $repDel->deleteReport($query_ID);
     echo $result;
+}
+function reportTag(){
+    def();
+    //Establish a new connection
+    $tagUp = new Db();
+    //Get the report ID from the URL (src: AJAX request)
+    $query_ID = $_GET['queryID'];
+    //Call the TAG ALGORITHM IN THE PARAMETER TO DEFINE $val
+    //Run the tagUpdate function from the DB class (send it the report ID)
+    $result = $tagUp->tagUpdate($query_ID);
+    echo json_encode($result);
 }
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
@@ -96,6 +107,8 @@ if((isset($_REQUEST['reqType']))==1){
         reportResolve();
     }else if($_REQUEST['reqType']==6){
         reportDelete();
+    }else if($_REQUEST['reqType']==7){
+        reportTag();
     }
 }
 ?>
