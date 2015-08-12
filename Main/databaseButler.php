@@ -87,6 +87,26 @@ function reportTag(){
     $result = $tagUp->tagUpdate($query_ID);
     echo json_encode($result);
 }
+function reportCheck(){
+    def();
+    //Establish a new connection
+    $repCheck = new Db();
+    //Run the checkReport function from the DB class (Send the user query)
+    if(is_numeric($_POST['ticket'])){
+        $result = $repCheck->checkReport($_POST['ticket']);
+        echo $result;
+    }else{
+        echo "Invalid Ticket #.";
+    }
+}
+function reportTotal(){
+    def();
+    //Establish a new connection
+    $repTot = new Db();
+    //Run the totalReports function from the DB class
+    $result = $repTot->totalReports();
+    echo json_encode($result);
+}
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
 //echo "it works";
@@ -109,6 +129,10 @@ if((isset($_REQUEST['reqType']))==1){
         reportDelete();
     }else if($_REQUEST['reqType']==7){
         reportTag();
+    }else if($_REQUEST['reqType']==8){
+        reportCheck();
+    }else if($_REQUEST['reqType']==9){
+        reportTotal();
     }
 }
 ?>

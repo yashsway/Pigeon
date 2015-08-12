@@ -1,6 +1,7 @@
 //Global Vars
 var welcome_msg = "Hi! How can I help you today?";
 var newReport_valid = false;
+var totalReports = 0;
 //------AJAX Requests-----------
 var data = "";
 function ajaxRequest(reqScript, returnDataType, reqData, callback){
@@ -28,7 +29,14 @@ function hash(){
     //100 reports a day, frequency is per minute
     var now = new Date();
     var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMonth().toString().split("").reverse().join("")[0];
-    return curr + "" + Math.floor((Math.random()*100)+1);
+    return curr + "" + totalReports + "" + Math.floor((Math.random()*10)+1);
+}
+function getReportTotal(){
+    var req = {reqType:9};
+    ajaxRequest("databaseButler.php","json",req,function(returnedData){
+        totalReports = returnedData['totalReports'];
+        console.log("Total # of Requests: " + totalReports);
+    });
 }
 //-----------Validation-----------------
 //Validation colors
@@ -210,6 +218,8 @@ function newReport_compilation(){
 //New Report submit
 function newReport_formSubmission(){
     $("#newReport_submit").on('click',function(){
+        //Disable the submit button on submission
+        $("#newReport_submit").attr('disabled',true);
         //Check the form if everything is valid (progress bar is the 3rd & final validation step)
         finalValidationCheck();
         if(newReport_valid==true){
@@ -245,7 +255,9 @@ function newReport_formSubmission(){
                         $("#newReport-ticketNumber-wrapper").show();
                         $(".back").attr('id','fromSubmission');
                         $(".back").show();
-                        $("#help-text").text("We'll get back to you as soon as possible.");
+                        //TEST: ticket # display
+                        $("#newReport_ticketNumber").text(formData.id);
+                        $("#help-text").html("<b>Write down</b> this number for future reference! You can use it to check the status of your request. <br/>We'll get back to you as soon as possible.");
                         $("#fromSubmission").on('click',function() {
                             $("#welcome-icon").show();
                             $("#newReport-ticketNumber-wrapper").hide();
@@ -253,11 +265,17 @@ function newReport_formSubmission(){
                             $(".back").hide();
                             $("#help-text").text(welcome_msg);
                         });
+                        //Re-enable the submit button AFTER submission
+                        $("#newReport_submit").attr('disabled',false);
                     }else{
                         //Inform the user that something went wrong
                         newReport_message("Submission failed! :( Something went wrong, try again later.");
                         //TEST: console msg
                         console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
+                        //TEST: Clears
+                        progressBar_reset("#newReport_progress");
+                        //Re-enable the submit button on submission failure
+                        $("#newReport_submit").attr('disabled',false);
                     }
                     //TODO: AJAX refresh
                     /*setTimeout(function(){
@@ -267,15 +285,23 @@ function newReport_formSubmission(){
                     //TEST: console msg
                     console.log("Submission failed. Database query error.");
                     //Inform the user that something went wrong
-                    newReport_message("Submission failed! :( Something went wrong, try again later.");
+                    newReport_message("Submission failed! :( Something went wrong with the database, try again later.");
                     //Re-enable the submit button on submission failure
                     $("#newReport_submit").attr('disabled',false);
+                    //TEST: Clears
+                    progressBar_reset("#newReport_progress");
                 }
             });
 
         }else{
             //Inform the user that the form has some invalid fields
             newReport_message("Correct the fields in <b>red</b> first!");
+            //TEST: Clears
+            progressBar_reset("#newReport_progress");
+            //The valid boolean should be set to false immediately
+            newReport_valid = false;
+            //Re-enable the submit button on submission failure
+            $("#newReport_submit").attr('disabled',false);
         }
     });
 }
@@ -313,56 +339,90 @@ function priorityNumberGenerator(val){
             return 4;
     }
 }
-//----------------------------Page Load--------------------------
-$(document).ready(function(){
-    //Login when the enter key is pressed in the password input
-    $('#pass_word').bind('keypress', function(e) {
-        var code = e.keyCode || e.which;
-        if(code == 13) { //Enter keycode
-           $(".login").trigger('click');
-        }
-    });
-    //New Report Modal View for Report button
-    $("#newReport_trigger").attr("data-toggle","modal");
-    $("#newReport_trigger").attr("data-target","#file-new-report");
-    //Enable new reports
-    newReport_engine();
-    //Datedroppers
-    $("#newReport_date").dateDropper();
-    //Enable tooltips
-    $('[data-toggle="tooltip"]').tooltip();
-    //Other UI stuff
-    $("#help-text").text(welcome_msg);
-    $("#landing-buttons-wrapper").show();
-    $("#newReport-ticketNumber-wrapper").hide();
-    $("#login-wrapper").hide();
-    $(".back").hide();
-    $(".login").hide();
-});
-
-$("#login_trigger").on('click',function() {
-    $("#welcome-icon").hide();
-    $("#help-text").text("Contact the administrator if you forgot your password.");
-    $("#landing-buttons-wrapper").hide();
-    $("#newReport-ticketNumber-wrapper").hide();
-    $("#login-wrapper").show();
-    $(".back").css('margin-left','44%');
-    $(".back").attr('id','fromLogin');
-    $(".back").show();
-    $(".login").show();
-    $("#fromLogin").on('click',function() {
+//----------------------------Controllers------------------------
+function welcomeDisplayController(toggle){
+    if(toggle){
         $("#welcome-icon").show();
+        $("#landing-buttons-wrapper").show();
+        $("#help-text").text(welcome_msg);
+    }else{
+        $("#welcome-icon").hide();
+        $("#landing-buttons-wrapper").hide();
+        $("#help-text").text('');
+    }
+}
+function loginDisplayController(toggle){
+    if(toggle){
+        $("#login-wrapper").show();
+        $("#login").show();
+    }else{
         $("#user_name").val('');
         $("#pass_word").val('');
-        $("#landing-buttons-wrapper").show();
         $("#login-wrapper").hide();
+        $("#login").hide();
+    }
+}
+function checkDisplayController(toggle){
+    if(toggle){
+        $("#checkStatus-input-wrapper").show();
+        $("#checkTicket").show();
+        $("#userQuery").text('');
+        $("#help-text").text('This number was given to you when you filed a report on Pigeon.');
+    }else{
+        $("#checkStatus-input-wrapper").hide();
+        $("#checkStatus-display-wrapper").hide();
+        $("#userQuery").text('');
+        $("#checkTicket").hide();
+        $("#checkStatus-statusText").removeClass("animated bounce");
+    }
+}
+function backController(toggle,obj){
+    if(toggle){
+        $(".back").attr('id',obj);
+        $(".back").show();
+    }else{
         $(".back").hide();
-        $(".login").hide();
-        $("#help-text").text(welcome_msg);
+    }
+}
+//----------------------------Check Ticket-----------------------
+$("#checkTicket_trigger").on('click',function() {
+    backController(true,"fromCheck");
+    welcomeDisplayController(false);
+    checkDisplayController(true);
+    $("#checkStatus-statusText").text("Searching for request. Hang tight.");
+    $("#fromCheck").on('click',function() {
+        backController(false,"fromCheck");
+        checkDisplayController(false);
+        welcomeDisplayController(true);
     });
 });
-
-$(".login").on('click',function(){
+$("#checkTicket").on('click',function(){
+    var qry = $("#userQuery").val();
+    var formData = {reqType:8,ticket:qry};
+    ajaxRequest("databaseButler.php","text",formData,function(returnedData){
+        $("#checkStatus-statusText").text("Status: " + returnedData);
+        $("#checkStatus-statusText").addClass("animated bounce");
+        $("#checkStatus-display-wrapper").show();
+        $("#checkStatus-display-wrapper").one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            $("#checkStatus-statusText").removeClass("animated bounce");
+        });
+    });
+});
+//----------------------------Login------------------------------
+$("#login_trigger").on('click',function() {
+    $("#newReport-ticketNumber-wrapper").hide();
+    welcomeDisplayController(false);
+    $("#help-text").text("Contact the administrator if you forgot your password.");
+    loginDisplayController(true);
+    $(".back").css('margin-left','44%');
+    backController(true,'fromLogin');
+    $("#fromLogin").on('click',function() {
+        backController(false,'fromLogin');
+        welcomeDisplayController(true);
+        loginDisplayController(false);
+    });
+});
+$("#login").on('click',function(){
     var usr = $("#user_name").val();
     var pass = $("#pass_word").val();
     var formData = {user_name:usr,pass_word:pass};
@@ -380,4 +440,29 @@ $(".login").on('click',function(){
             window.location.assign("index.html.php");
         }
     });
+});
+//----------------------------Page Load--------------------------
+$(document).ready(function(){
+    getReportTotal();
+    //Login when the enter key is pressed in the password input
+    $('#pass_word').bind('keypress', function(e) {
+        var code = e.keyCode || e.which;
+        if(code == 13) { //Enter keycode
+           $("#login").trigger('click');
+        }
+    });
+    //New Report Modal View for Report button
+    $("#newReport_trigger").attr("data-toggle","modal");
+    $("#newReport_trigger").attr("data-target","#file-new-report");
+    //Enable new reports
+    newReport_engine();
+    //Datedroppers
+    $("#newReport_date").dateDropper();
+    //Enable tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    //Other UI stuff
+    $("#newReport-ticketNumber-wrapper").hide();
+    loginDisplayController(false);
+    checkDisplayController(false);
+    welcomeDisplayController(true);
 });

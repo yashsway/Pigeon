@@ -3,18 +3,6 @@ var reports = new Array();
 var ID, name, phone, email, department, request, custom_request, summary, details, priority, date, time, duration, admin_priority;
 var newReport_valid = false;
 var editReport_valid = false;
-//TEST: all of the following arrays are test report data
-/*var test_names = ['Peter Gregory','Rade Kuruc','Jaimie Dickson','Marta Prancho','Mia Cai','Goranka Gaechesca'];
-var test_phones = ['905-525-9140','905-525-9140','905-525-9140','905-525-9140','905-525-9140','905-525-9140'];
-var test_emails = ['gregp@mcmaster.ca','kurucr@mcmaster.ca','jdickso@mcmaster.ca','mprancho@mcmaster.ca','caimi@mcmaster.ca','gacesag@mcmaster.ca'];
-var test_departments = ['Residence Admissions','Residence Admissions','Residence Admissions','Residence Admissions','Residence Admissions','Residence Admissions'];
-var test_requests = ['Other','Other','Other','Other','Other','Other'];
-var test_customs= ['test','test','test','test','test','test'];
-var test_summaries = ['Sample Report','Sample Report','Sample Report','Sample Report','Sample Report','Sample Report'];
-var test_details = ['test','test','test','test','test','test'];
-var test_priorities = ["Low","Medium","Medium","Low","High","High"];
-var test_dates = ['04/01/2015','04/01/2015','04/01/2015','04/01/2015','04/01/2015','04/01/2015'];
-var test_times = ['8:30 AM','8:30 AM','8:30 AM','8:30 AM','8:30 AM','8:30 AM'];*/
 //--------------------AJAX Handler-------------------
 var data = "";
 function ajaxRequest(reqScript, returnDataType, reqData, callback){
@@ -165,8 +153,9 @@ function confirmation_init(obj,callback){
 function hash(){
     //100 reports a day, frequency is per minute
     var now = new Date();
+    ;
     var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMonth().toString().split("").reverse().join("")[0];
-    return curr + "" + Math.floor((Math.random()*100)+1);
+    return curr + "" + $("#report-listing > tr").length + "" + Math.floor((Math.random()*10)+1);
 }
 //-----------All Validation-----------------
 //Validation colors
@@ -421,6 +410,10 @@ function newReport_formSubmission(){
                         newReport_message("Submission failed! :( Something went wrong, try again later.");
                         //TEST: console msg
                         console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
+                        //TEST: Clears
+                        progressBar_reset("#newReport_progress");
+                        //Re-enable the submit button on submission failure
+                        $("#newReport_submit").attr('disabled',false);
                     }
                 }else{
                     //TEST: console msg
@@ -429,12 +422,20 @@ function newReport_formSubmission(){
                     newReport_message("Submission failed! :( Something went wrong, try again later.");
                     //Re-enable the submit button on submission failure
                     $("#newReport_submit").attr('disabled',false);
+                    //TEST: Clears
+                    progressBar_reset("#newReport_progress");
                 }
             });
 
         }else{
             //Inform the user that the form has some invalid fields
             newReport_message("Correct the fields in <b>red</b> first!");
+            //TEST: Clears
+            progressBar_reset("#newReport_progress");
+            //The valid boolean should be set to false immediately
+            newReport_valid = false;
+            //Re-enable the submit button on submission failure
+            $("#newReport_submit").attr('disabled',false);
         }
     });
 }
@@ -753,6 +754,8 @@ function detailedReportBuilder(){
                         $("#viewReport_dateMsg").empty();
                     }
                 }
+                //Update tag
+                ajaxTagUpdater(rep_ID);
             }
         });
     });

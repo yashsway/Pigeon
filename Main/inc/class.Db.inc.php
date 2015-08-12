@@ -198,5 +198,48 @@ class Db {
         $data[0] = array("tag"=>$val);
         return $data;
     }
+
+    public function checkReport($id){
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT resolved, tag FROM reports WHERE reportID = ?');
+        $ajaxQuery->bind_param("i",$id);
+        $ajaxQuery->execute();
+
+
+        $result = $ajaxQuery->get_result();
+        $assoc_result[0]['tag'] = -1;
+        while($row=$result->fetch_assoc()){
+            $assoc_result[0] = $row;
+        }
+
+        if($assoc_result[0]['resolved']==1){
+            return "Resolved.";
+        }else{
+            switch($assoc_result[0]['tag']){
+                case 0:
+                    return "Received & Assessing.";
+                case 1:
+                    return "Received.";
+                case 2:
+                    return "Assessed. Resolving Soon.";
+                case 3:
+                    return "Resolving Today.";
+                case 4:
+                    return "Contact Us Immediately @ ext. 24830/20866";
+                case 5:
+                    return "Received & Assessing.";
+                default:
+                    return "Request Not Found.";
+            }
+        }
+    }
+
+    public function totalReports(){
+        $result = mysqli_query($this->databaseConnection,'SELECT count(id) as totalReports FROM reports');
+        $row = mysqli_fetch_array($result);
+        if(!$result){
+            return mysqli_error($databaseConnection);
+        }
+        return $row;
+    }
 }
 ?>

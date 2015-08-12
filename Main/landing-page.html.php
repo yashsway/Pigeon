@@ -36,10 +36,13 @@
             <h1 class="main-text center" id="product-title">Pigeon</h1>
             <div class="row">
                 <div id="landing-buttons-wrapper">
-                    <div class="col-md-6 center landing-buttons">
+                    <div class="col-md-4 center landing-buttons">
                         <button type="button" class="btn btn-danger" id="newReport_trigger">Report or Request</button>
                     </div>
-                    <div class="col-md-6 center landing-buttons">
+                    <div class="col-md-4 center landing-buttons">
+                        <button type="button" class="btn btn-primary" id="checkTicket_trigger">Check Ticket</button>
+                    </div>
+                    <div class="col-md-4 center landing-buttons">
                         <button type="button" class="btn btn-success" id="login_trigger">Login</button>
                     </div>
                 </div>
@@ -59,21 +62,20 @@
                         <input class="loginForm" type="password" style="text-align:center;color:#301330;" id="pass_word" />
                     </form>
                 </div>
-                <!--<div id="checkStatus-input-wrapper">
+                <div id="checkStatus-input-wrapper">
                     <p class="body-text">What's your ticket number?<br/>
-                    <input type="text" id="userQuery" style="text-align:center;color:#301330;"/><img id="checkTicket" src="assets/icons/rightArrow.png">
-                    <p id="help-text">This number was given to you when you filed a report on Pigeon.</p>
-                    </p>
-                </div>-->
-                <!--<div id="checkStatus-display-wrapper">
-
-                </div>-->
-            </div>
-            <img src="assets/icons/smile.png" id="welcome-icon" />
-            <p id="help-text"></p>
-            <div id="sit-nav-btns">
-                <button class="btn btn-sm btn-default back">Back</button>
-                <button class="btn btn-sm btn-success login">Login</button>
+                    <input type="text" id="userQuery" style="text-align:center;color:#301330;"/></p>
+                    <div id="checkStatus-display-wrapper">
+                        <p id="checkStatus-statusText"></p>
+                    </div>
+                </div>
+                <img src="assets/icons/smile.png" id="welcome-icon" />
+                <p id="help-text"></p>
+                <div id="sit-nav-btns">
+                    <button class="btn btn-sm btn-default back">Back</button>
+                    <button class="btn btn-sm btn-success proceed" id="login">Login</button>
+                    <button class="btn btn-sm btn-success proceed" id="checkTicket">Check Ticket</button>
+                </div>
             </div>
         </div>
         <div class="col-md-2 col-sm-2 side-panel">

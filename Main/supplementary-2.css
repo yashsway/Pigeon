@@ -52,10 +52,14 @@ body {
 #login_trigger {
     width: 150px;
 }
+#checkTicket_trigger {
+    width: 150px;
+}
 #login-wrapper {
     display: none;
 }
-.login {
+.proceed {
+    position: relative;
     display: none;
 }
 .body-text {
@@ -63,6 +67,11 @@ body {
     font-size: 35px;
     text-align: center;
     color: #301330;
+}
+#checkStatus-statusText {
+    text-align: center;
+    font-size: 35px;
+    padding: 20px;
 }
 #newReport-ticketNumber-wrapper {
     margin-top: 20px;
@@ -95,12 +104,7 @@ body {
     margin-top: 30px;
 }
 #checkTicket {
-    position: absolute;
-    display: inline;
-    height: 60px;
-    padding-bottom: 6px;
-    margin-left: 10px;
-    cursor: pointer;
+    margin: 5px;
 }
 .back {
     margin-left: 47%;
@@ -142,7 +146,7 @@ input::-webkit-input-placeholder {
     width: 75px;
     position: relative;
     display: block;
-    margin-left: 43%;
+    margin-left: 44%;
     padding: 5px;
 }
 @media (min-width: 1190px) {
@@ -161,6 +165,11 @@ input::-webkit-input-placeholder {
         font-size: 14em;
     }
 }
+@media (min-width: 865px) {
+    #fromCheck {
+        margin-left: 35%;
+    }
+}
 @media (max-width: 865px) {
     #login-wrapper {
         margin-left: -4%;
@@ -169,15 +178,28 @@ input::-webkit-input-placeholder {
         margin-left: -4%;
     }
 }
+@media (min-width: 809px) {
+    #fromCheck {
+        margin-left: 40%;
+    }
+}
 @media (max-width: 809px) {
     #login-wrapper {
-        margin-left: -15%;
+        margin-left: -17%;
     }
     #sit-nav-btns {
-        margin-left: -15%;
+        margin-left: -17%;
     }
     #product-title {
         font-size: 12em;
+    }
+}
+@media (max-width: 767px) {
+    #login-wrapper {
+        margin-left: -12%;
+    }
+    #sit-nav-btns {
+        margin-left: -12%;
     }
 }
 @media (max-width: 510px) {
@@ -190,21 +212,19 @@ input::-webkit-input-placeholder {
     #login_trigger {
         padding: 20px;
     }
+    #checkTicket_trigger {
+        padding: 20px;
+    }
 }
 @media (max-width: 470px){
     #login-wrapper {
-        margin-left: -25%;
+        margin-left: -27%;
     }
     #sit-nav-btns {
-        margin-left: -25%;
+        margin-left: -27%;
     }
     #welcome-icon {
         margin-left: 40%;
-    }
-    #checkTicket {
-        top: 60vh;
-        left: 35vw;
-        position: static;
     }
     #userQuery {
         width: 80%;
@@ -212,16 +232,16 @@ input::-webkit-input-placeholder {
 }
 @media (max-width: 370px) {
     #login-wrapper {
-        margin-left: -35%;
+        margin-left: -40%;
     }
     #sit-nav-btns {
-        margin-left: -35%;
+        margin-left: -32%;
     }
     #welcome-icon {
         margin-left: 35%;
     }
     #product-title {
-        font-size: 7em;
+        font-size: 6em;
     }
     .body-text {
         font-size: 25px;
@@ -232,8 +252,8 @@ input::-webkit-input-placeholder {
     #login_trigger {
         padding: 20px;
     }
-    #checkTicket {
-        position: static;
+    #checkTicket_trigger {
+        padding: 20px;
     }
     html {
         min-height: 460px;
