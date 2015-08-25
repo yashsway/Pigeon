@@ -269,7 +269,6 @@ input::-webkit-input-placeholder {
         display: none;
     }
 }
-
 @media (max-width: 767px) {
     .report-icons > img {
         height: 23px;

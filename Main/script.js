@@ -12,7 +12,7 @@ function ajaxRequest(reqScript, returnDataType, reqData, callback){
         url: reqScript,
         data: reqData,
         success: function(data) {
-            console.log("AJAX request success.");
+            //console.log("AJAX request success.");
             //console.log(data);
             callback(data);
         },
@@ -196,7 +196,7 @@ function newReport_validation(){
         var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
         validationColors($("#newReport_name").val(),regX,"#newReport_name",1,1);
         //Phone Validation
-        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x?\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
         validationColors($("#newReport_phone").val(),regX,"#newReport_phone",1,1);
         //Email Validation
         regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
@@ -303,7 +303,7 @@ function editReport_validation(){
         var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
         validationColors($("#editReport_name").val(),regX,"#editReport_name",1,1);
         //Phone Validation
-        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x?\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
         validationColors($("#editReport_phone").val(),regX,"#editReport_phone",1,1);
         //Email Validation
         regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
@@ -921,8 +921,6 @@ function ajaxTagUpdater(id){
             console.log("Updating tag failed. Check Database Query.");
         }else{
             $(".main-panel").find("#"+id).find(".report-tag").empty();
-            //TEST: Console msg
-            console.log(returnedData[0].tag + " #" + id);
             $(".main-panel").find("#"+id).find(".report-tag").html(tagCodeGenerator(returnedData[0].tag));
         }
     });
@@ -998,8 +996,8 @@ $(document).ready(function(){
          if(new Date().getTime() - time >= 7000)
              window.location.reload(true);
          else
-             setTimeout(refresh, 10000);
+             setTimeout(refresh, 30000);
      }
 
-     setTimeout(refresh, 10000);*/
+     setTimeout(refresh, 30000);*/
 });

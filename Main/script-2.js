@@ -11,7 +11,7 @@ function ajaxRequest(reqScript, returnDataType, reqData, callback){
         url: reqScript,
         data: reqData,
         success: function(data) {
-            console.log("AJAX request success.");
+            //console.log("AJAX request success.");
             //console.log(data);
             callback(data);
         },
@@ -77,7 +77,7 @@ function newReport_validation(){
         var regX = /^[a-z|A-Z|\s*]+$/i; //First name and/or last name (with a space inbetween) No numbers or symbols allowed
         validationColors($("#newReport_name").val(),regX,"#newReport_name",1,1);
         //Phone Validation
-        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
+        regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x?\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
         validationColors($("#newReport_phone").val(),regX,"#newReport_phone",1,1);
         //Email Validation
         regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
@@ -277,10 +277,6 @@ function newReport_formSubmission(){
                         //Re-enable the submit button on submission failure
                         $("#newReport_submit").attr('disabled',false);
                     }
-                    //TODO: AJAX refresh
-                    /*setTimeout(function(){
-                        location.reload();
-                    },3500);*/
                 }else{
                     //TEST: console msg
                     console.log("Submission failed. Database query error.");
@@ -292,7 +288,6 @@ function newReport_formSubmission(){
                     progressBar_reset("#newReport_progress");
                 }
             });
-
         }else{
             //Inform the user that the form has some invalid fields
             newReport_message("Correct the fields in <b>red</b> first!");

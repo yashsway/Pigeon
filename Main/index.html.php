@@ -28,7 +28,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>HCS IT Help Desk</title>
+    <title>Pigeon</title>
     <meta name="description" content="IT Support Ticketing App">
     <meta name="author" content="Yash Gopal">
 
@@ -63,7 +63,7 @@
     <nav class="ym-hlist">
         <ul>
             <li>
-                <h2 class="nav-title nav-element" id="nav-title"><span class="glyphicon glyphicon-flag"></span> HCS IT Help Desk</h2>
+                <h2 class="nav-title nav-element" id="nav-title">Pigeon</h2>
             </li>
         </ul>
         <a href="#" class="btn nav-element nav-buttons btn-danger" id="logout"><span class="btn-icons glyphicon glyphicon-off"></span><span class="text">&nbsp;Logout</span></a>

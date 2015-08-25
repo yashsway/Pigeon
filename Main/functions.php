@@ -128,8 +128,6 @@ function tagGenerator($data){
             }
         }
     }
-
-
     //Failure
     //Due Date passed
     if($interval<0){
