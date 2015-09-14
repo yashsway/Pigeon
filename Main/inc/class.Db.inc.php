@@ -15,39 +15,42 @@ class Db {
         global $servAddress;
         global $user;
         global $pass;
-
+		//Error display
+		//ini_set('display_errors',1);
+		//ini_set('display_startup_errors',1);
+		//error_reporting(-1);
+		
         if($GLOBALS['appMode']==0){
             //Connection to test database
             $this->databaseConnection = mysqli_connect($servAddress,$user,$pass);
         }else if($GLOBALS['appMode']==1){
             //Production database
-            $this->databaseConnection = mysqli_connect("130.113.143.45:3306", "yash", "y@$#mysQl!", "pigeon");
+            $this->databaseConnection = mysqli_connect("130.113.143.45", "yash", "y@$#mysQl!", "pigeon", "3306");
         }
-
-        /*if(!$this->databaseConnection){
-            $output = "Unable to connect to database server.";
-            //TEST: console msg
-            echo '<script type="text/javascript">console.log("' . $output . '");</script>';
-            exit();
-        }
-        if(!mysqli_set_charset($this->databaseConnection,'utf8')){
-            $output = 'Unable to set database connection encoding.';
-            //TEST: console msg
-            echo '<script type="text/javascript">console.log("' . $output . '");</script>';
-            exit();
-        }
-        if(!mysqli_select_db($this->databaseConnection,$database)){
-            $output = "Unable to locate database.";
-            //TEST: console msg
-            echo '<script type="text/javascript">console.log("' . $output . '");</script>';
-            exit();
-        }*/
-        $output = "Database connection established.";
-        //TEST: console msg
-        //echo '<script type="text/javascript">console.log("' . $output . '");</script>';
     }
 
-    public function getReportDetails($id){
+    public function authenticate($auth){
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT clientName FROM authkeys WHERE clientKey = ?');
+        $ajaxQuery->bind_param("s",$auth);
+        $ajaxQuery->execute();
+
+        if(!$ajaxQuery){
+            return false;
+        }
+
+        $ajaxQuery->bind_result($na);
+        while($ajaxQuery->fetch()){
+            $assoc_result[0]['clientName'] = $na;
+        }
+
+        if($assoc_result[0]['clientName']=="Staff"){
+            return "Auth ok";
+        }else{
+            return "Auth fail";
+        }
+    }
+
+    public function getReportDetails($id){		
         $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved, dateResolved, dateEdited, timesViewed FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
@@ -57,11 +60,28 @@ class Db {
             $error[0] = array("error"=>"Query fail");
             return $error;
         }
-
-        $result = $ajaxQuery->get_result();
-        $json_result = array();
-        while($row=$result->fetch_assoc()){
-            $assoc_result[] = $row;
+		
+        $ajaxQuery->bind_result($na,$ph,$em,$dep,$req,$cus,$summ,$det,$pr,$dat,$tim,$dur,$adm_pr,$adm_nte,$mrk,$res,$dat_res,$dat_ed,$times);
+        while($ajaxQuery->fetch()){
+            $assoc_result[0]['reportName'] = $na;
+			$assoc_result[0]['reportPhone'] = $ph;
+			$assoc_result[0]['reportEmail'] = $em;
+			$assoc_result[0]['reportDepartment'] = $dep;
+			$assoc_result[0]['reportRequest'] = $req;
+			$assoc_result[0]['reportCustomRequest'] = $cus;
+			$assoc_result[0]['reportSummary'] = $summ;
+			$assoc_result[0]['reportDetails'] = $det;
+			$assoc_result[0]['reportPriority'] = $pr;
+			$assoc_result[0]['reportDate'] = $dat;
+			$assoc_result[0]['reportTime'] = $tim;
+			$assoc_result[0]['duration'] = $dur;
+			$assoc_result[0]['admin_priority'] = $adm_pr;
+			$assoc_result[0]['admin_notes'] = $adm_nte;
+			$assoc_result[0]['markedForDeletion'] = $mrk;
+			$assoc_result[0]['resolved'] = $res;
+			$assoc_result[0]['dateResolved'] = $dat_res;
+			$assoc_result[0]['dateEdited'] = $dat_ed;
+			$assoc_result[0]['timesViewed'] = $times;
         }
 
         $views = $assoc_result[0]["timesViewed"] + 1;
@@ -118,11 +138,18 @@ class Db {
             return $error;
         }
 
-        $result = $ajaxQuery->get_result();
-        $json_result = array();
+        $ajaxQuery->bind_result($summ,$na,$ph,$em,$dat,$tim,$dur,$adm_pr,$adm_nte);
 
-        while($row=$result->fetch_assoc()){
-            $assoc_result[] = $row;
+        while($ajaxQuery->fetch()){
+			$assoc_result[0]['reportSummary'] = $summ;
+            $assoc_result[0]['reportName'] = $na;
+			$assoc_result[0]['reportPhone'] = $ph;
+			$assoc_result[0]['reportEmail'] = $em;
+			$assoc_result[0]['reportDate'] = $dat;
+			$assoc_result[0]['reportTime'] = $tim;
+			$assoc_result[0]['duration'] = $dur;
+			$assoc_result[0]['admin_priority'] = $adm_pr;
+			$assoc_result[0]['admin_notes'] = $adm_nte;
         }
         return $assoc_result;
     }
@@ -176,11 +203,18 @@ class Db {
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
-        $result = $ajaxQuery->get_result();
-        $json_result = array();
+        $ajaxQuery->bind_result($pr,$dat,$time,$dur,$adm_pr,$res,$datEd,$viewed,$tag);
 
-        while($row=$result->fetch_assoc()){
-            $assoc_result[] = $row;
+        while($ajaxQuery->fetch()){
+            $assoc_result[0]['reportPriority'] = $pr;
+			$assoc_result[0]['reportDate'] = $dat;
+			$assoc_result[0]['reportTime'] = $time;
+			$assoc_result[0]['duration'] = $dur;
+			$assoc_result[0]['admin_priority'] = $adm_pr;
+			$assoc_result[0]['resolved'] = $res;
+			$assoc_result[0]['dateEdited'] = $datEd;
+			$assoc_result[0]['timesViewed'] = $viewed;
+			$assoc_result[0]['tag'] = $tag;
         }
 
         $val = tagGenerator($assoc_result);
@@ -194,23 +228,25 @@ class Db {
             $error[0] = array("error"=>"Query fail");
             return $error;
         }
-
+		
         $data[0] = array("tag"=>$val);
         return $data;
     }
 
-    public function checkReport($id){
+    public function checkReport($id){		
         $ajaxQuery = $this->databaseConnection->prepare('SELECT resolved, tag FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
-
-
-        $result = $ajaxQuery->get_result();
+		
+		$ajaxQuery->bind_result($res,$tag);
+		
         $assoc_result[0]['tag'] = -1;
-        while($row=$result->fetch_assoc()){
-            $assoc_result[0] = $row;
-        }
-
+		
+		while($ajaxQuery->fetch()){
+			$assoc_result[0]['resolved'] =  $res;
+			$assoc_result[0]['tag'] = $tag;
+		}
+		
         if($assoc_result[0]['resolved']==1){
             return "Resolved.";
         }else{

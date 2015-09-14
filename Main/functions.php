@@ -16,9 +16,6 @@ function fetchReports(){
     while($row = mysqli_fetch_array($result)){
         $reports[] = new reportBlueprint($row['reportID'],$row['reportName'],$row['reportPhone'],$row['reportEmail'],$row['reportDepartment'],$row['reportRequest'],$row['reportCustomRequest'],$row['reportSummary'],$row['reportDetails'],$row['reportPriority'],$row['reportDate'],$row['reportTime'],$row['duration'],$row['admin_priority'],$row['admin_notes'],$row['markedForDeletion'],$row['resolved'],$row['timesViewed'],$row['tag']);
     }
-    //TEST: Console msg
-    //echo '<script>console.log("Report(s) in the database: '. count($reports) . '");</script>';
-    //echo '<script>console.log("Reports successfully fetched.");</script>';
     return $reports;
 }
 function reports_indexReturn($id){
@@ -104,7 +101,7 @@ function tagGenerator($data){
         $tg = 3;
     }else if(($data[0]['reportPriority']==1 && $interval<=2) || ($data[0]['reportPriority']==2 && $interval<=4) || ($data[0]['reportPriority']==3 && $interval<=6) || ($data[0]['admin_priority']==1 && $interval<=3) || ($data[0]['admin_priority']==2 && $interval<=6) || ($data[0]['admin_priority']==3 && $interval<=9)){
         $tg = 2;
-    }else if($data[0]['duration']>24){
+    }else if($data[0]['duration']>3){
         $tg = 2;
     }else if($data[0]['timesViewed']>=15){
         $tg = 2;
@@ -112,7 +109,7 @@ function tagGenerator($data){
 
     //Check
     if($data[0]['admin_priority']==(-1)){
-        if($data[0]['tag']!=2){
+        if($data[0]['tag']!=2 && $tg != 2 && $tg !=3){
             $tg = 5;
         }
     }
@@ -122,7 +119,7 @@ function tagGenerator($data){
         $dateEdited = new DateTime($data[0]['dateEdited']);
         $interval3 = $dateEdited->diff($currDate);
         $interval3 = (int)($interval3->format('%r%a'));
-        if($data[0]['tag']!=2){
+        if($data[0]['tag']!=2 && $tg!=2){
             if($interval3<=2){
                 $tg = 5;
             }

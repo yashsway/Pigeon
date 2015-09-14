@@ -88,8 +88,20 @@ body {
     margin-left: 0%;
     font-size: 15px;
     font-style: italic;
+	font-family: "Slabo 27px";
     text-align: center;
     display: block;
+}
+#stats {
+	padding: 5px;
+	margin-top: 10px;
+    margin-left: 0%;
+    font-size: 12px;
+    font-style: bold;
+	font-family: 'Slabo 27px', sans-serif;
+    text-align: center;
+    display: block;
+	opacity: 0.5;
 }
 .loginForm {
     display: block;
@@ -107,7 +119,6 @@ body {
     margin: 5px;
 }
 .back {
-    margin-left: 47%;
     display: none;
 }
 /* New Report Form Stuff */
@@ -175,9 +186,12 @@ input::-webkit-input-placeholder {
     }
 }
 @media (min-width: 865px) {
-    #fromCheck {
-        margin-left: 35%;
-    }
+	#sit-nav-btns {
+		margin-left: 40%;
+	}
+	#login-wrapper {
+		margin-left: -7%;
+	}
 }
 @media (max-width: 991px) {
     .progress {
@@ -189,11 +203,6 @@ input::-webkit-input-placeholder {
         margin-left: -4%;
     }
     #sit-nav-btns {
-        margin-left: -4%;
-    }
-}
-@media (min-width: 809px) {
-    #fromCheck {
         margin-left: 40%;
     }
 }
@@ -202,7 +211,7 @@ input::-webkit-input-placeholder {
         margin-left: -17%;
     }
     #sit-nav-btns {
-        margin-left: -17%;
+        margin-left: 35%;
     }
     #product-title {
         font-size: 12em;
@@ -230,7 +239,7 @@ input::-webkit-input-placeholder {
         margin-left: -12%;
     }
     #sit-nav-btns {
-        margin-left: -12%;
+        margin-left: 40%;
     }
 }
 @media (max-width: 510px) {
@@ -249,10 +258,10 @@ input::-webkit-input-placeholder {
 }
 @media (max-width: 470px){
     #login-wrapper {
-        margin-left: -27%;
+        margin-left: -30%;
     }
     #sit-nav-btns {
-        margin-left: -27%;
+        margin-left: 30%;
     }
     #welcome-icon {
         margin-left: 40%;
@@ -266,7 +275,7 @@ input::-webkit-input-placeholder {
         margin-left: -40%;
     }
     #sit-nav-btns {
-        margin-left: -40%;
+        margin-left: 25%;
     }
     #welcome-icon {
         margin-left: 35%;

@@ -31,7 +31,7 @@
     <title>Pigeon</title>
     <meta name="description" content="IT Support Ticketing App">
     <meta name="author" content="Yash Gopal">
-
+	<link rel="icon" type="image/png" href="assets/icons/favicon.png">
     <!--mobile viewport optimization-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -42,11 +42,11 @@
     <link rel="stylesheet" href="../Frameworks/yaml412-130728/yaml412-130728/yaml/screen/typography.css">
     <link rel="stylesheet" href="../Frameworks/yaml412-130728/yaml412-130728/yaml/screen/grid-960gs-16.css">
     <!--Pure CSS-->
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
     <!--Bootstrap-->
     <link href="../Frameworks/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!--Web Fonts-->
-    <link href='http://fonts.googleapis.com/css?family=Slabo+27px|Oswald' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Slabo+27px|Oswald' rel='stylesheet' type='text/css'>
     <!--Grid Forms-->
     <link rel="stylesheet" type="text/css" href="../Frameworks/gridforms-master/gridforms-master/gridforms/gridforms.css">
     <!--Font Awesome-->

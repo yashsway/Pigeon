@@ -141,10 +141,6 @@
 .priority_container {
     color: white;
 }
-/*form span {
-    font-size: 0px;
-    padding: 2px;
-}*/
 /*Date container in New Report form*/
 #newReport_date {
     width: 200px;
@@ -158,10 +154,6 @@ input::-webkit-input-placeholder {
     color: #cdcdcd;
     opacity: 0.3;
 }
-/*#newReport_priority span img {
-    height: 50px;
-    width: 50px;
-}*/
 #newReport_date {
     padding: 20px;
 }
@@ -280,6 +272,9 @@ input::-webkit-input-placeholder {
     .main-panel-header-contents > img {
         height: 25px;
         width: 25px;
+    }
+    .side-panel {
+        height: 15%;
     }
 }
 @media (max-width: 600px) {

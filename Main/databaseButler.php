@@ -4,12 +4,18 @@ function def(){
     require_once('init.php');
     require_once('functions.php');
 }
+function authentication(){
+    def();
+    $repAuth = new Db();
+    $res = $repAuth->authenticate($_POST['auth']);
+    echo $res;
+}
 function reportLookup(){
     def();
     //Establish a new connection
     $repLookCon = new Db();
     //Get the report ID from the URL (src: AJAX request)
-    $query_ID = $_GET['queryID'];
+    $query_ID = $_REQUEST['queryID'];
     //Run the getReportDetails function from the DB class to get the necessary information
     $result = $repLookCon->getReportDetails($query_ID);
     //Encode the associative array into JSON and echo it back
@@ -20,7 +26,7 @@ function reportMark(){
     //Establish a new connection
     $repMarkCon = new Db();
     //Get the report ID from the URL (src: AJAX request)
-    $query_ID = $_GET['queryID'];
+    $query_ID = $_REQUEST['queryID'];
     //Run the markReport function from the DB class (Send it both the report ID & the addition parameter to specify a mark or an un-mark)
     $result = $repMarkCon->markReport($query_ID,$_GET['reqParam']);
     echo $result;
@@ -29,13 +35,8 @@ function reportInsert(){
     def();
     //Establish a new connection
     $repInsCon = new Db();
-    //Get the report ID from the URL (src: AJAX request)
-    //TODO: query ID has to reference a hashing function
-    //$query_ID = $_GET['queryID'];
     //Run the insertReport function from the DB class (Send it the report ID & the JSON data of the submitted form)
     $result = $repInsCon->insertReport($_POST['id'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dep'],$_POST['req'],$_POST['cus'],$_POST['summ'],$_POST['det'],$_POST['pri'],$_POST['dat'],$_POST['tim']);
-    //Refresh report list
-    //reportEntry();
     echo $result;
 }
 function reportEditView(){
@@ -43,7 +44,7 @@ function reportEditView(){
     //Establish a new connection
     $repEditCon = new Db();
     //Get the report ID from the URL (src: AJAX request)
-    $query_ID = $_GET['queryID'];
+    $query_ID = $_REQUEST['queryID'];
     //Run the editReport function from the DB class (Send it the report ID)
     $result = $repEditCon->editReportView($query_ID);
     echo json_encode($result);
@@ -61,7 +62,7 @@ function reportResolve(){
     //Establish a new connection
     $repRes = new Db();
     //Get the report ID from the URL (src: AJAX request)
-    $query_ID = $_GET['queryID'];
+    $query_ID = $_REQUEST['queryID'];
     //Run the resolveReport function from the DB class (send it the report ID)
     $result = $repRes->resolveReport($query_ID,$_GET['reqParam'],date("jS F, Y"));
     echo $result;
@@ -71,7 +72,7 @@ function reportDelete(){
     //Establish a new connection
     $repDel = new Db();
     //Get the report ID from the URL (src: AJAX request)
-    $query_ID = $_GET['queryID'];
+    $query_ID = $_REQUEST['queryID'];
     //Run the deleteReport function from the DB class (send it the report ID)
     $result = $repDel->deleteReport($query_ID);
     echo $result;
@@ -81,7 +82,7 @@ function reportTag(){
     //Establish a new connection
     $tagUp = new Db();
     //Get the report ID from the URL (src: AJAX request)
-    $query_ID = $_GET['queryID'];
+    $query_ID = $_REQUEST['queryID'];
     //Call the TAG ALGORITHM IN THE PARAMETER TO DEFINE $val
     //Run the tagUpdate function from the DB class (send it the report ID)
     $result = $tagUp->tagUpdate($query_ID);
@@ -92,8 +93,8 @@ function reportCheck(){
     //Establish a new connection
     $repCheck = new Db();
     //Run the checkReport function from the DB class (Send the user query)
-    if(is_numeric($_POST['ticket'])){
-        $result = $repCheck->checkReport($_POST['ticket']);
+    if(is_numeric($_REQUEST['ticket'])){
+        $result = $repCheck->checkReport($_REQUEST['ticket']);
         echo $result;
     }else{
         echo "Invalid Ticket #.";
@@ -133,6 +134,8 @@ if((isset($_REQUEST['reqType']))==1){
         reportCheck();
     }else if($_REQUEST['reqType']==9){
         reportTotal();
+    }else if($_REQUEST['reqType']==10){
+        authentication();
     }
 }
 ?>

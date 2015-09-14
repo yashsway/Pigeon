@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <title>Pigeon</title>
-    <meta name="description" content="IT Support Ticketing App" />
+    <meta name="description" content="IT Help Desk App" />
     <meta name="author" content="Yash Gopal" />
+	<link rel="icon" type="image/png" href="assets/icons/favicon.png">
     <!--mobile viewport optimization-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Bootstrap-->
@@ -23,8 +24,8 @@
     <!--noUiSlider-->
     <link href="../Frameworks/noUiSlider/jquery.nouislider.min.css" rel="stylesheet">
     <!--Custom Stylesheet-->
-    <link href='http://fonts.googleapis.com/css?family=Slabo+27px|Oswald' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Slabo+27px|Oswald' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="supplementary-2.css" />
 </head>
 
@@ -46,9 +47,6 @@
                         <button type="button" class="btn btn-success" id="login_trigger">Login</button>
                     </div>
                 </div>
-                <!--<div id="newReport-wrapper">
-
-                </div>-->
                 <div id="newReport-ticketNumber-wrapper">
                     <p class="body-text">Submission successful!
                         <p id="newReport_ticketNumber"></p>
@@ -76,6 +74,7 @@
                     <button class="btn btn-sm btn-success proceed" id="login">Login</button>
                     <button class="btn btn-sm btn-success proceed" id="checkTicket">Check Ticket</button>
                 </div>
+				<!--<p id="stats"></p>-->
             </div>
         </div>
         <div class="col-md-2 col-sm-2 side-panel">

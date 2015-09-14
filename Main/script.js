@@ -155,7 +155,7 @@ function hash(){
     var now = new Date();
     ;
     var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMonth().toString().split("").reverse().join("")[0];
-    return curr + "" + $("#report-listing > tr").length + "" + Math.floor((Math.random()*10)+1);
+    return curr + "" + ($("#report-listing > tr").length+1) + "" + Math.floor((Math.random()*10)+1);
 }
 //-----------All Validation-----------------
 //Validation colors
@@ -225,8 +225,6 @@ function newReport_validation(){
         regX = /.{5,}/g;
         if($("#newReport_requestCategory").val()=="Other"){
             if($("#newReport_otherRequest").text()==""){
-                validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1);
-            }else{
                 validationColors($("#newReport_otherRequest").val(),regX,"#newReport_otherRequest",1,1);
             }
         }
@@ -321,7 +319,7 @@ function newReport_message(msg){
     $("#newReport_infoMsg").html(msg+"&nbsp&nbsp");
     //Set the default message back on after 5s
     setTimeout(function(){
-        $("#newReport_infoMsg").html("All fields are required, except details.&nbsp&nbsp");
+        $("#newReport_infoMsg").html("Hover over submit to check your form.&nbsp&nbsp");
     },5000);
 }
 //Other category field is only enabled when request category dropdown is selected as 'other'
@@ -357,6 +355,9 @@ function newReport_engine(){
     newReport_validation();
     //Enable new report submission
     newReport_formSubmission();
+    //Disable authentication gate
+    $("#newReport_authKey").prop('disabled',true);
+    $("#newReport_authKey").prop('placeholder','not required when signed in');
 }
 //New Report Compilation
 function newReport_compilation(){
@@ -364,8 +365,6 @@ function newReport_compilation(){
     var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
     //TEST: progress bar
     progressBar_modify("#newReport_progress",15);
-    //TEST: console msg (JSON data)
-    console.log("Before Send: " + formData);
     return formData;
 }
 //New Report submit
@@ -381,7 +380,7 @@ function newReport_formSubmission(){
             //Compile the form, add to database, update progress bar and make an entry in the table
             var formData = newReport_compilation();
             //TEST: console msg (returned JSON data)
-            console.log(formData);
+            //console.log(formData);
             //NOTE: Review AJAX insert into database
             ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
                 //Test: progress bar
@@ -396,7 +395,7 @@ function newReport_formSubmission(){
                     progressBar_modify("#newReport_progress",10);
                     progressBar_reset("#newReport_progress");
                     //Clear form and close AFTER 3.5s IF progress bar is FULL
-                    if($("#newReport_progress").attr('aria-valuenow')==100){
+                    if($("#newReport_progress").attr('aria-valuenow')>=100){
                         setTimeout(function(){
                             $("#newReport_clear").trigger("click");
                             $("#newReport_close").trigger("click");
@@ -426,7 +425,6 @@ function newReport_formSubmission(){
                     progressBar_reset("#newReport_progress");
                 }
             });
-
         }else{
             //Inform the user that the form has some invalid fields
             newReport_message("Correct the fields in <b>red</b> first!");
@@ -461,8 +459,6 @@ function editReport_compilation(id){
     }else{
        var formData = {reqType:4,id:id,summ:$("#editReport_summary").val(),na:$("#editReport_name").val(),ph:$("#editReport_phone").val(),em:$("#editReport_email").val(),dat:$("#editReport_date").val(),tim:$("#editReport_time").val(),admPr:0,dur:$("#editReport_durationSlider").val(),nte:$("#editReport_notes").val()};
     }
-    //TEST: console msg (JSON data)
-    console.log(formData);
     return formData;
 }
 function viewEditForm(){
@@ -470,8 +466,9 @@ function viewEditForm(){
         //TEST: Get the ID of the report to be edited
         //var temp_index = database_indexReturn($(this).parent().parent().attr("id"));
         var rep_ID = $(this).parent().parent().attr('id');
+		var request = {reqType:3,queryID:rep_ID};
         //NOTE: Review AJAX edit form
-        ajaxRequest("databaseButler.php?reqType="+3+"&queryID="+rep_ID, "json", null, function(returnedData){
+        ajaxRequest("databaseButler.php", "json", request, function(returnedData){
             if(returnedData[0].error=="Query fail"){
                 console.log("Populating edit report failed. Check Database Query.");
             }else{
@@ -505,7 +502,7 @@ function viewEditForm(){
                     orientation: "horizontal",
                     range: {
                         'min': 1,
-                        'max': 48
+                        'max': 7
                     },
                     format: wNumb({
                         decimals: 0
@@ -556,7 +553,6 @@ $("#editReport_save").on("click",function(){
         var formData = editReport_compilation(rep_ID);
         //NOTE: Review AJAX save edit form
         ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
-            console.log(returnedData);
             if(returnedData=="Query ok"){
                 //Close edit form & related
                 closeEditForm(true);
@@ -976,10 +972,6 @@ $(document).ready(function(){
     $("#editReport_date").dateDropper();
     //Enable tooltips
     $('[data-toggle="tooltip"]').tooltip();
-    //Build database
-    //databaseBuilder_initial();
-    //Build table row & report listing
-    //rowBuilder_initial();
     //MOVED: Call to enable detailed report building
     detailedReportBuilder();
     //MOVED: Call to enable report deletion

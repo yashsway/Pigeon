@@ -29,13 +29,13 @@ function hash(){
     //100 reports a day, frequency is per minute
     var now = new Date();
     var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMonth().toString().split("").reverse().join("")[0];
-    return curr + "" + totalReports + "" + Math.floor((Math.random()*10)+1);
+    return curr + "" + (parseInt(totalReports)+1) + "" + Math.floor((Math.random()*10)+1);
 }
 function getReportTotal(){
     var req = {reqType:9};
     ajaxRequest("databaseButler.php","json",req,function(returnedData){
         totalReports = returnedData['totalReports'];
-        console.log("Total # of Requests: " + totalReports);
+        //$("#stats").text("Total # of reports: " + totalReports);
     });
 }
 //-----------Validation-----------------
@@ -126,13 +126,19 @@ function newReport_validation(){
         }else if(!$("input[name='priority']:checked").val()){
             validationColors($("#newReport_priority").val(),false,"#newReport_priority",0);
         }
+        //Auth key validation
+        if($("#newReport_authKey").val()==""){
+            validationColors($("#newReport_authKey").val(),false,"#newReport_authKey",0,1);
+        }else{
+            validationColors($("#newReport_authKey").val(),true,"#newReport_authKey",0,1);
+        }
     });
 }
 //Pre Submission Validation Check for New Reports
 function finalValidationCheck(){
     //rgb(255, 192, 203) = pink
     //rgb(203, 232, 150) = green
-    var fields = ["#newReport_name","#newReport_phone","#newReport_email","#newReport_department","#newReport_requestCategory","#newReport_otherRequest","#newReport_summary","#newReport_priority","#newReport_date","#newReport_time"];
+    var fields = ["#newReport_name","#newReport_phone","#newReport_email","#newReport_department","#newReport_requestCategory","#newReport_otherRequest","#newReport_summary","#newReport_authKey","#newReport_priority","#newReport_date","#newReport_time"];
     for(var i=0;i<fields.length;i++){
         //TEST: Progress bar 50%
         progressBar_modify("#newReport_progress",5);
@@ -146,7 +152,7 @@ function finalValidationCheck(){
                 break;
             }
         }
-        else if(i>=7){
+        else if(i>=8){
             if(($(fields[i]).css('background-color')=='rgb(203, 232, 150)')){
                 newReport_valid = true;
             }else{
@@ -168,7 +174,7 @@ function newReport_message(msg){
     $("#newReport_infoMsg").html(msg+"&nbsp&nbsp");
     //Set the default message back on after 5s
     setTimeout(function(){
-        $("#newReport_infoMsg").html("All fields are required, except details.&nbsp&nbsp");
+        $("#newReport_infoMsg").html("Hover over submit to check your form.&nbsp&nbsp");
     },5000);
 }
 //Other category field is only enabled when request category dropdown is selected as 'other'
@@ -211,8 +217,6 @@ function newReport_compilation(){
     var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
     //TEST: progress bar 65%
     progressBar_modify("#newReport_progress",15);
-    //TEST: console msg (JSON data)
-    console.log("Before Send: " + formData);
     return formData;
 }
 //New Report submit
@@ -227,61 +231,77 @@ function newReport_formSubmission(){
             newReport_valid = false;
             //Disable the submit button to prevent multiple submissions
             $("#newReport_submit").attr('disabled',true);
-            //Compile the form, add to database, update progress bar and make an entry in the table
-            var formData = newReport_compilation();
-            //TEST: console msg (returned JSON data)
-            console.log(formData);
-            //NOTE: Review AJAX insert into database
-            ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
-                //Test: progress bar 90%
-                progressBar_modify("#newReport_progress",25);
-                if(returnedData=="Query ok"){
-                    //Inform the user that the form is valid
-                    newReport_message("Looks great! Thanks!");
-                    //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
-                    //detailedReportBuilder();
-                    //reportDeletion();
-                    //Test: progress bar 100%
-                    progressBar_modify("#newReport_progress",10);
-                    progressBar_reset("#newReport_progress");
-                    //Clear form and close AFTER 3.5s IF progress bar is FULL
-                    if($("#newReport_progress").attr('aria-valuenow')==100){
-                        setTimeout(function(){
-                            $("#newReport_clear").trigger("click");
-                            $("#newReport_close").trigger("click");
-                        },3500);
-                        $("#welcome-icon").hide();
-                        $("#landing-buttons-wrapper").hide();
-                        $("#newReport-ticketNumber-wrapper").show();
-                        $(".back").attr('id','fromSubmission');
-                        $(".back").show();
-                        //TEST: ticket # display
-                        $("#newReport_ticketNumber").text(formData.id);
-                        $("#help-text").html("<b>Write down</b> this number for future reference! You can use it to check the status of your request. <br/>We'll get back to you as soon as possible.");
-                        $("#fromSubmission").on('click',function() {
-                            $("#welcome-icon").show();
-                            $("#newReport-ticketNumber-wrapper").hide();
-                            $("#landing-buttons-wrapper").show();
-                            $(".back").hide();
-                            $("#help-text").text(welcome_msg);
-                        });
-                        //Re-enable the submit button AFTER submission
-                        $("#newReport_submit").attr('disabled',false);
-                    }else{
-                        //Inform the user that something went wrong
-                        newReport_message("Submission failed! :( Something went wrong, try again later.");
-                        //TEST: console msg
-                        console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
-                        //TEST: Clears
-                        progressBar_reset("#newReport_progress");
-                        //Re-enable the submit button on submission failure
-                        $("#newReport_submit").attr('disabled',false);
-                    }
+            //Collect authentication key
+            var authPackage = {reqType:10,auth:$("#newReport_authKey").val()};
+            //TEST: Authentication GATE
+            ajaxRequest("databaseButler.php","text",authPackage,function(returnedData){
+                if(returnedData=="Auth ok"){
+                    //Compile the form, add to database, update progress bar and make an entry in the table
+                    var formData = newReport_compilation();
+                    //NOTE: Review AJAX insert into database
+                    ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
+                        //Test: progress bar 90%
+                        progressBar_modify("#newReport_progress",25);
+                        if(returnedData=="Query ok"){
+                            //Inform the user that the form is valid
+                            newReport_message("Looks great! Thanks!");
+                            //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
+                            //detailedReportBuilder();
+                            //reportDeletion();
+                            //Test: progress bar 100%
+                            progressBar_modify("#newReport_progress",10);
+                            progressBar_reset("#newReport_progress");
+                            //Clear form and close AFTER 3.5s IF progress bar is FULL
+                            if($("#newReport_progress").attr('aria-valuenow')>=100){
+                                setTimeout(function(){
+                                    $("#newReport_clear").trigger("click");
+                                    $("#newReport_close").trigger("click");
+                                },3500);
+                                $("#welcome-icon").hide();
+                                $("#landing-buttons-wrapper").hide();
+                                $("#newReport-ticketNumber-wrapper").show();
+                                $(".back").attr('id','fromSubmission');
+                                $(".back").show();
+                                //TEST: ticket # display
+                                $("#newReport_ticketNumber").text(formData.id);
+                                $("#help-text").html("<b>Write down</b> this number for future reference! You can use it to check the status of your request. <br/>We'll get back to you as soon as possible.");
+                                $("#fromSubmission").on('click',function() {
+                                    $("#welcome-icon").show();
+                                    $("#newReport-ticketNumber-wrapper").hide();
+                                    $("#landing-buttons-wrapper").show();
+                                    $(".back").hide();
+                                    $("#help-text").text(welcome_msg);
+                                });
+                                //Re-enable the submit button AFTER submission
+                                $("#newReport_submit").attr('disabled',false);
+                            }else{
+                                //Inform the user that something went wrong
+                                newReport_message("Submission failed! :( Something went wrong, try again later.");
+                                //TEST: console msg
+                                console.log("Submission stopped at: " + $("#newReport_progress").attr('aria-valuenow') + "%.");
+                                //TEST: Clears
+                                progressBar_reset("#newReport_progress");
+                                //Re-enable the submit button on submission failure
+                                $("#newReport_submit").attr('disabled',false);
+                            }
+                        }else{
+                            //TEST: console msg
+                            console.log("Submission failed. Database query error.");
+                            //Inform the user that something went wrong
+                            newReport_message("Submission failed! :( Something went wrong with the database, try again later.");
+                            //Re-enable the submit button on submission failure
+                            $("#newReport_submit").attr('disabled',false);
+                            //TEST: Clears
+                            progressBar_reset("#newReport_progress");
+                        }
+                    });
                 }else{
+                    //Visual cue to the user
+                    validationColors($("#newReport_authKey").val(),false,"#newReport_authKey",0,1);
                     //TEST: console msg
-                    console.log("Submission failed. Database query error.");
+                    console.log("Authentication Failed.");
                     //Inform the user that something went wrong
-                    newReport_message("Submission failed! :( Something went wrong with the database, try again later.");
+                    newReport_message("Authentication Failed. Check key!");
                     //Re-enable the submit button on submission failure
                     $("#newReport_submit").attr('disabled',false);
                     //TEST: Clears
@@ -409,7 +429,6 @@ $("#login_trigger").on('click',function() {
     welcomeDisplayController(false);
     $("#help-text").text("Contact the administrator if you forgot your password.");
     loginDisplayController(true);
-    $(".back").css('margin-left','44%');
     backController(true,'fromLogin');
     $("#fromLogin").on('click',function() {
         backController(false,'fromLogin');
@@ -446,6 +465,13 @@ $(document).ready(function(){
            $("#login").trigger('click');
         }
     });
+	//Check reports with the ticket # when the enter key is pressed
+	$('#userQuery').bind('keypress', function(e) {
+		var code = e.keyCode || e.which;
+		if(code == 13) {
+			$("#checkTicket").trigger('click');
+		}
+	});
     //New Report Modal View for Report button
     $("#newReport_trigger").attr("data-toggle","modal");
     $("#newReport_trigger").attr("data-target","#file-new-report");
