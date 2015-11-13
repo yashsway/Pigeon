@@ -5,7 +5,7 @@ function fetchReports(){
     global $reports;
     $connect = new Db();
     $databaseConnection = $connect->databaseConnection;
-    $result = mysqli_query($databaseConnection,'SELECT * FROM reports');
+    $result = mysqli_query($databaseConnection,'SELECT * FROM reports WHERE markedForDeletion = 0');
     if(!$result){
         $output = "Error fetching reports: " . mysqli_error($databaseConnection);
         //TEST: Console msg

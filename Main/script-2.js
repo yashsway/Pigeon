@@ -31,11 +31,12 @@ function hash(){
     var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMonth().toString().split("").reverse().join("")[0];
     return curr + "" + (parseInt(totalReports)+1) + "" + Math.floor((Math.random()*10)+1);
 }
-function getReportTotal(){
-    var req = {reqType:9};
+function getStatistics(){
+    var req = {reqType:11};
     ajaxRequest("databaseButler.php","json",req,function(returnedData){
         totalReports = returnedData['totalReports'];
-        //$("#stats").text("Total # of reports: " + totalReports);
+        totalResolved = returnedData['totalResolved'];
+        $("#stats").text(totalReports + " reports filed to date. " + totalResolved + " reports resolved to date.");
     });
 }
 //-----------Validation-----------------
@@ -425,7 +426,8 @@ $("#checkTicket").on('click',function(){
 });
 //----------------------------Login------------------------------
 $("#login_trigger").on('click',function() {
-    $("#newReport-ticketNumber-wrapper").hide();
+    window.location = "https://cap.mcmaster.ca/mcauth/login.jsp?app_id=1425";
+    /*$("#newReport-ticketNumber-wrapper").hide();
     welcomeDisplayController(false);
     $("#help-text").text("Contact the administrator if you forgot your password.");
     loginDisplayController(true);
@@ -434,9 +436,9 @@ $("#login_trigger").on('click',function() {
         backController(false,'fromLogin');
         welcomeDisplayController(true);
         loginDisplayController(false);
-    });
+    });*/
 });
-$("#login").on('click',function(){
+/*$("#login").on('click',function(){
     var usr = $("#user_name").val();
     var pass = $("#pass_word").val();
     var formData = {user_name:usr,pass_word:pass};
@@ -454,10 +456,10 @@ $("#login").on('click',function(){
             window.location.assign("index.html.php");
         }
     });
-});
+});*/
 //----------------------------Page Load--------------------------
 $(document).ready(function(){
-    getReportTotal();
+    getStatistics();
     //Login when the enter key is pressed in the password input
     $('#pass_word').bind('keypress', function(e) {
         var code = e.keyCode || e.which;
@@ -465,13 +467,13 @@ $(document).ready(function(){
            $("#login").trigger('click');
         }
     });
-	//Check reports with the ticket # when the enter key is pressed
-	$('#userQuery').bind('keypress', function(e) {
-		var code = e.keyCode || e.which;
-		if(code == 13) {
-			$("#checkTicket").trigger('click');
-		}
-	});
+    //Check reports with the ticket # when the enter key is pressed
+    $('#userQuery').bind('keypress', function(e) {
+        var code = e.keyCode || e.which;
+        if(code == 13) {
+            $("#checkTicket").trigger('click');
+        }
+    });
     //New Report Modal View for Report button
     $("#newReport_trigger").attr("data-toggle","modal");
     $("#newReport_trigger").attr("data-target","#file-new-report");

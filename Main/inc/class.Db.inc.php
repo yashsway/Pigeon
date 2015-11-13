@@ -15,11 +15,11 @@ class Db {
         global $servAddress;
         global $user;
         global $pass;
-		//Error display
-		//ini_set('display_errors',1);
-		//ini_set('display_startup_errors',1);
-		//error_reporting(-1);
-		
+        //Error display
+        //ini_set('display_errors',1);
+        //ini_set('display_startup_errors',1);
+        //error_reporting(-1);
+
         if($GLOBALS['appMode']==0){
             //Connection to test database
             $this->databaseConnection = mysqli_connect($servAddress,$user,$pass);
@@ -50,7 +50,7 @@ class Db {
         }
     }
 
-    public function getReportDetails($id){		
+    public function getReportDetails($id){
         $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved, dateResolved, dateEdited, timesViewed FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
@@ -60,28 +60,28 @@ class Db {
             $error[0] = array("error"=>"Query fail");
             return $error;
         }
-		
+
         $ajaxQuery->bind_result($na,$ph,$em,$dep,$req,$cus,$summ,$det,$pr,$dat,$tim,$dur,$adm_pr,$adm_nte,$mrk,$res,$dat_res,$dat_ed,$times);
         while($ajaxQuery->fetch()){
             $assoc_result[0]['reportName'] = $na;
-			$assoc_result[0]['reportPhone'] = $ph;
-			$assoc_result[0]['reportEmail'] = $em;
-			$assoc_result[0]['reportDepartment'] = $dep;
-			$assoc_result[0]['reportRequest'] = $req;
-			$assoc_result[0]['reportCustomRequest'] = $cus;
-			$assoc_result[0]['reportSummary'] = $summ;
-			$assoc_result[0]['reportDetails'] = $det;
-			$assoc_result[0]['reportPriority'] = $pr;
-			$assoc_result[0]['reportDate'] = $dat;
-			$assoc_result[0]['reportTime'] = $tim;
-			$assoc_result[0]['duration'] = $dur;
-			$assoc_result[0]['admin_priority'] = $adm_pr;
-			$assoc_result[0]['admin_notes'] = $adm_nte;
-			$assoc_result[0]['markedForDeletion'] = $mrk;
-			$assoc_result[0]['resolved'] = $res;
-			$assoc_result[0]['dateResolved'] = $dat_res;
-			$assoc_result[0]['dateEdited'] = $dat_ed;
-			$assoc_result[0]['timesViewed'] = $times;
+            $assoc_result[0]['reportPhone'] = $ph;
+            $assoc_result[0]['reportEmail'] = $em;
+            $assoc_result[0]['reportDepartment'] = $dep;
+            $assoc_result[0]['reportRequest'] = $req;
+            $assoc_result[0]['reportCustomRequest'] = $cus;
+            $assoc_result[0]['reportSummary'] = $summ;
+            $assoc_result[0]['reportDetails'] = $det;
+            $assoc_result[0]['reportPriority'] = $pr;
+            $assoc_result[0]['reportDate'] = $dat;
+            $assoc_result[0]['reportTime'] = $tim;
+            $assoc_result[0]['duration'] = $dur;
+            $assoc_result[0]['admin_priority'] = $adm_pr;
+            $assoc_result[0]['admin_notes'] = $adm_nte;
+            $assoc_result[0]['markedForDeletion'] = $mrk;
+            $assoc_result[0]['resolved'] = $res;
+            $assoc_result[0]['dateResolved'] = $dat_res;
+            $assoc_result[0]['dateEdited'] = $dat_ed;
+            $assoc_result[0]['timesViewed'] = $times;
         }
 
         $views = $assoc_result[0]["timesViewed"] + 1;
@@ -141,15 +141,15 @@ class Db {
         $ajaxQuery->bind_result($summ,$na,$ph,$em,$dat,$tim,$dur,$adm_pr,$adm_nte);
 
         while($ajaxQuery->fetch()){
-			$assoc_result[0]['reportSummary'] = $summ;
+            $assoc_result[0]['reportSummary'] = $summ;
             $assoc_result[0]['reportName'] = $na;
-			$assoc_result[0]['reportPhone'] = $ph;
-			$assoc_result[0]['reportEmail'] = $em;
-			$assoc_result[0]['reportDate'] = $dat;
-			$assoc_result[0]['reportTime'] = $tim;
-			$assoc_result[0]['duration'] = $dur;
-			$assoc_result[0]['admin_priority'] = $adm_pr;
-			$assoc_result[0]['admin_notes'] = $adm_nte;
+            $assoc_result[0]['reportPhone'] = $ph;
+            $assoc_result[0]['reportEmail'] = $em;
+            $assoc_result[0]['reportDate'] = $dat;
+            $assoc_result[0]['reportTime'] = $tim;
+            $assoc_result[0]['duration'] = $dur;
+            $assoc_result[0]['admin_priority'] = $adm_pr;
+            $assoc_result[0]['admin_notes'] = $adm_nte;
         }
         return $assoc_result;
     }
@@ -207,14 +207,14 @@ class Db {
 
         while($ajaxQuery->fetch()){
             $assoc_result[0]['reportPriority'] = $pr;
-			$assoc_result[0]['reportDate'] = $dat;
-			$assoc_result[0]['reportTime'] = $time;
-			$assoc_result[0]['duration'] = $dur;
-			$assoc_result[0]['admin_priority'] = $adm_pr;
-			$assoc_result[0]['resolved'] = $res;
-			$assoc_result[0]['dateEdited'] = $datEd;
-			$assoc_result[0]['timesViewed'] = $viewed;
-			$assoc_result[0]['tag'] = $tag;
+            $assoc_result[0]['reportDate'] = $dat;
+            $assoc_result[0]['reportTime'] = $time;
+            $assoc_result[0]['duration'] = $dur;
+            $assoc_result[0]['admin_priority'] = $adm_pr;
+            $assoc_result[0]['resolved'] = $res;
+            $assoc_result[0]['dateEdited'] = $datEd;
+            $assoc_result[0]['timesViewed'] = $viewed;
+            $assoc_result[0]['tag'] = $tag;
         }
 
         $val = tagGenerator($assoc_result);
@@ -228,25 +228,25 @@ class Db {
             $error[0] = array("error"=>"Query fail");
             return $error;
         }
-		
+
         $data[0] = array("tag"=>$val);
         return $data;
     }
 
-    public function checkReport($id){		
+    public function checkReport($id){
         $ajaxQuery = $this->databaseConnection->prepare('SELECT resolved, tag FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
-		
-		$ajaxQuery->bind_result($res,$tag);
-		
+
+        $ajaxQuery->bind_result($res,$tag);
+
         $assoc_result[0]['tag'] = -1;
-		
-		while($ajaxQuery->fetch()){
-			$assoc_result[0]['resolved'] =  $res;
-			$assoc_result[0]['tag'] = $tag;
-		}
-		
+
+        while($ajaxQuery->fetch()){
+            $assoc_result[0]['resolved'] =  $res;
+            $assoc_result[0]['tag'] = $tag;
+        }
+
         if($assoc_result[0]['resolved']==1){
             return "Resolved.";
         }else{
@@ -276,6 +276,19 @@ class Db {
             return mysqli_error($databaseConnection);
         }
         return $row;
+    }
+
+    public function getStatistics(){
+        $result = mysqli_query($this->databaseConnection,'SELECT count(id) as totalReports FROM reports');
+        $row = mysqli_fetch_array($result);
+        $assoc_result['totalReports'] = $row['totalReports'];
+        $result = mysqli_query($this->databaseConnection,'SELECT count(resolved) as totalResolved FROM reports WHERE resolved = 1');
+        $row = mysqli_fetch_array($result);
+        $assoc_result['totalResolved'] = $row['totalResolved'];
+        if(!$result){
+            return mysqli_error($databaseConnection);
+        }
+        return $assoc_result;
     }
 }
 ?>

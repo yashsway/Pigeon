@@ -153,7 +153,6 @@ function confirmation_init(obj,callback){
 function hash(){
     //100 reports a day, frequency is per minute
     var now = new Date();
-    ;
     var curr = now.getDate().toString().split("").reverse().join("")[0]+""+now.getMonth().toString().split("").reverse().join("")[0];
     return curr + "" + ($("#report-listing > tr").length+1) + "" + Math.floor((Math.random()*10)+1);
 }
@@ -388,9 +387,6 @@ function newReport_formSubmission(){
                 if(returnedData=="Query ok"){
                     //Inform the user that the form is valid
                     newReport_message("Looks great! Thanks!");
-                    //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
-                    //detailedReportBuilder();
-                    //reportDeletion();
                     //Test: progress bar
                     progressBar_modify("#newReport_progress",10);
                     progressBar_reset("#newReport_progress");
@@ -466,7 +462,7 @@ function viewEditForm(){
         //TEST: Get the ID of the report to be edited
         //var temp_index = database_indexReturn($(this).parent().parent().attr("id"));
         var rep_ID = $(this).parent().parent().attr('id');
-		var request = {reqType:3,queryID:rep_ID};
+        var request = {reqType:3,queryID:rep_ID};
         //NOTE: Review AJAX edit form
         ajaxRequest("databaseButler.php", "json", request, function(returnedData){
             if(returnedData[0].error=="Query fail"){
@@ -636,7 +632,7 @@ function reportDeletion(){
                     obj.parent().parent().remove();
                     //Delete the report data from the database
                     //TODO: AJAX deletion
-                    ajaxRequest("databaseButler.php?reqType="+6+"&queryID="+reportID,"text",null,function(returnedData){
+                    /*ajaxRequest("databaseButler.php?reqType="+6+"&queryID="+reportID,"text",null,function(returnedData){
                         if(returnedData=="Query ok"){
                             //TEST: console msg
                             console.log("Report #"+reportID+" deleted.");
@@ -645,7 +641,7 @@ function reportDeletion(){
                             //TEST: console msg
                             console.log("Deleting report #"+reportID+" failed.");
                         }
-                    });
+                    });*/
                 },60000);
                 //Show the restoration button
                 $("#restore"+reportID).show();
@@ -668,7 +664,7 @@ function reportDeletion(){
                 toggle=0;
             }
         });*/
-        //**Check detaileReportBuilder below for additional deletion utility**
+        //**Check detailedReportBuilder below for additional deletion utility**
     });
 }
 //Detailed Report View Generator (Asynchronous elements inside)

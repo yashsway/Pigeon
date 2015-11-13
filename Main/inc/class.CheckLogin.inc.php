@@ -42,7 +42,7 @@ class CheckLogin{
             //Mac 127.0.0.1
             $this->_con = mysqli_connect($servAddress,$user,$pass);
         }else if($GLOBALS['appMode']==1){
-            $this->_con = mysqli_connect("130.113.143.45","psousa", "B3asl3y", "hcs-starrez-help","3306");
+            $this->_con = mysqli_connect("130.113.143.45","radetest", "c0c2c0l2", "hcs-starrez-help","3306");
         }
 
        /* if(!$this->_con){

@@ -6,7 +6,7 @@
     <title>Pigeon</title>
     <meta name="description" content="IT Help Desk App" />
     <meta name="author" content="Yash Gopal" />
-	<link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
     <!--mobile viewport optimization-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Bootstrap-->
@@ -74,7 +74,7 @@
                     <button class="btn btn-sm btn-success proceed" id="login">Login</button>
                     <button class="btn btn-sm btn-success proceed" id="checkTicket">Check Ticket</button>
                 </div>
-				<!--<p id="stats"></p>-->
+                <p id="stats"></p>
             </div>
         </div>
         <div class="col-md-2 col-sm-2 side-panel">

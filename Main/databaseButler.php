@@ -108,6 +108,14 @@ function reportTotal(){
     $result = $repTot->totalReports();
     echo json_encode($result);
 }
+function appStats(){
+    def();
+    //New Connection
+    $stat = new Db();
+    //Stats function from the Db class
+    $result = $stat->getStatistics();
+    echo json_encode($result);
+}
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
 //echo "it works";
@@ -136,6 +144,8 @@ if((isset($_REQUEST['reqType']))==1){
         reportTotal();
     }else if($_REQUEST['reqType']==10){
         authentication();
+    }else if($_REQUEST['reqType']==11){
+        appStats();
     }
 }
 ?>
