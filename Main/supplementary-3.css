@@ -1,0 +1,167 @@
+body {
+    background: url(assets/grid.png);
+    background-color: #8FB59C;
+    background-blend-mode: screen;
+    height: 100%;
+}
+/* Centering Hack */
+.content {
+    margin: 0px auto;
+    display: table;
+}
+.content div {
+    display: table-cell;
+}
+.main-text {
+    font-family: 'Oswald', sans-serif;
+}
+.body-text {
+    font-family: "Slabo 27px", sans-serif;
+    font-size: 35px;
+    text-align: center;
+    color: #301330;
+}
+.help-text {
+    padding: 5px;
+    margin-left: 0%;
+    font-size: 15px;
+    font-style: italic;
+    font-family: "Slabo 27px";
+    text-align: center;
+    display: block;
+}
+.container-fluid {
+    min-height: 100%;
+    position: relative;
+}
+.main {
+    top: 100px;
+    height: 100%;
+    width: 60%;
+}
+#staffHelper {
+    position: absolute;
+    z-index: 100;
+    height: 40px;
+    width: 100%;
+    overflow: hidden;
+    background-color: #54A992;
+    opacity: 0.8;
+    clear: both;
+}
+#staffHelper > #appStatus {
+    float: left;
+    vertical-align: middle;
+    font-size: 18px;
+    color: white;
+    margin: 5px 10px;
+}
+#staffHelper > #currentUserWrapper {
+    position: absolute;
+    display: inline-block;
+    height: inherit;
+    right: 0;
+    top: 0;
+}
+#currentUserWrapper > #currentUser {
+    vertical-align: middle;
+    margin: 7px 100px 5px 10px;
+    font-size: 18px;
+    color: white;
+}
+#staffHelper > #logoutWrapper {
+    position: absolute;
+    display: inline-block;
+    height: inherit;
+    top: 0;
+    right: 0;
+}
+#logoutWrapper > #logout {
+    margin: 3px 10px;
+}
+#info-bar{
+    overflow: hidden;
+    height: 30px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    z-index: 150;
+    margin-bottom: 0px;
+    width: 100%;
+    background-color: #301330;
+    box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.30);
+}
+#footer_push {
+    clear: both;
+    height: 30px;
+}
+#info-bar > p {
+    color: white;
+    text-align: center;
+}
+.center {
+    text-align: center;
+}
+.module {
+    margin: 10px 10px;
+}
+.module > button {
+    width: 200px;
+    padding: 20px;
+}
+#newReport-ticketNumber-wrapper {
+    margin-top: 20px;
+    display: none;
+}
+#newReport_ticketNumber {
+    font-style: bold;
+    font-size: 50px;
+    text-align: center;
+    color: #301330;
+}
+.back {
+    display: none;
+}
+/*Global placeholder text*/
+input::-webkit-input-placeholder {
+    color: #cdcdcd;
+    opacity: 0.3;
+}
+/* New Report Form Stuff */
+/* Date container in New Report form */
+#newReport_date {
+    width: 200px;
+}
+/*Time container in New Report form*/
+#newReport_time {
+    width: 200px;
+}
+/*Global placeholder text*/
+input::-webkit-input-placeholder {
+    color: #cdcdcd;
+    opacity: 0.3;
+}
+#newReport_date {
+    padding: 20px;
+}
+#newReport_time {
+    width: 205px;
+    padding: 20px;
+}
+.progress {
+    float: left;
+    width: 200px;
+    position: absolute;
+    margin-top: 12px;
+}
+
+@media (max-width: 400px) {
+    .module > button {
+        width: 150px;
+    }
+}
+@media (max-width: 300px) {
+    .module > button {
+        margin-left: -20px;
+    }
+}

@@ -9,11 +9,11 @@
     }
 
     //check if there is a cookie upon page load - if there is one, check the age of the current session and if still active, extend by a few hours.
-    if (!isset($_SESSION['hcs_helpDesk_cookie'])){
+    if (!isset($_SESSION['pigeon_admin'])){
         header("Location: landing-page.html.php");
         exit;
     }else{
-        CheckLogin::check_session_age();
+        CheckLogin::check_session_age('pigeon_admin');
     }
     //Load all functions
     require_once('functions.php');
@@ -24,6 +24,7 @@
     //Fetch reports from the database
     $reports = fetchReports();
 ?>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -31,7 +32,7 @@
     <title>Pigeon</title>
     <meta name="description" content="IT Support Ticketing App">
     <meta name="author" content="Yash Gopal">
-	<link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
     <!--mobile viewport optimization-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

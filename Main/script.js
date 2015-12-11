@@ -355,8 +355,8 @@ function newReport_engine(){
     //Enable new report submission
     newReport_formSubmission();
     //Disable authentication gate
-    $("#newReport_authKey").prop('disabled',true);
-    $("#newReport_authKey").prop('placeholder','not required when signed in');
+    //$("#newReport_authKey").prop('disabled',true);
+    //$("#newReport_authKey").prop('placeholder','not required when signed in');
 }
 //New Report Compilation
 function newReport_compilation(){
