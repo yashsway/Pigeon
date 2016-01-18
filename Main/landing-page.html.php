@@ -49,29 +49,20 @@
                         <p id="newReport_ticketNumber"></p>
                     </p>
                 </div>
-                <div id="login-wrapper">
-                    <form>
-                        <label class="loginForm loginTxt" id="label-username">Username</label>
-                        <input class="loginForm" type="text" style="text-align:center;color:#301330;" id="user_name" />
-                        <label class="loginForm loginTxt" id="label-pass">Password</label>
-                        <input class="loginForm" type="password" style="text-align:center;color:#301330;" id="pass_word" />
-                    </form>
-                </div>
                 <div id="checkStatus-input-wrapper">
-                    <p class="body-text">What's your ticket number?<br/>
-                    <input type="text" id="userQuery" style="text-align:center;color:#301330;"/></p>
-                    <div id="checkStatus-display-wrapper">
+                    <p class="body-text content">What's your ticket number?<br/>
+                    <input class="content" type="text" id="userQuery" style="text-align:center;color:#301330;"/></p>
+                    <div class="content" id="checkStatus-display-wrapper">
                         <p id="checkStatus-statusText"></p>
                     </div>
                 </div>
-                <img src="assets/icons/smile.png" id="welcome-icon" />
-                <p id="help-text"></p>
-                <div id="sit-nav-btns">
-                    <button class="btn btn-sm btn-default back">Back</button>
-                    <button class="btn btn-sm btn-success proceed" id="login">Login</button>
-                    <button class="btn btn-sm btn-success proceed" id="checkTicket">Check Ticket</button>
+                <img src="assets/icons/smile.png" class="content" id="welcome-icon" />
+                <p class="content" id="help-text"></p>
+                <div class="content" id="sit-nav-btns">
+                    <button class="btn btn-sm btn-default content back">Back</button>
+                    <button class="btn btn-sm btn-success content proceed" id="checkTicket">Check Ticket</button>
                 </div>
-                <p id="stats"></p>
+                <p class="content" id="stats"></p>
             </div>
         </div>
         <div class="col-md-2 col-sm-2 side-panel">
