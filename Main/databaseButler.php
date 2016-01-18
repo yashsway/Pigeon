@@ -116,6 +116,10 @@ function appStats(){
     $result = $stat->getStatistics();
     echo json_encode($result);
 }
+function currentUser(){
+    session_start();
+    echo (string)$_SESSION['user_name'];
+}
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
 //echo "it works";
@@ -146,6 +150,8 @@ if((isset($_REQUEST['reqType']))==1){
         authentication();
     }else if($_REQUEST['reqType']==11){
         appStats();
+    }else if($_REQUEST['reqType']==12){
+        currentUser();
     }
 }
 ?>

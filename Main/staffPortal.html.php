@@ -9,6 +9,7 @@
     }
 
     if (!isset($_SESSION['pigeon_staff'])){
+        CheckLogin::kill_session();
         header("Location: landing-page.html.php");
         exit;
     }else{

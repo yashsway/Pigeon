@@ -1,3 +1,3 @@
 <?php
-echo 'Mac unauth';
+include 'unauthorized.html';
 ?>

@@ -45,7 +45,7 @@ body {
     height: 40px;
     width: 100%;
     overflow: hidden;
-    background-color: #54A992;
+    background-color: #301330;
     opacity: 0.8;
     clear: both;
 }
@@ -67,7 +67,7 @@ body {
     vertical-align: middle;
     margin: 7px 100px 5px 10px;
     font-size: 18px;
-    color: white;
+    color: #E8C571;
 }
 #staffHelper > #logoutWrapper {
     position: absolute;
@@ -78,6 +78,12 @@ body {
 }
 #logoutWrapper > #logout {
     margin: 3px 10px;
+    background-color: #D94C3A;
+    border-color: #D94C3A;
+    color: white;
+}
+#logoutWrapper > #logout:hover {
+    background-color: #d86758;
 }
 #info-bar{
     overflow: hidden;
@@ -106,8 +112,18 @@ body {
     margin: 10px 10px;
 }
 .module > button {
+    height: 100px;
     width: 200px;
     padding: 20px;
+    background-color: #54A992;
+    color: white;
+}
+.module > button:hover {
+    color: white;
+    background-color: #6cd8bb;
+}
+#newReport_trigger {
+    color: white;
 }
 #newReport-ticketNumber-wrapper {
     margin-top: 20px;

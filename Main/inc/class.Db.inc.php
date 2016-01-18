@@ -30,6 +30,7 @@ class Db {
     }
 
     public function authenticate($auth){
+        $auth = password_hash($auth,PASSWORD_BCRYPT);
         $ajaxQuery = $this->databaseConnection->prepare('SELECT clientName FROM authkeys WHERE clientKey = ?');
         $ajaxQuery->bind_param("s",$auth);
         $ajaxQuery->execute();

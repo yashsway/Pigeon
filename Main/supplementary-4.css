@@ -1,0 +1,22 @@
+/* Centering Hack */
+.content {
+    margin: 0px auto;
+    display: table;
+}
+.content div {
+    display: table-cell;
+}
+#message {
+    margin-top: 40vh;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+#main-icon {
+    height: 75px;
+    width: 75px;
+    padding: 5px;
+}
+body {
+    background-color: rgba(48,19,48,0.75);
+}

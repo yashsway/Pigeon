@@ -37,13 +37,10 @@
             <h1 class="main-text center" id="product-title">Pigeon</h1>
             <div class="row">
                 <div id="landing-buttons-wrapper">
-                    <div class="col-md-4 center landing-buttons">
-                        <button type="button" class="btn btn-danger" id="newReport_trigger">Report or Request</button>
-                    </div>
-                    <div class="col-md-4 center landing-buttons">
+                    <div class="col-md-6 center landing-buttons">
                         <button type="button" class="btn btn-primary" id="checkTicket_trigger">Check Ticket</button>
                     </div>
-                    <div class="col-md-4 center landing-buttons">
+                    <div class="col-md-6 center landing-buttons">
                         <button type="button" class="btn btn-success" id="login_trigger">Login</button>
                     </div>
                 </div>

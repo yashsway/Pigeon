@@ -23,8 +23,8 @@ $unencrypt_2 = McAuth::getMcAuthParameters($token, $private_key);//decrypt token
 
 //if user macid is on my list, send them over
 $attemptingUser = $unencrypt_2[4];
-$validAdmins = array("kurucr","prancho");
-$validStaff = array("gopalay");
+$validAdmins = array("kurucr","prancho","gopalay");
+$validStaff = array("jdickso","resadm","beattyk","beanc","beaudes","greenj11","lightd","reifenb","rezlife","rohrer","simondw","treleavm","wilmos1","walkta","baumgjo","burkep","dansjoe","gacesag","sharris","richlor","otterse","housing","lombard","sumstaf","cr_conf2","cr_conf3","cr_conf1","haml","adamarl","marcosn");
 if(in_array($attemptingUser,$validAdmins)){
     //Create session cookie
     session_start();
@@ -37,8 +37,7 @@ if(in_array($attemptingUser,$validAdmins)){
     session_start();
     $_SESSION['pigeon_staff'] = time('now') + 25000;
     $_SESSION['user_name'] = $attemptingUser;
-    //Redirect back to welcome page where report buttons will be enabled.
-    //global $genStaff = true;
+    //Redirect to the staff portal
     header("Location: http://hcs.mcmaster.ca/apps/pigeon/Main/staffPortal.html.php");
 }else{
     //Redirect to unauth page indicating reason for login denial

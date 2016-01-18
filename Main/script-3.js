@@ -36,6 +36,12 @@ function getStatistics(){
         totalReports = returnedData['totalReports'];
     });
 }
+function getUser(){
+    var req = {reqType:12};
+    ajaxRequest("databaseButler.php","text",req,function(returnedData){
+        $("#currentUser").text("Hi " + returnedData + "!");
+    });
+}
 //-----------Validation-----------------
 //Validation colors
 function validationColors(val,regEx,obj,mode,locale){
@@ -339,6 +345,8 @@ $("#logout").on('click',function(){
 $(document).ready(function(){
     //Reset the submit button as a precautionary
     $("#newReport_submit").attr('disabled',false);
+    //Get current user
+    getUser();
     //Update stats
     getStatistics();
     //New Report Modal View for Report button
