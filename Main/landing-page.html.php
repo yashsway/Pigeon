@@ -38,10 +38,10 @@
             <div class="row">
                 <div id="landing-buttons-wrapper">
                     <div class="col-md-6 center landing-buttons">
-                        <button type="button" class="btn btn-primary" id="checkTicket_trigger">Check Ticket</button>
+                        <button type="button" class="btn primary-buttons" id="checkTicket_trigger">Check Ticket</button>
                     </div>
                     <div class="col-md-6 center landing-buttons">
-                        <button type="button" class="btn btn-success" id="login_trigger">Login</button>
+                        <button type="button" class="btn primary-buttons" id="login_trigger">Login</button>
                     </div>
                 </div>
                 <div id="newReport-ticketNumber-wrapper">

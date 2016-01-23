@@ -22,11 +22,26 @@ body {
 .content div {
     display: table-cell;
 }
-/*
-#header {
+/* Primary Buttons */
+.primary-buttons {
+    line-height: 1;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: 'slabo 27px', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    border-bottom: 4px solid;
+    border-radius: 0.25rem;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
     padding: 10px;
+    transition: all 0.3s ease 0s;
 }
-*/
+.primary-buttons:hover {
+    color: white;
+}
 .main {
     height: 100%;
 }
@@ -60,10 +75,26 @@ body {
     width: 150px;
 }
 #login_trigger {
+    background-color: #D3EA77;
+    border-color: #A5B75D;
     width: 150px;
 }
+#login_trigger:hover {
+    background-color: #DFF77E;
+}
+#login_trigger:active {
+    border-bottom-color: #D3EA77;
+}
 #checkTicket_trigger {
+    background-color: #809BCE;
+    border-color: #60759B;
     width: 150px;
+}
+#checkTicket_trigger:hover {
+    background-color: #87A5DB;
+}
+#checkTicket_trigger:active {
+    background-color: #809BCE;
 }
 .proceed {
     position: inline-block;
