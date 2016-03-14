@@ -475,14 +475,14 @@ $(document).ready(function(){
         }
     });
     //New Report Modal View for Report button
-    $("#newReport_trigger").attr("data-toggle","modal");
-    $("#newReport_trigger").attr("data-target","#file-new-report");
+    //$("#newReport_trigger").attr("data-toggle","modal");
+    //$("#newReport_trigger").attr("data-target","#file-new-report");
     //Enable new reports
     newReport_engine();
     //Datedroppers
-    $("#newReport_date").dateDropper();
+    //$("#newReport_date").dateDropper();
     //Enable tooltips
-    $('[data-toggle="tooltip"]').tooltip();
+    //$('[data-toggle="tooltip"]').tooltip();
     //Other UI stuff
     $("#newReport-ticketNumber-wrapper").hide();
     loginDisplayController(false);

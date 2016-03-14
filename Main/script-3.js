@@ -358,4 +358,6 @@ $(document).ready(function(){
     $("#newReport_date").dateDropper();
     //Enable tooltips
     $('[data-toggle="tooltip"]').tooltip();
+    //TimePicker
+    $("#newReport_time").timepicker();
 });

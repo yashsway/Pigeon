@@ -41,6 +41,7 @@
     <link href="../Frameworks/animate.css" rel="stylesheet">
     <!--noUiSlider-->
     <link href="../Frameworks/noUiSlider/jquery.nouislider.min.css" rel="stylesheet">
+    <link href="../Frameworks/timePicker/jquery.timepicker.css" rel="stylesheet"/>
     <!--Custom Stylesheet-->
     <link href='https://fonts.googleapis.com/css?family=Slabo+27px|Oswald' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
@@ -81,6 +82,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="../Frameworks/bootstrap/js/bootstrap.min.js"></script>
     <script src="../Frameworks/datedropper-master/datedropper-master/datedropper.js"></script>
+    <script src="../Frameworks/timePicker/jquery.timepicker.min.js"></script>
     <script src="script-3.js"></script>
 </body>
 
