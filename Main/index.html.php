@@ -56,6 +56,8 @@
     <link rel="stylesheet" type="text/css" href="../Frameworks/datedropper-master/datedropper-master/datedropper.css">
     <!--noUiSlider-->
     <link href="../Frameworks/noUiSlider/jquery.nouislider.min.css" rel="stylesheet">
+    <!--Timepicker-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.10/jquery.timepicker.min.css" rel="stylesheet">
     <!--Custom Stylesheet-->
     <link rel="stylesheet" href="supplementary.css">
 </head>
@@ -122,6 +124,7 @@
     <script src="../Frameworks/datedropper-master/datedropper-master/datedropper.js"></script>
     <script src="../Frameworks/pietimer-master/jquery.pietimer.min.js"></script>
     <script src="../Frameworks/noUiSlider/jquery.nouislider.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.10/jquery.timepicker.min.js" type="text/javascript"></script>
     <script src="script.js"></script>
 </body>
 </html>

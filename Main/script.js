@@ -968,6 +968,17 @@ $(document).ready(function(){
     $("#editReport_date").dateDropper();
     //Enable tooltips
     $('[data-toggle="tooltip"]').tooltip();
+    //TEST: Timepicker test
+    $("#newReport_time").timePicker({
+        'noneOption': [
+            {
+                'label': 'anytime',
+                'className': 'extra',
+                'value': 'anytime'
+            },
+            'anytime'
+        ]
+    });
     //MOVED: Call to enable detailed report building
     detailedReportBuilder();
     //MOVED: Call to enable report deletion
