@@ -192,7 +192,7 @@ $("#newReport_clear").click(function(){
     $("#newReport_requestCategory").val('blank');$("#newReport_requestCategory").parent().css('background-color','');
     $("#newReport_otherRequest").val('');$("#newReport_otherRequest").parent().css('background-color','');
     $("#newReport_summary").val('');$("#newReport_summary").parent().css('background-color','');
-    $("#newReport_details").val('');
+    //$("#newReport_details").val('');
     $('input[name="priority"]').prop('checked', false);$("#newReport_priority").css('background-color','');
     $('#newReport_date').val('');$('#newReport_date').css('background-color','');
     $('#newReport_time').val('');$('#newReport_time').css('background-color','');
@@ -214,7 +214,8 @@ function newReport_compilation(){
     //Update stats so the total report number is accurate
     getStatistics();
     //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
-    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),det:$("#newReport_details").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
+    //CHANGES: removed det:$("#newReport_details").val()
+    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
     //TEST: progress bar 65%
     progressBar_modify("#newReport_progress",15);
     return formData;
@@ -359,5 +360,14 @@ $(document).ready(function(){
     //Enable tooltips
     $('[data-toggle="tooltip"]').tooltip();
     //TimePicker
-    $("#newReport_time").timepicker();
+    $("#newReport_time").timepicker({
+        'noneOption': [
+        {
+            'label': 'Anytime',
+            'value': 'Anytime'
+        }
+        ],
+        'minTime': '8:30am',
+        'maxTime': '4:00pm'
+    });
 });

@@ -115,10 +115,11 @@ class Db {
         }
     }
 
-    public function insertReport($id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim){
+    //CHANGES: removed reportDetails
+    public function insertReport($id,$na,$ph,$em,$dep,$req,$cus,$summ,$pri,$dat,$tim){
         //Make query
-        $ajaxQuery = $this->databaseConnection->prepare('INSERT INTO reports (reportID,reportName,reportPhone,reportEmail,reportDepartment,reportRequest,reportCustomRequest,reportSummary,reportDetails,reportPriority,reportDate,reportTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        $ajaxQuery->bind_param("isssssssssss",$id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim);
+        $ajaxQuery = $this->databaseConnection->prepare('INSERT INTO reports (reportID,reportName,reportPhone,reportEmail,reportDepartment,reportRequest,reportCustomRequest,reportSummary,reportPriority,reportDate,reportTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $ajaxQuery->bind_param("issssssssss",$id,$na,$ph,$em,$dep,$req,$cus,$summ,$pri,$dat,$tim);
         $ajaxQuery->execute();
 
         if($ajaxQuery){

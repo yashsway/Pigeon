@@ -36,7 +36,8 @@ function reportInsert(){
     //Establish a new connection
     $repInsCon = new Db();
     //Run the insertReport function from the DB class (Send it the report ID & the JSON data of the submitted form)
-    $result = $repInsCon->insertReport($_POST['id'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dep'],$_POST['req'],$_POST['cus'],$_POST['summ'],$_POST['det'],$_POST['pri'],$_POST['dat'],$_POST['tim']);
+    //CHANGES: removed $_POST['det']
+    $result = $repInsCon->insertReport($_POST['id'],$_POST['na'],$_POST['ph'],$_POST['em'],$_POST['dep'],$_POST['req'],$_POST['cus'],$_POST['summ'],$_POST['pri'],$_POST['dat'],$_POST['tim']);
     echo $result;
 }
 function reportEditView(){

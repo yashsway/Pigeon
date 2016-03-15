@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <button type="button" class="close" id="newReport_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="newReport-title">New Report</h4>
+                <h4 class="modal-title" id="newReport-title">New Report (required fields are marked with *)</h4>
             </div>
             <div class="modal-body">
                <!--<form class="grid-form" id="auth">
@@ -21,15 +21,15 @@
                     <fieldset>
                         <div data-row-span="3">
                             <div data-field-span="1">
-                                <label>Name</label>
+                                <label>Name*</label>
                                 <input type="text" minlength="1" maxlength="22" placeholder="Peter Gregory" id="newReport_name" required>
                             </div>
                             <div data-field-span="1">
-                                <label>Phone</label>
+                                <label>Phone*</label>
                                 <input type="text" maxlength="19" placeholder="902-525-9140 x55555" id="newReport_phone" required>
                             </div>
                             <div data-field-span="1">
-                                <label>Email</label>
+                                <label>Email*</label>
                                 <input type="text" maxlength="28" placeholder="gregp@mcmaster.ca" id="newReport_email" required>
                             </div>
                         </div>
@@ -49,11 +49,11 @@
                                 </select>
                             </div>
                             <div data-field-span="1">
-                                <label>Request Category</label>
+                                <label>Request Category*</label>
                                 <select id="newReport_requestCategory">
                                     <option value="blank" selected="selected"></option>
                                     <option value="Email (Outlook/Thunderbird)" title="Email">Email (Outlook/Thunderbird)</option>
-                                    <option value="PC Issues" title="PC Issues">Computer Issue (Slow, Malware etc)</option>
+                                    <option value="PC Issues" title="PC Issues">Computer Issue (Slow, Virus etc)</option>
                                     <option value="PC Setup" title="PC Setup">Computer Setup</option>
                                     <option value="Devices & Printers" title="Printer Setup">Devices & Printers</option>
                                     <option value="Internet/Network Issues" title="Network Issues">Internet/Network Issues</option>
@@ -68,16 +68,17 @@
                         </div>
                         <div data-row-span="4">
                             <div data-field-span="4">
-                                <label>Summarize your problem (60 characters max)</label>
-                                <input type="text" id="newReport_summary" minlength="10" maxlength="60" required>
+                                <label>Summarize your problem (500 characters max)</label>
+                                <textarea type="text" rows="2" cols="20" id="newReport_summary" minlength="10" maxlength="500" style="resize:none;height:130px" required></textarea>
                             </div>
                         </div>
-                        <div data-row-span="4">
+                        <!--Check Github Issues for the reason for details removal-->
+                        <!--<div data-row-span="4">
                             <div data-field-span="4">
                                 <label>Details (500 characters max) (Optional)</label>
                                 <textarea rows="2" cols="20" name="report_details" wrap="hard" maxlength="500" style="resize:none;height:130px" id="newReport_details"></textarea>
                             </div>
-                        </div>
+                        </div>-->
                     </fieldset>
                     <fieldset>
                         <div data-row-span="2">
@@ -92,8 +93,7 @@
                             <div data-field-span="1" id="newReport_meetingTime">
                                 <label>When does it have to be done by?/When are you free?</label>
                                 <input type="text" placeholder="yyyy-mm-dd" id="newReport_date">
-<!--                                placeholder="2:30 PM or 'anytime'"-->
-                                <input type="text" data-toggle="tooltip" data-placement="top" title="Write '2:30PM' or '9:00 am' if it's at a specific time OR write 'anytime' if it's all day." id="newReport_time">
+                                <input type="text" placeholder="2:30 PM or 'anytime'" id="newReport_time">
                             </div>
                         </div>
                     </fieldset>
@@ -105,7 +105,7 @@
                 </div>
                 <em id="newReport_infoMsg">Hover over submit to check your form.&nbsp</em>
                 <button class="btn btn-default" id="newReport_clear">Clear</button>
-                <button class="btn btn-success btn-lg" id="newReport_submit" data-toggle="tooltip" data-placement="top" title="Hover over me to check the form.">Submit</button>
+                <button class="btn btn-success btn-lg" id="newReport_submit" data-toggle="tooltip" data-placement="top" title="A confirmation email will be sent to you.">Submit</button>
             </div>
         </div>
     </div>

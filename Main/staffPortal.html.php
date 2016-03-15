@@ -68,7 +68,7 @@
             <p class="body-text">Submission successful!
                 <p id="newReport_ticketNumber"></p>
             </p>
-            <p class="help-text"><b>Write down</b> this number for future reference! You can use it to check the status of your request. <br/>We'll get back to you as soon as possible.</p>
+            <p class="help-text"><b>You can use the number above to check the status of your request. We've also sent you an email confirmation with that number for your reference.<br/>We'll get back to you as soon as possible.</p>
         </div>
         <button class="btn btn-sm btn-default back content">Back</button>
     </div>
