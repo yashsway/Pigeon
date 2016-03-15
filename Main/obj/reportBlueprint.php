@@ -9,7 +9,7 @@ class reportBlueprint{
     public $request;
     public $custom_request;
     public $summary;
-    public $details;
+    //public $details;
     public $priority;
     public $date;
     public $time;
@@ -22,7 +22,8 @@ class reportBlueprint{
     public $timesViewed;
     public $tag;
 
-    public function __construct($id,$na,$ph,$em,$dep,$req,$cus,$summ,$det,$pri,$dat,$tim,$dur=1,$admPr="",$nte="",$del=0,$res=0,$viewed=0,$tag=0){
+    //CHANGES: removed $det
+    public function __construct($id,$na,$ph,$em,$dep,$req,$cus,$summ,$pri,$dat,$tim,$dur=1,$admPr="",$nte="",$del=0,$res=0,$viewed=0,$tag=0){
         $this->ID = $id;
         $this->name = $na;
         $this->phone = $ph;
@@ -31,7 +32,7 @@ class reportBlueprint{
         $this->request = $req;
         $this->custom_request = $cus;
         $this->summary = $summ;
-        $this->details = $det;
+        //$this->details = $det;
         $this->priority = $pri;
         $this->_date = $dat;
         $this->_time = $tim;
