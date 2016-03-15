@@ -51,8 +51,9 @@ class Db {
         }
     }
 
+    //CHANGES: removed reportDetails
     public function getReportDetails($id){
-        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportDetails, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved, dateResolved, dateEdited, timesViewed FROM reports WHERE reportID = ?');
+        $ajaxQuery = $this->databaseConnection->prepare('SELECT reportName, reportPhone, reportEmail, reportDepartment, reportRequest, reportCustomRequest, reportSummary, reportPriority, reportDate, reportTime, duration, admin_priority, admin_notes, markedForDeletion, resolved, dateResolved, dateEdited, timesViewed FROM reports WHERE reportID = ?');
         $ajaxQuery->bind_param("i",$id);
         $ajaxQuery->execute();
 
@@ -62,7 +63,7 @@ class Db {
             return $error;
         }
 
-        $ajaxQuery->bind_result($na,$ph,$em,$dep,$req,$cus,$summ,$det,$pr,$dat,$tim,$dur,$adm_pr,$adm_nte,$mrk,$res,$dat_res,$dat_ed,$times);
+        $ajaxQuery->bind_result($na,$ph,$em,$dep,$req,$cus,$summ,$pr,$dat,$tim,$dur,$adm_pr,$adm_nte,$mrk,$res,$dat_res,$dat_ed,$times);
         while($ajaxQuery->fetch()){
             $assoc_result[0]['reportName'] = $na;
             $assoc_result[0]['reportPhone'] = $ph;
@@ -71,7 +72,7 @@ class Db {
             $assoc_result[0]['reportRequest'] = $req;
             $assoc_result[0]['reportCustomRequest'] = $cus;
             $assoc_result[0]['reportSummary'] = $summ;
-            $assoc_result[0]['reportDetails'] = $det;
+            //$assoc_result[0]['reportDetails'] = $det;
             $assoc_result[0]['reportPriority'] = $pr;
             $assoc_result[0]['reportDate'] = $dat;
             $assoc_result[0]['reportTime'] = $tim;

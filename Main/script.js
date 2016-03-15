@@ -33,7 +33,7 @@ function ajaxRefresh(mode,id){
                     if(returnedData[0].error=="Query fail"){
                         console.log("Populating detailed view failed. Check Database Query.");
                     }else{
-                        $("#full-info-title").text("#" + id + " " + returnedData[0].reportSummary);
+                        $("#full-info-title").text("#" + id + " " + returnedData[0].reportSummary.substr(0,60) + "...");
                         $(".full-info-text.name").text(returnedData[0].reportName);
                         $(".full-info-text.phone").text(returnedData[0].reportPhone);
                         $(".full-info-text.email").text(returnedData[0].reportEmail);
@@ -43,9 +43,11 @@ function ajaxRefresh(mode,id){
                         }else{
                             $(".full-info-text.request").text(returnedData[0].reportRequest);
                         }
-                        if(returnedData[0].reportDetails!=null){
+                        //CHANGES: removed reportDetails and populated field with summary instead
+                        /*if(returnedData[0].reportDetails!=null){
                             $(".full-info-text.details").text(returnedData[0].reportDetails);
-                        }
+                        }*/
+                        $(".full-info-text.details").text(returnedData[0].reportSummary);
                         $(".full-info-text.priority").text(priorityStringGenerator(returnedData[0].reportPriority));
                         $(".full-info-text.date").text(returnedData[0].reportDate);
                         $(".full-info-text.time").text(returnedData[0].reportTime);
@@ -690,7 +692,8 @@ function detailedReportBuilder(){
             if(returnedData[0].error=="Query fail"){
                 console.log("Populating detailed view failed. Check Database Query.");
             }else{
-                $("#full-info-title").text("#" + rep_ID + " " + returnedData[0].reportSummary);
+                //CHANGES: select 60 character substring out of summary
+                $("#full-info-title").text("#" + rep_ID + " " + returnedData[0].reportSummary.substr(0,60) + "...");
                 $(".full-info-text.name").text(returnedData[0].reportName);
                 $(".full-info-text.phone").text(returnedData[0].reportPhone);
                 $(".full-info-text.email").text(returnedData[0].reportEmail);
@@ -700,9 +703,11 @@ function detailedReportBuilder(){
                 }else{
                     $(".full-info-text.request").text(returnedData[0].reportRequest);
                 }
-                if(returnedData[0].reportDetails!=null){
+                //CHANGES: removed reportDetails and populated field with summary
+                /*if(returnedData[0].reportDetails!=null){
                     $(".full-info-text.details").text(returnedData[0].reportDetails);
-                }
+                }*/
+                $(".full-info-text.details").text(returnedData[0].reportSummary);
                 $(".full-info-text.priority").text(priorityStringGenerator(returnedData[0].reportPriority));
                 $(".full-info-text.date").text(returnedData[0].reportDate);
                 $(".full-info-text.time").text(returnedData[0].reportTime);
