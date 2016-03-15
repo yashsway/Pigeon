@@ -975,7 +975,7 @@ $(document).ready(function(){
     //Enable tooltips
     $('[data-toggle="tooltip"]').tooltip();
     //TEST: Timepicker test
-    $("#newReport_time").timePicker();
+    $("#newReport_time").timepicker();
     //MOVED: Call to enable detailed report building
     detailedReportBuilder();
     //MOVED: Call to enable report deletion
