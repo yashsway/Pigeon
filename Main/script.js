@@ -772,7 +772,10 @@ function detailedReport_ColorCoding(value,field){
                 $(".priority_container").css("background-color","salmon");
                 break;
             default:
-                $(".priority_container").css("background-color","black");
+                $(".priority_container").css({
+                    "background-color":"#2B2D42",
+                    "color":"white"
+                });
                 break;
         }
     }else if(field=="adminPriority"){
@@ -790,7 +793,10 @@ function detailedReport_ColorCoding(value,field){
                 $(".adminPriority_container").css("background-color","rgba(250, 128, 114, 0.5)");
                 break;
             default:
-                $(".adminPriority_container").css("background-color","black");
+                $(".adminPriority_container").css({
+                    "background-color":"#2B2D42",
+                    "color":"white"
+                });
                 break;
         }
     }
@@ -874,7 +880,7 @@ function priorityStringGenerator(val){
         case 3:
             return "High";
         default:
-            return "Not Defined Yet";
+            return "Pending";
     }
 }
 function tagCodeGenerator(val){

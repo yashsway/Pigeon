@@ -23,8 +23,8 @@ $unencrypt_2 = McAuth::getMcAuthParameters($token, $private_key);//decrypt token
 
 //if user macid is on my list, send them over
 $attemptingUser = $unencrypt_2[4];
-$validAdmins = array("kurucr","prancho","jdickso");
-$validStaff = array("gopalay","resadm","beattyk","beanc","beaudes","greenj11","lightd","reifenb","rezlife","rohrer","simondw","treleavm","wilmos1","walkta","baumgjo","burkep","dansjoe","gacesag","sharris","richlor","otterse","housing","lombard","sumstaf","cr_conf2","cr_conf3","cr_conf1","haml","adamarl","marcosn");
+$validAdmins = array("kurucr","prancho","jdickso","gopalay");
+$validStaff = array("resadm","beattyk","beanc","beaudes","greenj11","lightd","reifenb","rezlife","rohrer","simondw","treleavm","wilmos1","walkta","baumgjo","burkep","dansjoe","gacesag","sharris","richlor","otterse","housing","lombard","sumstaf","cr_conf2","cr_conf3","cr_conf1","haml","adamarl","marcosn");
 if(in_array($attemptingUser,$validAdmins)){
     //Create session cookie
     session_start();
