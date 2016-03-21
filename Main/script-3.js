@@ -83,6 +83,9 @@ function newReport_validation(){
         //Phone Validation
         regX = /((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})(\s?(x\d{5})))|((?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4}))|(x?\d{5})/g; //Standard US/Canadian Phone # along with an optional 5 digit extension beginning with an 'x' appended to the end /w or /wo a space
         validationColors($("#newReport_phone").val(),regX,"#newReport_phone",1,1);
+        //TEST: Extension validation
+        regX = /^([0-9]{5})/g;
+        validationColors($("#newReport_extension").val(),regX,"#newReport_extension",1,1);
         //Email Validation
         regX = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g; //Standard email.
         validationColors($("#newReport_email").val(),regX,"#newReport_email",1,1);
@@ -136,13 +139,13 @@ function newReport_validation(){
 function finalValidationCheck(){
     //rgb(255, 192, 203) = pink
     //rgb(203, 232, 150) = green
-    var fields = ["#newReport_name","#newReport_phone","#newReport_email","#newReport_department","#newReport_requestCategory","#newReport_otherRequest","#newReport_summary","#newReport_priority","#newReport_date","#newReport_time"];
+    var fields = ["#newReport_name","#newReport_phone","#newReport_extension","#newReport_email","#newReport_department","#newReport_requestCategory","#newReport_otherRequest","#newReport_summary","#newReport_priority","#newReport_date","#newReport_time"];
     for(var i=0;i<fields.length;i++){
         //TEST: Progress bar 50%
         progressBar_modify("#newReport_progress",5);
         //TEST: console msg
         //console.log(fields[i]+ ": self->" + $(fields[i]).css('background-color') + " parent->" + $(fields[i]).parent().css('background-color'));
-        if(i==5){
+        if(fields[i]=="#newReport_otherRequest"){
             if(($(fields[i]).parent().css('background-color')=='rgba(0, 0, 0, 0)') | ($(fields[i]).parent().css('background-color')=='rgb(203, 232, 150)') | ($(fields[i]).parent().css('background-color')=='transparent')){
                 newReport_valid = true;
             }else{
@@ -150,7 +153,7 @@ function finalValidationCheck(){
                 break;
             }
         }
-        else if(i>=7){
+        else if(i==(fields.length-1)|i==(fields.length-2)|i==(fields.length-3)){
             if(($(fields[i]).css('background-color')=='rgb(203, 232, 150)')){
                 newReport_valid = true;
             }else{
@@ -192,6 +195,7 @@ $("#newReport_clear").click(function(){
     $("#newReport_requestCategory").val('blank');$("#newReport_requestCategory").parent().css('background-color','');
     $("#newReport_otherRequest").val('');$("#newReport_otherRequest").parent().css('background-color','');
     $("#newReport_summary").val('');$("#newReport_summary").parent().css('background-color','');
+    $("#newReport_extension").val('');
     //$("#newReport_details").val('');
     $('input[name="priority"]').prop('checked', false);$("#newReport_priority").css('background-color','');
     $('#newReport_date').val('');$('#newReport_date').css('background-color','');
@@ -215,7 +219,7 @@ function newReport_compilation(){
     getStatistics();
     //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
     //CHANGES: removed det:$("#newReport_details").val()
-    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
+    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val()+"  x"+$("#newReport_extension").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
     //TEST: progress bar 65%
     progressBar_modify("#newReport_progress",15);
     return formData;

@@ -341,6 +341,7 @@ $("#newReport_clear").click(function(){
     $("#newReport_otherRequest").val('');$("#newReport_otherRequest").parent().css('background-color','');
     $("#newReport_summary").val('');$("#newReport_summary").parent().css('background-color','');
     //$("#newReport_details").val('');
+    $("#newReport_extension").val('');
     $('input[name="priority"]').prop('checked', false);$("#newReport_priority").css('background-color','');
     $('#newReport_date').val('');$('#newReport_date').css('background-color','');
     $('#newReport_time').val('');$('#newReport_time').css('background-color','');
@@ -364,7 +365,7 @@ function newReport_engine(){
 function newReport_compilation(){
     //Collect all the client-entered values and make a JSON string out of it. Also include the request type at the start.
     //CHANGES: removed det:$("#newReport_details").val()
-    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
+    var formData = {reqType:2,id:hash(),na:$("#newReport_name").val(),ph:$("#newReport_phone").val()+"  x"+$("#newReport_extension").val(),em:$("#newReport_email").val(),dep:$("#newReport_department").val(),req:$("#newReport_requestCategory").val(),cus:$("#newReport_otherRequest").val(),summ:$("#newReport_summary").val(),pri:priorityNumberGenerator($("input[type='radio'][name='priority']:checked").val()),dat:$("#newReport_date").val(),tim:$("#newReport_time").val()};
     //TEST: progress bar
     progressBar_modify("#newReport_progress",15);
     return formData;
@@ -842,7 +843,7 @@ function priorityFlagCodeGenerator(val){
         case 3:
             return '<img src="assets/icons/red-flag.png"/>';
         default:
-            return '<img src="assets/icons/bomb.png"/>';
+            return '<img src="assets/icons/hourglass.png"/>';
     }
 }
 function resolutionFlagCodeGenerator(val){
@@ -852,7 +853,7 @@ function resolutionFlagCodeGenerator(val){
         case 1:
             return '<img src="assets/icons/checkmark.png"/>';
         default:
-            return '<img src="assets/icons/bomb.png"/>';
+            return '<img src="assets/icons/hourglass.png"/>';
     }
 }
 function priorityNumberGenerator(val){
