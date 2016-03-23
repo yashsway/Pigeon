@@ -42,6 +42,16 @@ function getUser(){
         $("#currentUser").text("Hi " + returnedData + "!");
     });
 }
+//-----------Email---------------------
+function sendMail(data){
+    ajaxRequest("testMail.php","text",data,function(returnedData){
+        if(returnedData=="success"){
+            console.log("auto mail ok!");
+        }else{
+            console.log(returnedData);
+        }
+    });
+}
 //-----------Validation-----------------
 //Validation colors
 function validationColors(val,regEx,obj,mode,locale){
@@ -270,6 +280,8 @@ function newReport_formSubmission(){
                         });
                         //Re-enable the submit button AFTER submission
                         $("#newReport_submit").attr('disabled',false);
+                        //Send auto confirmation email
+                        sendMail({reqType:0,ticket:formData.id});
                     }else{
                         //Inform the user that something went wrong
                         newReport_message("Submission failed! :( Something went wrong, try again later.");

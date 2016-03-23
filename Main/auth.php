@@ -15,21 +15,30 @@ $authz = $_GET['authz']; //get good token param from successful macid login
 $private_key = "VL2PMKB0jyo2O88gkgF3vEFg";
 
 $unencrypt = McAuth::getMcAuthParameters($authz, $private_key);//decrypt token
+//First Name: ["authz"]["fgivenameName"]
+//Last Name: ["authz"]["surnameName"]
+//mail: ["authz"]["mail"]
 $unencrypt_2 = McAuth::getMcAuthParameters($token, $private_key);//decrypt token
+//macid: 4th
 
 //echo "<pre>";
+//var_dump($unencrypt);
 //var_dump($unencrypt_2);
 //echo "</pre>";
 
 //if user macid is on my list, send them over
 $attemptingUser = $unencrypt_2[4];
-$validAdmins = array("kurucr","prancho","jdickso","gopalay");
-$validStaff = array("resadm","beattyk","beanc","beaudes","greenj11","lightd","reifenb","rezlife","rohrer","simondw","treleavm","wilmos1","walkta","baumgjo","burkep","dansjoe","gacesag","sharris","richlor","otterse","housing","lombard","sumstaf","cr_conf2","cr_conf3","cr_conf1","haml","adamarl","marcosn");
+$userMail = $unencrypt["authz"]["mail"];
+$firstName = $unencrypt["authz"]["fgivenameName"];
+$validAdmins = array("prancho","jdickso");
+$validStaff = array("kurucr","gopalay","resadm","beattyk","beanc","beaudes","greenj11","lightd","reifenb","rezlife","rohrer","simondw","treleavm","wilmos1","walkta","baumgjo","burkep","dansjoe","gacesag","sharris","richlor","otterse","housing","lombard","sumstaf","cr_conf2","cr_conf3","cr_conf1","haml","adamarl","marcosn");
 if(in_array($attemptingUser,$validAdmins)){
     //Create session cookie
     session_start();
     $_SESSION['pigeon_admin'] = time('now') + 25000;
     $_SESSION['user_name'] = $attemptingUser;
+    $_SESSION['firstName'] = $firstName;
+    $_SESSION['userMail'] = $userMail;
     //Redirect to main app
     header("Location: http://hcs.mcmaster.ca/apps/pigeon/Main/index.html.php");
 }else if(in_array($attemptingUser,$validStaff)){
@@ -37,6 +46,8 @@ if(in_array($attemptingUser,$validAdmins)){
     session_start();
     $_SESSION['pigeon_staff'] = time('now') + 25000;
     $_SESSION['user_name'] = $attemptingUser;
+    $_SESSION['firstName'] = $firstName;
+    $_SESSION['userMail'] = $userMail;
     //Redirect to the staff portal
     header("Location: http://hcs.mcmaster.ca/apps/pigeon/Main/staffPortal.html.php");
 }else{
