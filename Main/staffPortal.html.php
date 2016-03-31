@@ -83,6 +83,7 @@
     <script src="../Frameworks/bootstrap/js/bootstrap.min.js"></script>
     <script src="../Frameworks/datedropper-master/datedropper-master/datedropper.js"></script>
     <script src="../Frameworks/timePicker/jquery.timepicker.min.js"></script>
+    <script src="mailModifier.js"></script>
     <script src="script-3.js"></script>
 </body>
 
