@@ -4,12 +4,14 @@
 
     if(isset($_POST['log_out'])){
         CheckLogin::kill_session();
+        session_destroy();
         header("Location: landing-page.html.php");
         exit;
     }
 
     if (!isset($_SESSION['pigeon_staff'])){
         CheckLogin::kill_session();
+        session_destroy();
         header("Location: landing-page.html.php");
         exit;
     }else{

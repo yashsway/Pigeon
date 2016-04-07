@@ -1,30 +1,16 @@
 class mailModifier{
     constructor(data){
+        this.user = "";
+        this.ticket = -1;
+        this.templateType = -1;
+    }
+    setData(data){
         this.user = data.user;
         this.ticket = data.ticket;
         this.templateType = data.type;
-        this.data = data;
     }
     getData() {
-        return this.data;
-    }
-    templateData(type){
-        switch(type){
-            case 0:
-                return {title:"Ticket Confirmation"};
-                break;
-            default:
-                return "error";
-        }
-    }
-    modifyTemplate(type){
-        if(this.data!=null){
-            var info = this.templateData(type);
-            $("#title").text(this.data.title);
-            $("#ticket").text(this.ticket);
-            console.log(this.ticket);
-
-        }
+        return {user:this.user,ticket:this.ticket,type:this.templateType};
     }
     //-----------Email---------------------
     sendMail(data){
@@ -36,9 +22,31 @@ class mailModifier{
             }
         });
     }
+    //---------Template Stuff------------------
+    templateData(type){
+        switch(type){
+            case 0:
+                return {title:"Ticket Confirmation",ticket:this.ticket};
+                break;
+            default:
+                return "error";
+        }
+    }
+    modifyTemplate(type){
+        if(this.user!=""){
+            /*var info = this.templateData(type);
+            $("#title").text(info.title);
+            $("#ticket").text(this.ticket);*/
+            var info = this.templateData(type);
+            ajaxRequest("/apps/pigeon/Main/mailTemplates/ticketauto.html.php","html",info,function(returnedData){
+                var emailToSend = returnedData;
+                console.log(emailToSend);
+            });
+        }
+    }
     prepareSend(data){
-        this.putData(data);
-        this.modifyTemplate(data.type);
-        this.sendMail({ticket:this.ticket});
+        this.setData(data);
+        this.modifyTemplate(this.templateType);
+        this.sendMail({reqType:this.templateType,ticket:this.ticket});
     }
 }

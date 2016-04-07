@@ -36,7 +36,7 @@ function ticketAuto(){
     $email = $_SESSION['userMail'];
     $sub = 'Ticket Confirmation';
     $ticket = $_POST['ticket'];
-    $contentPath = 'mailTemplates/ticketauto.html';
+    $contentPath = 'mailTemplates/ticketauto.html.php';
 
     $out = array(
         "email" => $email,

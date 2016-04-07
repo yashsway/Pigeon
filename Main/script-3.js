@@ -273,7 +273,8 @@ function newReport_formSubmission(){
                         //Send auto confirmation email
                         //sendMail({reqType:0,ticket:formData.id});
                         //TEST: mail template modifier
-                        var test = new mailModifier({user:"Yash",ticket:formData.id,type:0});
+                        var test = new mailModifier();
+                        test.prepareSend({user:"Yash",ticket:formData.id,type:0});
                         console.log(test.getData());
                     }else{
                         //Inform the user that something went wrong
@@ -379,4 +380,7 @@ $(document).ready(function(){
         'minTime': '8:30am',
         'maxTime': '4:00pm'
     });
+    var test = new mailModifier();
+    test.prepareSend({user:"Yash",ticket:43276,type:0});
+    console.log(test.getData());
 });

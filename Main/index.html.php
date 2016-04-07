@@ -4,12 +4,14 @@
 
     if(isset($_POST['log_out'])){
         CheckLogin::kill_session();
+        session_destroy();
         header("Location: landing-page.html.php");
         exit;
     }
 
     //check if there is a cookie upon page load - if there is one, check the age of the current session and if still active, extend by a few hours.
     if (!isset($_SESSION['pigeon_admin'])){
+        session_destroy();
         header("Location: landing-page.html.php");
         exit;
     }else{

@@ -5,6 +5,7 @@ ini_set('display_startup_errors',1);
 error_reporting(-1);
 
 require_once("inc/class.McAuth.inc.php");
+require_once('init.php');
 
 $token = $_GET['token'];
 $authz = $_GET['authz']; //get good token param from successful macid login
@@ -30,9 +31,13 @@ $unencrypt_2 = McAuth::getMcAuthParameters($token, $private_key);//decrypt token
 $attemptingUser = $unencrypt_2[4];
 $userMail = $unencrypt["authz"]["mail"];
 $firstName = $unencrypt["authz"]["fgivenameName"];
-$validAdmins = array("prancho","jdickso");
-$validStaff = array("kurucr","gopalay","resadm","beattyk","beanc","beaudes","greenj11","lightd","reifenb","rezlife","rohrer","simondw","treleavm","wilmos1","walkta","baumgjo","burkep","dansjoe","gacesag","sharris","richlor","otterse","housing","lombard","sumstaf","cr_conf2","cr_conf3","cr_conf1","haml","adamarl","marcosn");
-if(in_array($attemptingUser,$validAdmins)){
+//$validAdmins = array("prancho","jdickso");
+//$validStaff = array("kurucr","gopalay","resadm","beattyk","beanc","beaudes","greenj11","lightd","reifenb","rezlife","rohrer","simondw","treleavm","wilmos1","walkta","baumgjo","burkep","dansjoe","gacesag","sharris","richlor","otterse","housing","lombard","sumstaf","cr_conf2","cr_conf3","cr_conf1","haml","adamarl","marcosn");
+$dbAction = new Db();
+$access = $dbAction->get_user($attemptingUser);
+
+//NOTE: Validation changed. Now checks with users database. Old system was using in_array($attemptingUser,$validAdmins) which returns 1 or 0
+if($access==2){
     //Create session cookie
     session_start();
     $_SESSION['pigeon_admin'] = time('now') + 25000;
@@ -41,7 +46,7 @@ if(in_array($attemptingUser,$validAdmins)){
     $_SESSION['userMail'] = $userMail;
     //Redirect to main app
     header("Location: http://hcs.mcmaster.ca/apps/pigeon/Main/index.html.php");
-}else if(in_array($attemptingUser,$validStaff)){
+}else if($access==1){
     //Create session cookie
     session_start();
     $_SESSION['pigeon_staff'] = time('now') + 25000;

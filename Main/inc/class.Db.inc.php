@@ -293,5 +293,153 @@ class Db {
         }
         return $assoc_result;
     }
+
+    //User Permissions: Edit user permission
+    public function edit_user_permission($macid, $level){
+        $query = $this->databaseConnection->prepare('select * from users where macid = ? limit 1');
+        //var_dump( $query);
+
+        $query->bind_param("s", $macid);
+        $query->execute();
+        $user_result = $query->store_result();
+        $user_token = array();
+        $row_count = $query->num_rows;
+
+        if ($row_count == 1){
+            $query = $this->databaseConnection->prepare('update users set level = ? where macid = ?');
+        //var_dump( $query);
+
+            $query->bind_param("is", $level, $macid);
+            $query->execute();
+
+            if ($query){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+    }
+
+    //User Permissions: Delete User
+    public function del_user($macid){
+        $query = $this->databaseConnection->prepare('select * from users where macid = ? limit 1');
+        //var_dump( $query);
+
+        $query->bind_param("s", $macid);
+        $query->execute();
+        $user_result = $query->store_result();
+        $user_token = array();
+        $row_count = $query->num_rows;
+
+        if ($row_count == 1){
+            $query = $this->databaseConnection->prepare('delete from users where macid = ?');
+        //var_dump( $query);
+
+            $query->bind_param("s", $macid);
+            $query->execute();
+
+            if ($query){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+    }
+
+    //User Permissions: Add User
+    public function add_user($macid, $level){
+        $query = $this->databaseConnection->prepare('select * from users where macid = ? limit 1');
+        //var_dump( $query);
+
+        $query->bind_param("s", $macid);
+        $query->execute();
+        $user_result = $query->store_result();
+        $user_token = array();
+        $row_count = $query->num_rows;
+
+        if ($row_count == 1){
+            $query = $this->databaseConnection->prepare('update users set level = ? where macid = ?');
+        //var_dump( $query);
+
+            $query->bind_param("is", $level, $macid);
+            $query->execute();
+
+            if ($query){
+                return 1;
+            }else{
+                return 0;
+            }
+        }else{
+            $query = $this->databaseConnection->prepare('insert into users (macid, level) values (?,?)');
+        //var_dump( $query);
+
+            $query->bind_param("si", $macid, $level);
+            $query->execute();
+
+            if ($query){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+    }
+
+    //User Permissions: Get user details
+    function get_user($macid){
+        //0 = no access
+        //1 = user
+        //2 = admin
+
+        $query = $this->databaseConnection->prepare('select * from users where macid = ? limit 1');
+        //var_dump( $query);
+
+        $query->bind_param("s", $macid);
+        $query->execute();
+        $user_result = $query->store_result();
+        $user_token = array();
+        $row_count = $query->num_rows;
+
+        if ($row_count == 0){
+            return 0;
+            exit;
+        }else{
+            $query = $this->databaseConnection->prepare('select * from users where macid = ? LIMIT 1');
+
+            $query->bind_param("s", $macid);
+            $query->execute();
+            $result = $query->get_result();
+
+            while($row = $result->fetch_assoc()){
+                $user_token[0] = $row['macid'];
+                $user_token[1] = $row['level'];
+            }
+
+            if ($user_token[1] == 2){
+                return 2;
+                exit;
+            }else if($user_token[1] == 1){
+                return 1;
+                exit;
+            }else{
+                return 0;
+                exit;
+            }
+        }
+    }
+
+    //User Permissions: get all users
+    function get_all_users(){
+        $query = $this->databaseConnection->prepare('select * from users');
+
+            $query->execute();
+            $result = $query->get_result();
+            return $result;
+            exit;
+            while($row = $result->fetch_assoc()){
+                $user_token[0] = $row['macid'];
+                $user_token[1] = $row['level'];
+            }
+
+    }
 }
 ?>
