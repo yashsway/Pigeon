@@ -115,20 +115,30 @@ function ajaxRefresh(mode,id){
     }
 }
 //-----------Populate Reports------------
-function cacheReports(callback){
-    ajaxRequest("databaseButler.php?reqType="+13,"text",null,function(returnedData){
-        if(returnedData=="ok"){
-            callback();
-        }else{
-            console.log("Failed to cache reports. Check back-end.");
-        }
-    });
-}
-function populateReportList(){
-    cacheReports(function(){
-        $("#report-listing").append();
-    });
-}
+//function cacheReports(callback){
+//    var request = {reqType:13};
+//    ajaxRequest("databaseButler.php","text",request,function(returnedData){
+//        console.log(returnedData);
+//        /*if(returnedData=="ok"){
+//            console.log(returnedData);
+//            callback();
+//        }else{
+//            console.log("Failed to cache reports. Check back-end.");
+//            console.log(returnedData);
+//        }*/
+//    });
+//}
+//function testFetch(){
+//    ajaxRequest("databaseButler.php?reqType="+14,"text",null,function(returnedData){
+//        console.log(returnedData);
+//    });
+//    console.log("Callback works! Wait for ajax log next.");
+//}
+//function populateReportList(){
+//    cacheReports(function(){
+//        testFetch();
+//    });
+//}
 //-----------Backbone-----------
 //Report ADT
 function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm,nte,del){
@@ -1006,6 +1016,8 @@ $(document).ready(function(){
     reportDeletion();
     //Tag Updating
     tagUpdater();
+    //TEST: fetching reports
+    populateReportList();
     //REFRESH
     /*var time = new Date().getTime();
      $(document.body).bind("click keypress", function(e) {

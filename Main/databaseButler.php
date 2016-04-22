@@ -123,9 +123,13 @@ function currentUser(){
 }
 function cacheReports(){
     def();
-    $in = new Db();
-    $result = $in->getAndStoreReports();
+    $cach = new Db();
+    $result = $cach->getAndStoreReports();
     echo $result;
+}
+function fetchReports(){
+    global $reports;
+    //echo $reports[1]->summary;
 }
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
@@ -161,6 +165,8 @@ if((isset($_REQUEST['reqType']))==1){
         currentUser();
     }else if($_REQUEST['reqType']==13){
         cacheReports();
+    }else if($_REQUEST['reqType']==14){
+        fetchReports();
     }
 }
 ?>

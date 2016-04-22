@@ -16,9 +16,9 @@ class Db {
         global $user;
         global $pass;
         //Error display
-        //ini_set('display_errors',1);
-        //ini_set('display_startup_errors',1);
-        //error_reporting(-1);
+        ini_set('display_errors',1);
+        ini_set('display_startup_errors',1);
+        error_reporting(-1);
 
         if($GLOBALS['appMode']==0){
             //Connection to test database
@@ -295,8 +295,9 @@ class Db {
     }
 
     public function getAndStoreReports(){
-        $result = mysqli_query($this->databaseConnection,'SELECT * FROM reports WHERE markedForDeletion = 0');
-        require_once('obj/reportBlueprint.php');
+        $result = mysqli_query($this->databaseConnection,'SELECT * FROM reports');
+        return "wo";
+        /*require_once('obj/reportBlueprint.php');
         global $reports;
         while($row = mysqli_fetch_array($result)){
             $reports[] = new reportBlueprint($row['reportID'],$row['reportName'],$row['reportPhone'],$row['reportEmail'],$row['reportDepartment'],$row['reportRequest'],$row['reportCustomRequest'],$row['reportSummary'],$row['reportPriority'],$row['reportDate'],$row['reportTime'],$row['duration'],$row['admin_priority'],$row['admin_notes'],$row['markedForDeletion'],$row['resolved'],$row['timesViewed'],$row['tag']);
@@ -305,7 +306,7 @@ class Db {
             return mysqli_error($databaseConnection);
         }else{
             return "ok";
-        }
+        }*/
     }
     //User Permissions: Edit user permission
     public function edit_user_permission($macid, $level){
