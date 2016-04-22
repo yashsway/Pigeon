@@ -157,13 +157,7 @@ if((isset($_REQUEST['reqType']))==1){
     }else if($_REQUEST['reqType']==12){
         currentUser();
     }else if($_REQUEST['reqType']==13){
-<<<<<<< HEAD
-        cacheReports();
-    }else if($_REQUEST['reqType']==14){
-        fetchReports();
-=======
         getReports();
->>>>>>> tempWork
     }
 }
 ?>
