@@ -63,52 +63,51 @@
         <!--Custom Stylesheet-->
         <link rel="stylesheet" href="supplementary.css">
     </head>
-
-    <body>
-        <nav class="ym-hlist">
-            <ul>
-                <li>
-                    <h2 class="nav-title nav-element" id="nav-title">Pigeon</h2>
-                </li>
-            </ul>
-            <a href="#" class="btn nav-element nav-buttons btn-danger" id="logout"><span class="btn-icons glyphicon glyphicon-off"></span><span class="text">&nbsp;Logout</span></a>
-            <a href="#" class="btn nav-element nav-buttons btn-success" id="report"><span class="btn-icons glyphicon glyphicon-plus"></span><span class="text">&nbsp;Report</span></a>
-        </nav>
-        <div class="container-fluid">
-            <div class="col-md-12 col-sm-12 main-panel-container">
-                <!--REMOVED table-responsive from below-->
-                <table class="table main-panel">
-                    <thead>
-                        <th class="main-panel-header-contents"><img src="assets/icons/hammer.png" data-toggle="tooltip" data-placement="top" title="Resolved?" />
-                        </th>
-                        <th class="main-panel-header-contents"><img src="assets/icons/info.png" data-toggle="tooltip" data-placement="top" title="ID" />
-                        </th>
-                        <th class="main-panel-header-contents"><img src="assets/icons/clipboard.png" data-toggle="tooltip" data-placement="top" title="Summary" />
-                        </th>
-                        <th class="main-panel-header-contents"><img src="assets/icons/tag.png" data-toggle="tooltip" data-placement="top" title="Tag (Click to Update)" />
-                        </th>
-                        <th class="main-panel-header-contents"><img src="assets/icons/calendar_month.png" data-toggle="tooltip" data-placement="top" title="Date Due" />
-                        </th>
-                        <th class="main-panel-header-contents"><img src="assets/icons/risk.png" data-toggle="tooltip" data-placement="top" title="Client Priority" />
-                        </th>
-                        <th class="main-panel-header-contents"><img src="assets/icons/ambulance.png" data-toggle="tooltip" data-placement="top" title="Your Priority" />
-                        </th>
-                        <th class="main-panel-header-contents"><img src="assets/icons/timeframe.png" data-toggle="tooltip" data-placement="top" title="How long it will take" />
-                        </th>
-                        <th class="main-panel-header-contents"><img src="assets/icons/gear.png" data-toggle="tooltip" data-placement="top" title="Tools" />
-                        </th>
-                    </thead>
-                    <tbody id="report-listing">
-                        <?php
+<body>
+    <nav class="ym-hlist">
+        <ul>
+            <li>
+                <h2 class="nav-title nav-element" id="nav-title">Pigeon</h2>
+            </li>
+        </ul>
+        <a href="#" class="btn nav-element nav-buttons btn-danger" id="logout"><span class="btn-icons glyphicon glyphicon-off"></span><span class="text">&nbsp;Logout</span></a>
+        <a href="#" class="btn nav-element nav-buttons btn-success" id="report"><span class="btn-icons glyphicon glyphicon-plus"></span><span class="text">&nbsp;Report</span></a>
+    </nav>
+    <div class="container-fluid">
+        <div class="col-md-10 col-sm-10 main-panel-container">
+            <!--REMOVED table-responsive from below-->
+            <table class="table main-panel">
+                <thead>
+                    <th class="main-panel-header-contents"><img src="assets/icons/info.png" data-toggle="tooltip" data-placement="top" title="ID"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/clipboard.png" data-toggle="tooltip" data-placement="top" title="Summary"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/hammer.png" data-toggle="tooltip" data-placement="top" title="Resolved?"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/tag.png" data-toggle="tooltip" data-placement="top" title="Tag (Click to Update)"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/calendar_month.png" data-toggle="tooltip" data-placement="top" title="Date Due"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/risk.png" data-toggle="tooltip" data-placement="top" title="Client Priority"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/ambulance.png" data-toggle="tooltip" data-placement="top" title="Your Priority"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/timeframe.png" data-toggle="tooltip" data-placement="top" title="How long it will take"/>
+                    </th>
+                    <th class="main-panel-header-contents"><img src="assets/icons/gear.png" data-toggle="tooltip" data-placement="top" title="Tools"/>
+                    </th>
+                </thead>
+                <tbody id="report-listing">
+                   <?php
                         include 'obj/reportEntry.php';
                         reportEntry();
                     ?>
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
-        <!--Report Full Detail modal overlay-->
-        <?php
+    </div>
+    <!--Report Full Detail modal overlay-->
+    <?php
         include 'forms/reportDetailView.html';
         include 'forms/confirmation.html';
     ?>

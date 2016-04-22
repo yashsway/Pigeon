@@ -294,19 +294,17 @@ class Db {
         return $assoc_result;
     }
 
-    public function getAndStoreReports(){
-        $result = mysqli_query($this->databaseConnection,'SELECT * FROM reports');
-        return "wo";
-        /*require_once('obj/reportBlueprint.php');
-        global $reports;
-        while($row = mysqli_fetch_array($result)){
-            $reports[] = new reportBlueprint($row['reportID'],$row['reportName'],$row['reportPhone'],$row['reportEmail'],$row['reportDepartment'],$row['reportRequest'],$row['reportCustomRequest'],$row['reportSummary'],$row['reportPriority'],$row['reportDate'],$row['reportTime'],$row['duration'],$row['admin_priority'],$row['admin_notes'],$row['markedForDeletion'],$row['resolved'],$row['timesViewed'],$row['tag']);
+    public function getAllReports(){
+        $result = mysqli_query($this->databaseConnection,'select reportID,reportSummary,resolved,tag,reportDate,reportTime,reportPriority,admin_priority from reports');
+        $i = 0;
+        while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+            $assoc_result[$i] = $row;
+            $i++;
         }
         if(!$result){
             return mysqli_error($databaseConnection);
-        }else{
-            return "ok";
-        }*/
+        }
+        return $assoc_result;
     }
     //User Permissions: Edit user permission
     public function edit_user_permission($macid, $level){

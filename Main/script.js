@@ -114,31 +114,17 @@ function ajaxRefresh(mode,id){
                 break;
     }
 }
-//-----------Populate Reports------------
-//function cacheReports(callback){
-//    var request = {reqType:13};
-//    ajaxRequest("databaseButler.php","text",request,function(returnedData){
-//        console.log(returnedData);
-//        /*if(returnedData=="ok"){
-//            console.log(returnedData);
-//            callback();
-//        }else{
-//            console.log("Failed to cache reports. Check back-end.");
-//            console.log(returnedData);
-//        }*/
-//    });
-//}
-//function testFetch(){
-//    ajaxRequest("databaseButler.php?reqType="+14,"text",null,function(returnedData){
-//        console.log(returnedData);
-//    });
-//    console.log("Callback works! Wait for ajax log next.");
-//}
-//function populateReportList(){
-//    cacheReports(function(){
-//        testFetch();
-//    });
-//}
+//----------AJAX Report Fetch---------
+function fetchReports(){
+    var reqData = {reqType:13};
+    ajaxRequest("databaseButler.php","json",reqData,function(returnedData){
+        if(returnedData!=null){
+        }else{
+            console.log("Failed to retrieve reports");
+        }
+    });
+}
+fetchReports();
 //-----------Backbone-----------
 //Report ADT
 function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm,nte,del){
