@@ -1002,8 +1002,6 @@ $(document).ready(function(){
     reportDeletion();
     //Tag Updating
     tagUpdater();
-    //TEST: fetching reports
-    populateReportList();
     //REFRESH
     /*var time = new Date().getTime();
      $(document.body).bind("click keypress", function(e) {
