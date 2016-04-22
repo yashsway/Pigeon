@@ -30,7 +30,7 @@ function ajaxRefresh(mode,id){
             case 1:
                 //NOTE: can change it to change the details from normal array
                 ajaxRequest("databaseButler.php?reqType="+0+"&queryID="+id, "json", null, function(returnedData){
-                    if(returnedData[0].error=="Query fail"){
+                    if(returnedData[0].error=="fail"){
                         console.log("Populating detailed view failed. Check Database Query.");
                     }else{
                         $("#full-info-title").text("#" + id + " " + returnedData[0].reportSummary.substr(0,60) + "...");
@@ -113,6 +113,21 @@ function ajaxRefresh(mode,id){
                 console.log("Invalid AJAX refresh request");
                 break;
     }
+}
+//-----------Populate Reports------------
+function cacheReports(callback){
+    ajaxRequest("databaseButler.php?reqType="+13,"text",null,function(returnedData){
+        if(returnedData=="ok"){
+            callback();
+        }else{
+            console.log("Failed to cache reports. Check back-end.");
+        }
+    });
+}
+function populateReportList(){
+    cacheReports(function(){
+        $("#report-listing").append();
+    });
 }
 //-----------Backbone-----------
 //Report ADT
@@ -388,7 +403,7 @@ function newReport_formSubmission(){
             ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
                 //Test: progress bar
                 progressBar_modify("#newReport_progress",25);
-                if(returnedData=="Query ok"){
+                if(returnedData=="ok"){
                     //Inform the user that the form is valid
                     newReport_message("Looks great! Thanks!");
                     //Test: progress bar
@@ -469,7 +484,7 @@ function viewEditForm(){
         var request = {reqType:3,queryID:rep_ID};
         //NOTE: Review AJAX edit form
         ajaxRequest("databaseButler.php", "json", request, function(returnedData){
-            if(returnedData[0].error=="Query fail"){
+            if(returnedData[0].error=="fail"){
                 console.log("Populating edit report failed. Check Database Query.");
             }else{
                 //TEST: console msg
@@ -553,7 +568,7 @@ $("#editReport_save").on("click",function(){
         var formData = editReport_compilation(rep_ID);
         //NOTE: Review AJAX save edit form
         ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
-            if(returnedData=="Query ok"){
+            if(returnedData=="ok"){
                 //Close edit form & related
                 closeEditForm(true);
                 //Inform the user
@@ -595,7 +610,7 @@ function reportRestoration(id,deleteButton,delTimeout){
         //Remove the deletion tag/marking on the report
         //NOTE: review AJAX update
         ajaxRequest("databaseButler.php?reqType="+1+"&reqParam="+0+"&queryID="+id, "text", null, function(returnedData){
-            if(returnedData=="Query ok"){
+            if(returnedData=="ok"){
                 //TEST: Console msg
                 console.log("Report #"+id+" unmarked.");
                 //Remove the greyOut
@@ -620,7 +635,7 @@ function reportDeletion(){
         //Mark report for deletion
         //NOTE: review AJAX update
         ajaxRequest("databaseButler.php?reqType="+1+"&reqParam="+1+"&queryID="+reportID, "text", null, function(returnedData){
-            if(returnedData=="Query ok"){
+            if(returnedData=="ok"){
                 //TEST: Console msg
                 console.log("Report #" + reportID + " marked for deletion.");
                 //Remove report listing (after a delay)
@@ -637,7 +652,7 @@ function reportDeletion(){
                     //Delete the report data from the database
                     //TODO: AJAX deletion
                     /*ajaxRequest("databaseButler.php?reqType="+6+"&queryID="+reportID,"text",null,function(returnedData){
-                        if(returnedData=="Query ok"){
+                        if(returnedData=="ok"){
                             //TEST: console msg
                             console.log("Report #"+reportID+" deleted.");
                             $(".main-panel").find("#"+reportID).remove();
@@ -690,7 +705,7 @@ function detailedReportBuilder(){
         $(".modal-content").attr("id",rep_ID);
         //NOTE: Review following detailed view AJAX code
         ajaxRequest("databaseButler.php?reqType="+0+"&queryID="+rep_ID, "json", null, function(returnedData){
-            if(returnedData[0].error=="Query fail"){
+            if(returnedData[0].error=="fail"){
                 console.log("Populating detailed view failed. Check Database Query.");
             }else{
                 //CHANGES: select 60 character substring out of summary
@@ -922,7 +937,7 @@ function tagUpdater(){
 //AJAX Updater (Single Report)
 function ajaxTagUpdater(id){
     ajaxRequest("databaseButler.php?reqType="+7+"&queryID="+id,"json",null,function(returnedData){
-        if(returnedData[0].error=="Query fail"){
+        if(returnedData[0].error=="fail"){
             console.log("Updating tag failed. Check Database Query.");
         }else{
             $(".main-panel").find("#"+id).find(".report-tag").empty();
@@ -940,7 +955,7 @@ $("#resolve_issue").click(function(){
             $("#confirm_close").trigger('click');
         }else{
             ajaxRequest("databaseButler.php?reqType="+5+"&reqParam="+1+"&queryID="+rep_ID,"text",null,function(returnedData){
-                if(returnedData=="Query ok"){
+                if(returnedData=="ok"){
                     $(obj).text("Resolved");
                     $(obj).prop('disabled',true);
                     $("#edit_issue").hide();
@@ -968,6 +983,8 @@ $("#logout").on('click',function(){
 //---------------Page Load---------------
 // Functions to execute upon page load
 $(document).ready(function(){
+    //TEST: Fetch reports
+
     //NOTE: Report ID's are attached in the DOM in 2 places: each table row and the report detail modal, whenever it is opened.
     //New Report Modal View for Report button
     $("#report").attr("data-toggle","modal");

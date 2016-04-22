@@ -59,7 +59,7 @@ class Db {
 
         //Error catch
         if(!$ajaxQuery){
-            $error[0] = array("error"=>"Query fail");
+            $error[0] = array("error"=>"fail");
             return $error;
         }
 
@@ -93,7 +93,7 @@ class Db {
 
         //Error catch
         if(!$ajaxQuery){
-            $error[0] = array("error"=>"Query fail");
+            $error[0] = array("error"=>"fail");
             return $error;
         }
 
@@ -110,9 +110,9 @@ class Db {
         $ajaxQuery->execute();
 
         if($ajaxQuery){
-            return "Query ok";
+            return "ok";
         }else{
-            return "Query fail";
+            return "fail";
         }
     }
 
@@ -124,9 +124,9 @@ class Db {
         $ajaxQuery->execute();
 
         if($ajaxQuery){
-            return "Query ok";
+            return "ok";
         }else{
-            return "Query fail";
+            return "fail";
         }
     }
 
@@ -137,7 +137,7 @@ class Db {
 
         //Error catch
         if(!$ajaxQuery){
-            $error[0] = array("error"=>"Query fail");
+            $error[0] = array("error"=>"fail");
             return $error;
         }
 
@@ -164,9 +164,9 @@ class Db {
         $ajaxQuery->execute();
 
         if($ajaxQuery){
-            return "Query ok";
+            return "ok";
         }else{
-            return "Query fail";
+            return "fail";
         }
     }
 
@@ -181,9 +181,9 @@ class Db {
         $ajaxQuery->execute();
 
         if($ajaxQuery){
-            return "Query ok";
+            return "ok";
         }else{
-            return "Query fail";
+            return "fail";
         }
     }
 
@@ -193,9 +193,9 @@ class Db {
         $ajaxQuery->execute();
 
         if($ajaxQuery){
-            return "Query ok";
+            return "ok";
         }else{
-            return "Query fail";
+            return "fail";
         }
     }
 
@@ -228,7 +228,7 @@ class Db {
 
         //Error catch
         if(!$ajaxQuery){
-            $error[0] = array("error"=>"Query fail");
+            $error[0] = array("error"=>"fail");
             return $error;
         }
 
@@ -294,6 +294,19 @@ class Db {
         return $assoc_result;
     }
 
+    public function getAndStoreReports(){
+        $result = mysqli_query($this->databaseConnection,'SELECT * FROM reports WHERE markedForDeletion = 0');
+        require_once('obj/reportBlueprint.php');
+        global $reports;
+        while($row = mysqli_fetch_array($result)){
+            $reports[] = new reportBlueprint($row['reportID'],$row['reportName'],$row['reportPhone'],$row['reportEmail'],$row['reportDepartment'],$row['reportRequest'],$row['reportCustomRequest'],$row['reportSummary'],$row['reportPriority'],$row['reportDate'],$row['reportTime'],$row['duration'],$row['admin_priority'],$row['admin_notes'],$row['markedForDeletion'],$row['resolved'],$row['timesViewed'],$row['tag']);
+        }
+        if(!$result){
+            return mysqli_error($databaseConnection);
+        }else{
+            return "ok";
+        }
+    }
     //User Permissions: Edit user permission
     public function edit_user_permission($macid, $level){
         $query = $this->databaseConnection->prepare('select * from users where macid = ? limit 1');

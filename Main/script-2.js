@@ -243,7 +243,7 @@ function newReport_formSubmission(){
                     ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
                         //Test: progress bar 90%
                         progressBar_modify("#newReport_progress",25);
-                        if(returnedData=="Query ok"){
+                        if(returnedData=="ok"){
                             //Inform the user that the form is valid
                             newReport_message("Looks great! Thanks!");
                             //Bind view & delete buttons //TODO: Automatically BIND view and delete on creation of new row
@@ -452,7 +452,7 @@ $("#login_trigger").on('click',function() {
                 $("#user_name").removeClass('animated flash');
                 $("#pass_word").removeClass('animated flash');
             },3500);
-        }else if(returnedData=="success"){
+        }else if(returnedData=="ok"){
             window.location.assign("index.html.php");
         }
     });

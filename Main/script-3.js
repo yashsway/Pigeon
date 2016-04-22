@@ -242,7 +242,7 @@ function newReport_formSubmission(){
             ajaxRequest("databaseButler.php", "text", formData, function(returnedData){
                 //Test: progress bar 90%
                 progressBar_modify("#newReport_progress",25);
-                if(returnedData=="Query ok"){
+                if(returnedData=="ok"){
                     //Inform the user that the form is valid
                     newReport_message("Looks great! Thanks!");
                     //Test: progress bar 100%

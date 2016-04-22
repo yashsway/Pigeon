@@ -121,6 +121,12 @@ function currentUser(){
     session_start();
     echo (string)$_SESSION['user_name'];
 }
+function cacheReports(){
+    def();
+    $in = new Db();
+    $result = $in->getAndStoreReports();
+    echo $result;
+}
 //TEST:
 //echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
 //echo "it works";
@@ -153,6 +159,8 @@ if((isset($_REQUEST['reqType']))==1){
         appStats();
     }else if($_REQUEST['reqType']==12){
         currentUser();
+    }else if($_REQUEST['reqType']==13){
+        cacheReports();
     }
 }
 ?>
