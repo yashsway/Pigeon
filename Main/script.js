@@ -114,6 +114,17 @@ function ajaxRefresh(mode,id){
                 break;
     }
 }
+//----------AJAX Report Fetch---------
+function fetchReports(){
+    var reqData = {reqType:13};
+    ajaxRequest("databaseButler.php","json",reqData,function(returnedData){
+        if(returnedData!=null){
+        }else{
+            console.log("Failed to retrieve reports");
+        }
+    });
+}
+fetchReports();
 //-----------Backbone-----------
 //Report ADT
 function report(id,na,ph,em,dep,req,cus,summ,det,pri,dat,tim,dur,adm,nte,del){

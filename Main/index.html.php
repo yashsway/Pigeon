@@ -75,8 +75,6 @@
         <a href="#" class="btn nav-element nav-buttons btn-success" id="report"><span class="btn-icons glyphicon glyphicon-plus"></span><span class="text">&nbsp;Report</span></a>
     </nav>
     <div class="container-fluid">
-        <div class="col-md-1 col-sm-1 side-panel">
-        </div>
         <div class="col-md-10 col-sm-10 main-panel-container">
             <!--REMOVED table-responsive from below-->
             <table class="table main-panel">
@@ -107,8 +105,6 @@
                     ?>
                 </tbody>
             </table>
-        </div>
-        <div class="col-md-1 col-sm-1 side-panel">
         </div>
     </div>
     <!--Report Full Detail modal overlay-->

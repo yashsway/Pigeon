@@ -121,10 +121,13 @@ function currentUser(){
     session_start();
     echo (string)$_SESSION['user_name'];
 }
-//TEST:
-//echo json_encode(array('name'=>$_POST['na'],'reqType'=>$_POST['reqType']));
-//echo "it works";
-//echo ((isset($_REQUEST['reqType']))==1);
+function getReports(){
+    def();
+    //New connection
+    $connection = new Db();
+    $result = $connection->getAllReports();
+    echo json_encode($result);
+}
 if((isset($_REQUEST['reqType']))==1){
     if($_REQUEST['reqType']==0){
         reportLookup();
@@ -153,6 +156,8 @@ if((isset($_REQUEST['reqType']))==1){
         appStats();
     }else if($_REQUEST['reqType']==12){
         currentUser();
+    }else if($_REQUEST['reqType']==13){
+        getReports();
     }
 }
 ?>

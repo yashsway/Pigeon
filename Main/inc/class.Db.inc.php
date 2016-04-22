@@ -294,6 +294,18 @@ class Db {
         return $assoc_result;
     }
 
+    public function getAllReports(){
+        $result = mysqli_query($this->databaseConnection,'select reportID,reportSummary,resolved,tag,reportDate,reportTime,reportPriority,admin_priority from reports');
+        $i = 0;
+        while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+            $assoc_result[$i] = $row;
+            $i++;
+        }
+        if(!$result){
+            return mysqli_error($databaseConnection);
+        }
+        return $assoc_result;
+    }
     //User Permissions: Edit user permission
     public function edit_user_permission($macid, $level){
         $query = $this->databaseConnection->prepare('select * from users where macid = ? limit 1');
