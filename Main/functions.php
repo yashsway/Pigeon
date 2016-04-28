@@ -40,7 +40,7 @@ function priorityFlagCodeGenerator($value){
         case 3:
             return '<img src="assets/icons/red-flag.png"/>';
         default:
-            return '<img src="assets/icons/bomb.png"/>';
+            return '<img src="assets/icons/hourglass.png"/>';
     }
 }
 function resolutionFlagCodeGenerator($value){
@@ -50,7 +50,7 @@ function resolutionFlagCodeGenerator($value){
         case 1:
             return '<img src="assets/icons/checkmark.png"/>';
         default:
-            return '<img src="assets/icons/bomb.png"/>';
+            return '<img src="assets/icons/hourglass.png"/>';
     }
 }
 function tagCodeGenerator($value){
@@ -68,7 +68,7 @@ function tagCodeGenerator($value){
         case 5:
             return '<img src="assets/icons/view.png"/>';
         default:
-            return '<img src="assets/icons/bomb.png"/>';
+            return '<img src="assets/icons/hourglass.png"/>';
     }
 }
 

@@ -295,7 +295,7 @@ class Db {
     }
 
     public function getAllReports(){
-        $result = mysqli_query($this->databaseConnection,'select reportID,reportSummary,resolved,tag,reportDate,reportTime,reportPriority,admin_priority from reports');
+        $result = mysqli_query($this->databaseConnection,'select reportID,reportSummary,resolved,tag,reportDate,reportTime,reportPriority,admin_priority from reports where markedForDeletion!=1');
         $i = 0;
         while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
             $assoc_result[$i] = $row;
