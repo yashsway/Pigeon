@@ -1,24 +1,4 @@
 <?php
-
-function fetchReports(){
-    //Access the global array 'reports' from within this function
-    global $reports;
-    $connect = new Db();
-    $databaseConnection = $connect->databaseConnection;
-    $result = mysqli_query($databaseConnection,'SELECT * FROM reports WHERE markedForDeletion = 0');
-    if(!$result){
-        $output = "Error fetching reports: " . mysqli_error($databaseConnection);
-        //TEST: Console msg
-        echo '<script type="text/javascript">console.log(' . $output . ')</script>';
-        exit();
-    }
-    require_once('obj/reportBlueprint.php');
-    //CHANGES: removed $row['reportDetails']
-    while($row = mysqli_fetch_array($result)){
-        $reports[] = new reportBlueprint($row['reportID'],$row['reportName'],$row['reportPhone'],$row['reportEmail'],$row['reportDepartment'],$row['reportRequest'],$row['reportCustomRequest'],$row['reportSummary'],$row['reportPriority'],$row['reportDate'],$row['reportTime'],$row['duration'],$row['admin_priority'],$row['admin_notes'],$row['markedForDeletion'],$row['resolved'],$row['timesViewed'],$row['tag']);
-    }
-    return $reports;
-}
 function reports_indexReturn($id){
     //Access the global array 'reports' from within this function
     global $reports;
@@ -101,8 +81,6 @@ function tagGenerator($data){
     }else if($interval==0){
         $tg = 3;
     }else if(($data[0]['reportPriority']==1 && $interval<=2) || ($data[0]['reportPriority']==2 && $interval<=4) || ($data[0]['reportPriority']==3 && $interval<=6) || ($data[0]['admin_priority']==1 && $interval<=3) || ($data[0]['admin_priority']==2 && $interval<=6) || ($data[0]['admin_priority']==3 && $interval<=9)){
-        $tg = 2;
-    }else if($data[0]['duration']>3){
         $tg = 2;
     }else if($data[0]['timesViewed']>=15){
         $tg = 2;

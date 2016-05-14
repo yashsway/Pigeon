@@ -37,16 +37,16 @@ class mailModifier{
             /*var info = this.templateData(type);
             $("#title").text(info.title);
             $("#ticket").text(this.ticket);*/
-            var info = this.templateData(type);
+            /*var info = this.templateData(type);
             ajaxRequest("/apps/pigeon/Main/mailTemplates/ticketauto.html.php","html",info,function(returnedData){
                 var emailToSend = returnedData;
                 console.log(emailToSend);
-            });
+            });*/
         }
     }
     prepareSend(data){
         this.setData(data);
-        this.modifyTemplate(this.templateType);
+        //this.modifyTemplate(this.templateType);
         this.sendMail({reqType:this.templateType,ticket:this.ticket});
     }
 }

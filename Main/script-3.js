@@ -179,11 +179,14 @@ function newReport_message(msg){
     },5000);
 }
 //Other category field is only enabled when request category dropdown is selected as 'other'
-$("#newReport_requestCategory").on("click",function(){
-    if($(this).val()=="Other"){
-        $("#newReport_otherRequest").prop('disabled',false);
-    }else{
-        $("#newReport_otherRequest").prop('disabled',true);
+$("#newReport_requestCategory").on("change", function () {
+    if ($(this).val() == "Other") {
+        console.log("other!");
+        $("#newReport_otherRequest").prop('disabled', false);
+        $("#newReport_otherRequest").parent().css('background-color','');
+    } else {
+        $("#newReport_otherRequest").prop('disabled', true);
+        $("#newReport_otherRequest").parent().css('background-color','gray');
     }
 });
 //Clear button of the new Report formn
@@ -196,7 +199,6 @@ $("#newReport_clear").click(function(){
     $("#newReport_otherRequest").val('');$("#newReport_otherRequest").parent().css('background-color','');
     $("#newReport_summary").val('');$("#newReport_summary").parent().css('background-color','');
     $("#newReport_extension").val('');
-    //$("#newReport_details").val('');
     $('input[name="priority"]').prop('checked', false);$("#newReport_priority").css('background-color','');
     $('#newReport_date').val('');$('#newReport_date').css('background-color','');
     $('#newReport_time').val('');$('#newReport_time').css('background-color','');

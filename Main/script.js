@@ -1,6 +1,6 @@
 //Database to hold report objects
 var reports = new Array();
-var ID, name, phone, email, department, request, custom_request, summary, details, priority, date, time, duration, admin_priority;
+var ID, name, phone, email, department, request, custom_request, summary, details, priority, date, time, admin_priority;
 var newReport_valid = false;
 var editReport_valid = false;
 //--------------------AJAX Handler-------------------
@@ -54,7 +54,7 @@ function ajaxRefresh(mode, id) {
                 $(".full-info-text.time").text(returnedData[0].reportTime);
                 //Admin-Set information changed below
                 $(".full-info-text.adminPriority").text(priorityStringGenerator(returnedData[0].admin_priority));
-                $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " hr(s) to complete");
+                //$(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " hr(s) to complete");
                 $(".full-info-text.notes").text(returnedData[0].admin_notes);
                 //Final Color-coding
                 detailedReport_ColorCoding(returnedData[0].reportPriority, "priority");
@@ -98,8 +98,8 @@ function ajaxRefresh(mode, id) {
                 $(".main-panel").find("#" + id).find(".report-title").html(returnedData[0].reportSummary);
                 $(".main-panel").find("#" + id).find(".report-date").empty();
                 $(".main-panel").find("#" + id).find(".report-date").html(returnedData[0].reportDate);
-                $(".main-panel").find("#" + id).find(".report-duration").empty();
-                $(".main-panel").find("#" + id).find(".report-duration").html(returnedData[0].duration + " hr");
+                //$(".main-panel").find("#" + id).find(".report-duration").empty();
+                //$(".main-panel").find("#" + id).find(".report-duration").html(returnedData[0].duration + " hr");
                 $(".main-panel").find("#" + id).find(".report-adminPriority").empty();
                 $(".main-panel").find("#" + id).find(".report-adminPriority").html(priorityFlagCodeGenerator(returnedData[0].admin_priority));
             }
@@ -123,7 +123,7 @@ function fetchReports(callback) {
     ajaxRequest("databaseButler.php", "json", reqData, function (returnedData) {
         if (returnedData != null) {
             for (var i = 0; i < Object.keys(returnedData).length; i++) {
-                $("#report-listing").append(tableFormatter(returnedData[i]['reportID'], 'reportID', 1) + tableFormatter(returnedData[i]['reportID'], 'reportID', 0) + tableFormatter(returnedData[i]['reportSummary'], 'reportSummary', 0) + tableFormatter(returnedData[i]['resolved'], 'resolved', 0) + tableFormatter(returnedData[i]['tag'], 'tag', 0) + tableFormatter(returnedData[i]['reportDate'], 'reportDate', 0) + tableFormatter(returnedData[i]['reportPriority'], 'reportPriority', 0) + tableFormatter(returnedData[i]['admin_priority'], 'admin_priority', 0) + tableFormatter(returnedData[i]['duration'], 'duration', 0) + tableFormatter(returnedData[i]['reportID'], 'tools', 0) + '</tr>');
+                $("#report-listing").append(tableFormatter(returnedData[i]['reportID'], 'reportID', 1) + tableFormatter(returnedData[i]['resolved'], 'resolved', 0) + tableFormatter(returnedData[i]['reportID'], 'reportID', 0) + tableFormatter(returnedData[i]['reportSummary'], 'reportSummary', 0) + tableFormatter(returnedData[i]['reportDate'], 'reportDate', 0) + tableFormatter(returnedData[i]['reportTime'], 'reportTime', 0) + tableFormatter(returnedData[i]['reportPriority'], 'reportPriority', 0) + tableFormatter(returnedData[i]['admin_priority'], 'admin_priority', 0) + tableFormatter(returnedData[i]['tag'], 'tag', 0) + tableFormatter(returnedData[i]['reportID'], 'tools', 0) + '</tr>');
             }
         } else {
             console.log("Failed to retrieve reports");
@@ -138,7 +138,11 @@ function tableFormatter(val, container, type) {
         if (container == "reportID") {
             return '<td class="report-elements report-id text">' + val + '</td>';
         } else if (container == "reportSummary") {
-            return '<td class="report-elements report-title text">' + val + '</td>';
+            if(val.length>=60){
+                return '<td class="report-elements report-title text">' + val.substring(0,61) + '...</td>';
+            }else{
+                return '<td class="report-elements report-title text">' + val + '</td>';
+            }
         } else if (container == "resolved") {
             return '<td class="report-elements report-icons report-resolution">' + resolutionFlagCodeGenerator(val) + '</td>';
         } else if (container == "tag") {
@@ -149,7 +153,7 @@ function tableFormatter(val, container, type) {
             return '<td class="report-elements report-icons report-priority">' + priorityFlagCodeGenerator(val) + '</td>';
         } else if (container == "admin_priority") {
             return '<td class="report-elements report-icons report-priority">' + priorityFlagCodeGenerator(val) + '</td>';
-        } else if (container == "duration") {
+        } else if (container == "reportTime") {
             return '<td class="report-elements report-duration text">' + val + '</td>';
         } else if (container == "tools") {
             return '<td class="report-elements report-tools"><button class="btn btn-default view org-repTools">View</button><img class="view alt-repTools" src="assets/icons/zoom.png"><button class="btn btn-success restore" id="restore' + val + '"><span class="fa fa-undo"></span></button><button class="btn btn-danger delete org-repTools">Delete</button><img class="delete alt-repTools" src="assets/icons/delete.png"></td>';
@@ -166,7 +170,7 @@ function tableFormatter(val, container, type) {
 }
 //-----------Backbone-----------
 //Report ADT
-function report(id, na, ph, em, dep, req, cus, summ, det, pri, dat, tim, dur, adm, nte, del) {
+function report(id, na, ph, em, dep, req, cus, summ, det, pri, dat, tim, adm, nte, del) {
     this.ID = id;
     this.name = na;
     this.phone = ph;
@@ -179,7 +183,6 @@ function report(id, na, ph, em, dep, req, cus, summ, det, pri, dat, tim, dur, ad
     this.priority = pri;
     this.date = dat;
     this.time = tim;
-    this.duration = 2; //Default value of 2 days
     this.admin_priority = "";
     this.admin_notes = "";
     this.markedForDeletion = false;
@@ -372,11 +375,14 @@ function newReport_message(msg) {
     }, 5000);
 }
 //Other category field is only enabled when request category dropdown is selected as 'other'
-$("#newReport_requestCategory").on("click", function () {
+$("#newReport_requestCategory").on("change", function () {
     if ($(this).val() == "Other") {
+        console.log("other!");
         $("#newReport_otherRequest").prop('disabled', false);
+        $("#newReport_otherRequest").parent().css('background-color','');
     } else {
         $("#newReport_otherRequest").prop('disabled', true);
+        $("#newReport_otherRequest").parent().css('background-color','gray');
     }
 });
 //Clear button of the new Report formn
@@ -395,8 +401,8 @@ $("#newReport_clear").click(function () {
     $("#newReport_otherRequest").parent().css('background-color', '');
     $("#newReport_summary").val('');
     $("#newReport_summary").parent().css('background-color', '');
-    //$("#newReport_details").val('');
     $("#newReport_extension").val('');
+    $("#newReport_extension").parent().css('background-color','');
     $('input[name="priority"]').prop('checked', false);
     $("#newReport_priority").css('background-color', '');
     $('#newReport_date').val('');
@@ -415,9 +421,6 @@ function newReport_engine() {
     newReport_validation();
     //Enable new report submission
     newReport_formSubmission();
-    //Disable authentication gate
-    //$("#newReport_authKey").prop('disabled',true);
-    //$("#newReport_authKey").prop('placeholder','not required when signed in');
 }
 //New Report Compilation
 function newReport_compilation() {
@@ -538,7 +541,6 @@ function editReport_compilation(id) {
             dat: $("#editReport_date").val(),
             tim: $("#editReport_time").val(),
             admPr: priorityNumberGenerator($("input[type='radio'][name='adminPriority']:checked").val()),
-            dur: $("#editReport_durationSlider").val(),
             nte: $("#editReport_notes").val()
         };
     } else {
@@ -552,7 +554,6 @@ function editReport_compilation(id) {
             dat: $("#editReport_date").val(),
             tim: $("#editReport_time").val(),
             admPr: 0,
-            dur: $("#editReport_durationSlider").val(),
             nte: $("#editReport_notes").val()
         };
     }
@@ -595,8 +596,8 @@ function viewEditForm() {
                     console.log("Reading invalid admin_priority string. (View Edit Form)");
                 }
                 $("#editReport_notes").val(returnedData[0].admin_notes);
-                //Setup the duration slider
-                $("#editReport_durationSlider").noUiSlider({
+                //Setup the duration slider (REMOVED)
+                /*$("#editReport_durationSlider").noUiSlider({
                     start: returnedData[0].duration,
                     step: 1,
                     connect: "lower",
@@ -608,13 +609,13 @@ function viewEditForm() {
                     format: wNumb({
                         decimals: 0
                     })
-                });
-                //Show the initial value
-                $("#duration_tooltip").text(returnedData[0].duration + " hr(s)");
-                //Update the value in the label so the user knows what value the slider is at
-                $("#editReport_durationSlider").on('slide', function () {
+                });*/
+                //Show the initial value (REMOVED)
+                //$("#duration_tooltip").text(returnedData[0].duration + " hr(s)");
+                //Update the value in the label so the user knows what value the slider is at (REMOVED)
+                /*$("#editReport_durationSlider").on('slide', function () {
                     $("#duration_tooltip").text($(this).val() + " hr(s)");
-                });
+                });*/
                 //Disable itself
                 $(this).prop('disabled', true);
                 //Disable the resolution tools
@@ -632,10 +633,10 @@ function viewEditForm() {
 }
 
 function closeEditForm(op) {
-    if (op) {
+    /*if (op) {
         //Destroy the slider object
         $("#editReport_durationSlider")[0].destroy();
-    }
+    }*/
     //Hide the edit report form
     $("#editReport").hide();
     //Hide the save tools
@@ -817,7 +818,7 @@ function detailedReportBuilder() {
                 $(".full-info-text.time").text(returnedData[0].reportTime);
                 //Admin-Set information changed below
                 $(".full-info-text.adminPriority").text(priorityStringGenerator(returnedData[0].admin_priority));
-                $(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " hr(s) to complete");
+                //$(".full-info-text.duration").text("Will take approximately " + returnedData[0].duration + " hr(s) to complete");
                 $(".full-info-text.notes").text(returnedData[0].admin_notes);
                 //Final Color-coding
                 detailedReport_ColorCoding(returnedData[0].reportPriority, "priority");
